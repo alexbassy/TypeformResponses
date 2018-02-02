@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Platform, Linking, TextInput, Button, KeyboardAvoidingView } from 'react-native'
+import { TFForm, TFTextInput, TFButton } from './components/form-elements'
 
 export default class Login extends React.Component {
   static navigationOptions = {
@@ -43,16 +44,18 @@ export default class Login extends React.Component {
         behavior='padding'
         style={styles.container}
       >
-        <TextInput
-          placeholder='Username'
-        />
-        <TextInput
-          placeholder='Password'
-        />
-        <Button
-          title='Login'
-          onPress={ev => console.log(ev)}
-        />
+        <TFForm>
+          <TFTextInput
+            placeholder={`Username`}
+          />
+          <TFTextInput
+            secureTextEntry
+            placeholder={`Password`}
+          />
+          <TFButton
+            title='Submit'
+          />
+        </TFForm>
       </KeyboardAvoidingView>
     )
   }
@@ -63,8 +66,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  welcomeText: {
-    fontSize: 24
   }
 })
