@@ -42,12 +42,14 @@ const style = StyleSheet.create({
   TextInputContainer: {
     borderWidth: 1,
     borderRadius: 3,
+    backgroundColor: '#fff',
     borderColor: '#d3d3d3',
-    padding: 10,
     marginBottom: 16
   },
   TextInput: {
-    fontFamily: 'apercu-regular'
+    fontFamily: 'Apercu Pro',
+    padding: 8,
+    paddingVertical: 12
   },
   ButtonContainer: {
     alignItems: 'center',
@@ -60,6 +62,6 @@ const style = StyleSheet.create({
   Button: {
     fontSize: 18,
     color: '#fff',
-    fontFamily: 'apercu-regular',
+    fontFamily: 'Apercu Pro'
   }
 })

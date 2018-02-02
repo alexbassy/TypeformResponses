@@ -46,11 +46,14 @@ export default class Login extends React.Component {
       >
         <TFForm>
           <TFTextInput
-            placeholder={`Username`}
+            placeholder='Username or email address'
+            keyboardType='email-address'
+            autoCorrect={false}
+            autoCapitalize={'none'}
           />
           <TFTextInput
             secureTextEntry
-            placeholder={`Password`}
+            placeholder='Password'
           />
           <TFButton
             title='Submit'
@@ -65,6 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#f1ece4'
   }
 })
