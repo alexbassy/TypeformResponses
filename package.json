@@ -26,5 +26,10 @@
   },
   "standard": {
     "parser": "babel-eslint"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

@@ -12,7 +12,7 @@
 		</dict>
 	</array>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -50,7 +50,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -62,5 +62,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Apercu Pro Bold.ttf</string>
+		<string>Apercu Pro Light.ttf</string>
+		<string>Apercu Pro Medium.ttf</string>
+		<string>Apercu Pro Regular.ttf</string>
+	</array>
 </dict>
 </plist>
