@@ -1,41 +1,57 @@
 import React from 'react'
-import { StyleSheet, View, Platform, Linking, TextInput, Button, KeyboardAvoidingView } from 'react-native'
-import { TFForm, TFTextInput, TFButton } from './components/form-elements'
+import url from 'url'
+import querystring from 'querystring'
+import { StyleSheet, Alert, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
+import { clientID, clientSecret, callback, endpoint, scopes } from './secrets'
+import { TFHeading2 } from './components/typography'
+import { TFForm, TFButton } from './components/form-elements'
 
 export default class Login extends React.Component {
-  static navigationOptions = {
-    title: 'Login to Typeform'
-  }
-
   state = {}
 
-  componentDidMount () {
-    if (Platform.OS === 'android') {
-      Linking.getInitialURL().then(url => {
-        this.navigate(url)
-      })
-    } else {
-      Linking.addEventListener('url', this.handleOpenURL)
+  async componentDidMount () {
+    const token = await AsyncStorage.getItem('AccessToken')
+    if (token) {
+      Alert.alert(`You're authenticated`)
     }
   }
 
-  componentWillUnmount () {
-    Linking.removeEventListener('url', this.handleOpenURL)
-  }
+  async _handleOauthCallback (ev) {
+    Linking.removeEventListener('url', this._handleOauthCallback)
+    const parsed = url.parse(ev.url)
+    const callbackParams = querystring.parse(parsed.query)
+    const { code } = callbackParams
 
-  handleOpenURL = (event) => {
-    this.navigate(event.url)
-  }
-
-  navigate = (url) => {
-    const { navigate } = this.props.navigation
-    const route = url.replace(/.*?:\/\//g, '')
-    const id = route.match(/\/([^\/]+)\/?$/)[1]
-    const routeName = route.split('/')[0]
-
-    if (routeName === 'people') {
-      navigate('ListForms', { id, name: 'chris' })
+    if (!code) {
+      return
     }
+    const body = querystring.stringify({
+      'code': code,
+      'client_id': clientID,
+      'client_secret': clientSecret,
+      'redirect_uri': callback
+    })
+
+    const response = await fetch(endpoint.token, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body
+    })
+
+    const json = await response.json()
+
+    await AsyncStorage.setItem('AccessToken', json['access_token'])
+
+    Alert.alert(`You're authenticated`)
+  }
+
+  _doAuthentication = () => {
+    const requestUri = `${endpoint.authorize}?client_id=${clientID}&redirect_uri=${callback}&scope=${scopes}`
+    Linking.openURL(requestUri)
+    Linking.addEventListener('url', this._handleOauthCallback)
   }
 
   render () {
@@ -44,19 +60,14 @@ export default class Login extends React.Component {
         behavior='padding'
         style={styles.container}
       >
+        <TFHeading2>
+          Read your typeform responses on the go.
+        </TFHeading2>
         <TFForm>
-          <TFTextInput
-            placeholder='Username or email address'
-            keyboardType='email-address'
-            autoCorrect={false}
-            autoCapitalize={'none'}
-          />
-          <TFTextInput
-            secureTextEntry
-            placeholder='Password'
-          />
           <TFButton
-            title='Submit'
+            large
+            onPress={this._doAuthentication}
+            title='Login to Typeform'
           />
         </TFForm>
       </KeyboardAvoidingView>
