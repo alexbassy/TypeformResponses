@@ -30,21 +30,27 @@ const style = StyleSheet.create({
     fontFamily: 'Apercu Pro'
   },
   Heading1: {
-    fontSize: 48
+    fontSize: 48,
+    lineHeight: 56
   },
   Heading2: {
-    fontSize: 32
+    fontSize: 32,
+    lineHeight: 42
   },
   Heading3: {
-    fontSize: 24
+    fontSize: 24,
+    lineHeight: 32
   },
   Heading4: {
-    fontSize: 18
+    fontSize: 18,
+    lineHeight: 24
   },
   Heading5: {
-    fontSize: 16
+    fontSize: 16,
+    lineHeight: 22
   },
   Heading6: {
-    fontSize: 14
+    fontSize: 14,
+    lineHeight: 18
   }
 })
