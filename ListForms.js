@@ -1,6 +1,6 @@
 import React from 'react'
 import { endpoint } from './secrets'
-import { View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 
 export default class ListForms extends React.Component {
@@ -19,7 +19,6 @@ export default class ListForms extends React.Component {
   }
 
   async getTypeforms (token) {
-    console.log(token)
     const response = await fetch(endpoint.listForms, {
       headers: {
         'Accept': 'application/json',
@@ -29,10 +28,17 @@ export default class ListForms extends React.Component {
 
     const json = await response.json()
 
-    console.log(json)
-
     this.setState({
       forms: json.items
+    })
+  }
+
+  viewResponses (form) {
+    const { id, title } = form
+    this.props.navigation.navigate('ViewResponses', {
+      id,
+      title,
+      token: this.props.navigation.state.params.token
     })
   }
 
@@ -49,11 +55,17 @@ export default class ListForms extends React.Component {
 
     return (
       <ScrollView>
-        <List>
+        <List containerStyle={{ borderColor: '#cdccd1' }}>
           {this.state.forms.map((form, i) => (
             <ListItem
               key={i}
+              component={TouchableHighlight}
+              underlayColor={'#efeff4'}
+              containerStyle={{
+                borderBottomColor: '#cdccd1'
+              }}
               title={form.title}
+              onPress={() => this.viewResponses(form)}
             />
           ))}
         </List>
