@@ -6,6 +6,7 @@
     "babel-eslint": "^8.2.1",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "jest-react-native": "^18.0.0",
+    "json-server": "^0.12.1",
     "react-test-renderer": "16.2.0",
     "standard": "^11.0.0-beta.0"
   },
@@ -13,7 +14,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "test": "node node_modules/jest/bin/jest.js",
+    "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json"
   },
   "jest": {
     "preset": "react-native"

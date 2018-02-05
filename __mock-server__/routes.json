@@ -1,0 +1,5 @@
+{
+  "/forms": "/form",
+  "/forms/:id": "/form_field/:id",
+  "/forms/:id/responses": "/form_response/:id"
+}
