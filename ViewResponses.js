@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
+import { endpoint } from './secrets'
 
 const Statistics = ({ form, responses }) => {
   const completed = responses.items.filter(response => response.answers)
@@ -52,13 +53,12 @@ export default class ViewResponses extends React.Component {
         'Authorization': `bearer ${token}`
       }
     }
-    const formRequest = fetch(`https://api.typeform.com/forms/${id}`, requestOptions)
-    const responsesRequest = fetch(`https://api.typeform.com/forms/${id}/responses`, requestOptions)
+
+    const formRequest = fetch(`${endpoint.base}/forms/${id}`, requestOptions)
+    const responsesRequest = fetch(`${endpoint.base}/forms/${id}/responses`, requestOptions)
 
     const data = await Promise.all([formRequest, responsesRequest])
     const [form, responses] = await Promise.all([data[0].json(), data[1].json()])
-
-    console.log(responses)
 
     this.setState({
       form,
@@ -71,7 +71,7 @@ export default class ViewResponses extends React.Component {
     if (this.state.loading) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size='large' color='#000'/>
+          <ActivityIndicator size='large' color='#000' />
         </View>
       )
     }
