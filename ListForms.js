@@ -1,12 +1,22 @@
 import React from 'react'
+import BaseComponent from './base'
 import { endpoint } from './secrets'
-import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight, Button } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 
-export default class ListForms extends React.Component {
-  static navigationOptions = {
-    title: 'Your typeforms',
-    headerLeft: null
+export default class ListForms extends BaseComponent {
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state
+    return {
+      title: 'Your typeforms',
+      headerLeft: null,
+      headerRight: (
+        <Button
+          onPress={params.logout || (() => {})}
+          title='Logout'
+        />
+      )
+    }
   }
 
   state = {
@@ -14,6 +24,7 @@ export default class ListForms extends React.Component {
   }
 
   componentDidMount () {
+    this.props.navigation.setParams({ logout: this.logout })
     const { token } = this.props.navigation.state.params
     this.getTypeforms(token)
   }
@@ -48,7 +59,7 @@ export default class ListForms extends React.Component {
     if (!forms.length) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size='large' color='#000'/>
+          <ActivityIndicator size='large' color='#000' />
         </View>
       )
     }

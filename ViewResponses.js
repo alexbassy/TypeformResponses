@@ -1,4 +1,5 @@
 import React from 'react'
+import BaseComponent from './base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight} from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import { endpoint } from './secrets'
@@ -28,7 +29,7 @@ const Statistics = ({ form, responses }) => {
   )
 }
 
-export default class ViewResponses extends React.Component {
+export default class ViewResponses extends BaseComponent {
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state
     return {

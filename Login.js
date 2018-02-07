@@ -1,4 +1,5 @@
 import React from 'react'
+import BaseComponent from './base'
 import url from 'url'
 import querystring from 'querystring'
 import { StyleSheet, View, ActivityIndicator, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
@@ -6,7 +7,7 @@ import { clientID, clientSecret, callback, endpoint, scopes } from './secrets'
 import { TFHeading2 } from './components/typography'
 import { TFForm, TFButton } from './components/form-elements'
 
-export default class Login extends React.Component {
+export default class Login extends BaseComponent {
   state = {
     loading: true
   }
