@@ -1,10 +1,10 @@
 import React from 'react'
 import BaseComponent from './base'
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight} from 'react-native'
-import { List, ListItem } from 'react-native-elements'
+import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
+import renderResponseBlock from './components/blocks'
 import { endpoint } from './secrets'
 
-const Statistics = ({ form, responses }) => {
+const Statistics = ({ responses }) => {
   const completed = responses.items.filter(response => response.answers)
   const completionRate = completed.length ? responses.total_items / completed.length : 0
   // @todo: Work out completion rate same way as in the platform
@@ -48,7 +48,9 @@ export default class ViewResponses extends BaseComponent {
   }
 
   async getFormAndResponses () {
-    const { id, token } = this.props.navigation.state.params
+    const token = await this.getToken()
+    const { id } = this.props.navigation.state.params
+
     const requestOptions = {
       headers: {
         'Accept': 'application/json',
@@ -80,18 +82,13 @@ export default class ViewResponses extends BaseComponent {
 
     return (
       <View style={{flex: 1}}>
-        <ScrollView style={{flex: 1}}>
-          <Statistics responses={this.state.responses} />
-          <List>
-            {this.state.form.fields.map((field) => {
-              return (
-                <ListItem
-                  key={field.id}
-                  title={field.title}
-                />
-              )
-            })}
-          </List>
+        <Statistics responses={this.state.responses} />
+        <ScrollView
+          style={{flex: 1}}
+          contentInset={{top: 16}}
+          contentOffset={{y: -16}}
+        >
+          {this.state.form.fields.map(renderResponseBlock)}
         </ScrollView>
       </View>
     )
