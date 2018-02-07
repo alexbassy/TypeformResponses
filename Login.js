@@ -20,7 +20,7 @@ export default class Login extends React.Component {
     }
   }
 
-  async _handleOauthCallback (ev) {
+  _handleOauthCallback = async (ev) => {
     Linking.removeEventListener('url', this._handleOauthCallback)
     const parsed = url.parse(ev.url)
     const callbackParams = querystring.parse(parsed.query)
