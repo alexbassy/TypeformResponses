@@ -15,7 +15,7 @@ export default class ListForms extends BaseComponent {
       },
       headerRight: (
         <Button
-          onPress={params.logout || (() => {})}
+          onPress={params ? params.logout : (() => {})}
           style={{ fontFamily: 'Apercu Pro' }}
           title='Logout'
         />
@@ -24,16 +24,19 @@ export default class ListForms extends BaseComponent {
   }
 
   state = {
-    forms: []
+    forms: [],
+    refreshing: false
   }
 
   componentDidMount () {
-    this.props.navigation.setParams({ logout: this.logout })
-    const { token } = this.props.navigation.state.params
-    this.getTypeforms(token)
+    // hack to suppress error for updating unmounted component
+    setTimeout(() => this.props.navigation.setParams({ logout: this.logout }), 1)
+    this.getTypeforms()
   }
 
-  async getTypeforms (token) {
+  async getTypeforms (isRefreshing = false) {
+    const token = await this.getToken()
+
     const response = await fetch(endpoint.listForms, {
       headers: {
         'Accept': 'application/json',
@@ -44,7 +47,8 @@ export default class ListForms extends BaseComponent {
     const json = await response.json()
 
     this.setState({
-      forms: json.items
+      forms: json.items,
+      refreshing: isRefreshing ? false : null
     })
   }
 
@@ -53,12 +57,13 @@ export default class ListForms extends BaseComponent {
     this.props.navigation.navigate('ViewResponses', {
       id,
       title,
-      token: this.props.navigation.state.params.token
+      token: this.getToken()
     })
   }
 
-  refreshForms () {
-    return true
+  refreshForms = () => {
+    this.setState({ refreshing: true })
+    this.getTypeforms(true)
   }
 
   render () {
