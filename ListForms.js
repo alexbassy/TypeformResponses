@@ -67,7 +67,7 @@ export default class ListForms extends BaseComponent {
   }
 
   render () {
-    const { forms } = this.state
+    const { forms, refreshing } = this.state
 
     if (!forms.length) {
       return (
@@ -81,7 +81,7 @@ export default class ListForms extends BaseComponent {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={this.state.refreshing}
+            refreshing={refreshing}
             onRefresh={this.refreshForms}
           />
         }
