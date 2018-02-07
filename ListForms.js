@@ -75,6 +75,9 @@ export default class ListForms extends BaseComponent {
               containerStyle={{
                 borderBottomColor: '#cdccd1'
               }}
+              titleStyle={{
+                fontFamily: 'Apercu Pro'
+              }}
               title={form.title}
               onPress={() => this.viewResponses(form)}
             />
