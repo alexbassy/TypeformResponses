@@ -6,6 +6,7 @@ import { endpoint } from './secrets'
 
 const Statistics = ({ form, responses }) => {
   const completed = responses.items.filter(response => response.answers)
+  const completionRate = completed.length ? responses.total_items / completed.length : 0
   // @todo: Work out completion rate same way as in the platform
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -19,7 +20,7 @@ const Statistics = ({ form, responses }) => {
       </View>
       <View style={styles.statistic}>
         <Text style={styles.statisticValue}>
-          {responses.total_items / completed.length}%
+          {completionRate}%
         </Text>
         <Text style={styles.statisticTitle}>
           {`Completion rate`.toUpperCase()}
