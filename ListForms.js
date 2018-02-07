@@ -1,7 +1,7 @@
 import React from 'react'
 import BaseComponent from './base'
 import { endpoint } from './secrets'
-import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight, Button } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, ScrollView, TouchableHighlight, Button, RefreshControl } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 
 export default class ListForms extends BaseComponent {
@@ -10,9 +10,13 @@ export default class ListForms extends BaseComponent {
     return {
       title: 'Your typeforms',
       headerLeft: null,
+      headerTitleStyle: {
+        fontFamily: 'Apercu Pro'
+      },
       headerRight: (
         <Button
           onPress={params.logout || (() => {})}
+          style={{ fontFamily: 'Apercu Pro' }}
           title='Logout'
         />
       )
@@ -53,6 +57,10 @@ export default class ListForms extends BaseComponent {
     })
   }
 
+  refreshForms () {
+    return true
+  }
+
   render () {
     const { forms } = this.state
 
@@ -65,7 +73,14 @@ export default class ListForms extends BaseComponent {
     }
 
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.refreshForms}
+          />
+        }
+      >
         <List containerStyle={{ borderColor: '#cdccd1' }}>
           {this.state.forms.map((form, i) => (
             <ListItem
