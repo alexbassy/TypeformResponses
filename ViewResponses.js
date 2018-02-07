@@ -118,11 +118,13 @@ const styles = StyleSheet.create({
   statisticValue: {
     fontSize: 24,
     lineHeight: 32,
-    marginBottom: 4
+    marginBottom: 4,
+    fontFamily: 'Apercu Pro'
   },
   statisticTitle: {
     fontWeight: '300',
     color: '#8e8e93',
-    fontSize: 12
+    fontSize: 12,
+    fontFamily: 'Apercu Pro'
   }
 })
