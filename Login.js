@@ -2,25 +2,12 @@ import React from 'react'
 import BaseComponent from './base'
 import url from 'url'
 import querystring from 'querystring'
-import { StyleSheet, View, ActivityIndicator, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
 import { clientID, clientSecret, callback, endpoint, scopes } from './secrets'
 import { TFHeading2 } from './components/typography'
 import { TFForm, TFButton } from './components/form-elements'
 
 export default class Login extends BaseComponent {
-  state = {
-    loading: true
-  }
-
-  async componentDidMount () {
-    const token = await AsyncStorage.getItem('AccessToken')
-    if (token) {
-      this.goToListForms(token)
-    } else {
-      this.setState({ loading: false })
-    }
-  }
-
   _handleOauthCallback = async (ev) => {
     Linking.removeEventListener('url', this._handleOauthCallback)
     const parsed = url.parse(ev.url)
@@ -52,7 +39,7 @@ export default class Login extends BaseComponent {
     const token = json['access_token']
     await AsyncStorage.setItem('AccessToken', json['access_token'])
 
-    this.goToListForms(token)
+    this.goToListForms()
   }
 
   _doAuthentication = () => {
@@ -61,20 +48,11 @@ export default class Login extends BaseComponent {
     Linking.addEventListener('url', this._handleOauthCallback)
   }
 
-  goToListForms (token) {
-    const { navigate } = this.props.navigation
-    navigate('ListForms', { token })
+  goToListForms () {
+    this.navigate('ListForms')
   }
 
   render () {
-    if (this.state.loading) {
-      return (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size='large' color='#000'/>
-        </View>
-      )
-    }
-
     return (
       <KeyboardAvoidingView
         behavior='padding'

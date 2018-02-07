@@ -3,8 +3,32 @@ import { AsyncStorage, ActionSheetIOS} from 'react-native'
 import { NavigationActions } from 'react-navigation'
 
 export default class BaseComponent extends Component {
+  async getToken () {
+    return AsyncStorage.getItem('AccessToken')
+  }
+
   navigate = (...args) => {
     this.props.navigation.navigate(...args)
+  }
+
+  goToLoginScreen () {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Login'})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
+  }
+
+  skipLoginScreen () {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'ListForms'})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   doLogout = async () => {
