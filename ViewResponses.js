@@ -2,17 +2,16 @@ import React from 'react'
 import BaseComponent from './base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import renderResponseBlock from './components/blocks'
+import { getCompletionRate, getResponsesCount } from './utils'
 import { endpoint } from './secrets'
 
 const Statistics = ({ responses }) => {
-  const completed = responses.items.filter(response => response.answers)
-  const completionRate = completed.length ? responses.total_items / completed.length : 0
   // @todo: Work out completion rate same way as in the platform
   return (
     <View style={{ flexDirection: 'row' }}>
       <View style={[styles.statistic, styles.firstStatistic]}>
         <Text style={styles.statisticValue}>
-          {completed.length}
+          {getResponsesCount(responses)}
         </Text>
         <Text style={styles.statisticTitle}>
           {`Responses`.toUpperCase()}
@@ -20,7 +19,7 @@ const Statistics = ({ responses }) => {
       </View>
       <View style={styles.statistic}>
         <Text style={styles.statisticValue}>
-          {completionRate}%
+          {getCompletionRate(responses)}%
         </Text>
         <Text style={styles.statisticTitle}>
           {`Completion rate`.toUpperCase()}
@@ -72,7 +71,9 @@ export default class ViewResponses extends BaseComponent {
   }
 
   render () {
-    if (this.state.loading) {
+    const { form, responses, loading } = this.state
+
+    if (loading) {
       return (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size='large' color='#000' />
@@ -82,13 +83,13 @@ export default class ViewResponses extends BaseComponent {
 
     return (
       <View style={{flex: 1}}>
-        <Statistics responses={this.state.responses} />
+        <Statistics responses={responses} />
         <ScrollView
           style={{flex: 1}}
           contentInset={{top: 16}}
           contentOffset={{y: -16}}
         >
-          {this.state.form.fields.map(renderResponseBlock)}
+          {form.fields.map(field => renderResponseBlock(field, responses))}
         </ScrollView>
       </View>
     )

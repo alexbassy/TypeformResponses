@@ -48,7 +48,7 @@ export default class ListForms extends BaseComponent {
 
     this.setState({
       forms: json.items,
-      refreshing: isRefreshing ? false : null
+      refreshing: isRefreshing ? false : this.state.refreshing
     })
   }
 
@@ -87,9 +87,9 @@ export default class ListForms extends BaseComponent {
         }
       >
         <List containerStyle={{ borderColor: '#cdccd1' }}>
-          {this.state.forms.map((form, i) => (
+          {this.state.forms.map((form) => (
             <ListItem
-              key={i}
+              key={form.id}
               component={TouchableHighlight}
               underlayColor={'#efeff4'}
               containerStyle={{
