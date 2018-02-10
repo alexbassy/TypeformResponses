@@ -30,7 +30,7 @@ const Block = ({ field, responses, allResponses, children }) => {
   return (
     <View style={style.blockContainer}>
       <View style={[style.questionTypeIcon, iconStyle]} />
-      <View>
+      <View style={{flex: 1}}>
         <View>
           <Text>
             {field.title}
@@ -56,6 +56,7 @@ const style = StyleSheet.create({
     borderRadius: 3,
     marginHorizontal: 8,
     paddingVertical: 8,
+    paddingRight: 16,
     marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

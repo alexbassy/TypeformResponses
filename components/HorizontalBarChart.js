@@ -63,12 +63,13 @@ const style = StyleSheet.create({
   bar: {
     flex: 1,
     backgroundColor: '#f1f8f9',
-    height: 40,
     marginLeft: 16,
     alignItems: 'center',
     paddingLeft: 12,
+    paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 4
+    borderRadius: 4,
+    height: 32
   },
   barLabel: {
     fontSize: 12,
@@ -77,8 +78,8 @@ const style = StyleSheet.create({
   barCompletion: {
     position: 'absolute',
     backgroundColor: '#cae6ea',
-    height: 40,
-    borderRadius: 4
+    borderRadius: 4,
+    height: 32
   },
   responseCount: {
     fontSize: 12,
