@@ -33,7 +33,10 @@ export default class ViewResponses extends BaseComponent {
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state
     return {
-      title: params.title
+      title: params.title,
+      headerTitleStyle: {
+        fontFamily: 'Apercu Pro'
+      }
     }
   }
 
