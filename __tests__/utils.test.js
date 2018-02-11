@@ -33,7 +33,7 @@ describe('getResponsesForQuestion', () => {
     const statement = findQuestion(fields, f => f.title === 'Keeping up so far?')
     const r4 = getResponsesForQuestion(statement, responses)
 
-    expect(r1.length).toBe(3)
+    expect(r1.length).toBe(4)
     expect(r2.length).toBe(0)
     expect(r3.length).toBe(3)
     expect(r4.length).toBe(0)
@@ -48,7 +48,7 @@ describe('tallyMultipleChoiceAnswers', () => {
 
     expect(result).not.toBe(null)
     expect(Object.keys(result).length).toBe(2)
-    expect(Math.round(result.Pineapple.percentage)).toBe(Math.round(100 / 3))
+    expect(result.Pineapple.percentage).toBe(50)
     expect(result.Watermelon.count).toBe(2)
   })
 
