@@ -7,9 +7,7 @@ import { tallyMultipleChoiceAnswers } from '../../utils'
 const PictureChoice = (props) => {
   const { field, responses } = props
   const choices = tallyMultipleChoiceAnswers({ field, responses })
-  console.log(`FIELD`, field)
-  console.log(`RESPONSES`, responses)
-  console.log(`PROCESSED`, choices)
+
   return (
     <Block {...props}>
       <View>
