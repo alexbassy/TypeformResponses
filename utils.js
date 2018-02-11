@@ -29,8 +29,11 @@ export const getResponsesForQuestion = (field, responses) => {
     return []
   }
   const { id } = field
-  return responses.items.reduce((result, { answers }) => {
-    answers.forEach(answer => {
+  return responses.items.reduce((result, entry) => {
+    if (!entry.answers || !entry.answers.length) {
+      return result
+    }
+    entry.answers.forEach(answer => {
       if (answer.field.id === id) {
         result.push(answer)
       }
