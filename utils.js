@@ -7,7 +7,27 @@ export const getCompletionRate = responses => {
   return completed ? responses.total_items / completed : 0
 }
 
+export const findQuestion = (fields, comparison) => {
+  for (let field of fields) {
+    if (field.type !== 'group') {
+      if (comparison(field)) {
+        return field
+      }
+    } else {
+      for (let subField of field.properties.fields) {
+        if (comparison(subField)) {
+          return subField
+        }
+      }
+    }
+  }
+  return null
+}
+
 export const getResponsesForQuestion = (field, responses) => {
+  if (!field) {
+    return []
+  }
   const { id } = field
   return responses.items.reduce((result, { answers }) => {
     answers.forEach(answer => {
@@ -19,10 +39,10 @@ export const getResponsesForQuestion = (field, responses) => {
   }, [])
 }
 
-export const tallyMultipleChoiceAnswers = (answers) => {
+export const tallyMultipleChoiceAnswers = ({ field, responses }) => {
   // first create object of all possible answers
-  const totalAnswers = answers.length
-  return answers.reduce((result, answerItem) => {
+  const totalAnswers = responses.length
+  return responses.reduce((result, answerItem) => {
     const answer = answerItem.choice.label
     if (!result[answer]) {
       result[answer] = {
@@ -30,6 +50,12 @@ export const tallyMultipleChoiceAnswers = (answers) => {
         count: 0
       }
     }
+
+    if (field && field.type === 'picture_choice') {
+      const choice = field.properties.choices.find(x => x.label === answer)
+      result[answer].imageURL = choice.attachment.href
+    }
+
     result[answer].count++
     result[answer].percentage = (result[answer].count / totalAnswers) * 100
     return result

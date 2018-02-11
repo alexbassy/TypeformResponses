@@ -5,6 +5,8 @@
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "eslint-plugin-jest": "^21.8.0",
+    "jest": "^22.2.2",
     "jest-react-native": "^18.0.0",
     "json-server": "^0.12.1",
     "react-test-renderer": "16.2.0",
@@ -33,7 +35,10 @@
     "parser": "babel-eslint",
     "global": [
       "fetch"
-    ]
+    ],
+    "env": {
+      "jest": true
+    }
   },
   "rnpm": {
     "assets": [

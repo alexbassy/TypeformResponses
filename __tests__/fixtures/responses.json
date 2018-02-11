@@ -1,0 +1,475 @@
+{
+  "total_items": 3,
+  "page_count": 1,
+  "items": [
+    {
+      "landing_id": "61ae048a41a6521038b19c9afa439bf7",
+      "token": "61ae048a41a6521038b19c9afa439bf7",
+      "landed_at": "2018-02-07T12:57:46Z",
+      "submitted_at": "2018-02-07T13:17:25Z",
+      "metadata": {
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36",
+        "platform": "other",
+        "referer": "https://testfixture.typeform.com/to/gV0NkV",
+        "network_id": "5e0084e1bb",
+        "browser": "default"
+      },
+      "answers": [
+        {
+          "field": {
+            "id": "ArkpVe4qWBEI",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "fun free fancy"
+        },
+        {
+          "field": {
+            "id": "RQ26eUMXJvfr",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": false
+        },
+        {
+          "field": {
+            "id": "doKQ6gb0u9z4",
+            "type": "date"
+          },
+          "type": "date",
+          "date": "2022-04-10T00:00:00Z"
+        },
+        {
+          "field": {
+            "id": "gVN6Cv65AJDY",
+            "type": "legal"
+          },
+          "type": "boolean",
+          "boolean": true
+        },
+        {
+          "field": {
+            "id": "S5pKZHZlqTV1",
+            "type": "file_upload"
+          },
+          "type": "file_url",
+          "file_url": "https://admin.typeform.com/form/gV0NkV/field/S5pKZHZlqTV1/results/9ec6cadda283-husky.jpg/download"
+        },
+        {
+          "field": {
+            "id": "ha1jnILfN4oN",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "orange"
+        },
+        {
+          "field": {
+            "id": "OEXIx8deNahg",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 1
+        },
+        {
+          "field": {
+            "id": "py472SYPHLU0",
+            "type": "long_text"
+          },
+          "type": "text",
+          "text": "I came from a land very far away"
+        },
+        {
+          "field": {
+            "id": "ZQT25xTpDPw6",
+            "type": "email"
+          },
+          "type": "email",
+          "email": "grandma@gmail.com"
+        },
+        {
+          "field": {
+            "id": "XYvKYFu5FmYM",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 10
+        },
+        {
+          "field": {
+            "id": "GLcFaEUbfeS6",
+            "type": "dropdown"
+          },
+          "type": "text",
+          "text": "Pixie"
+        },
+        {
+          "field": {
+            "id": "nLZ95TAWPkRx",
+            "type": "website"
+          },
+          "type": "url",
+          "url": "http://coolest.tumblr.com"
+        },
+        {
+          "field": {
+            "id": "qwHwfPR5CyVm",
+            "type": "multiple_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Pineapple"
+          }
+        },
+        {
+          "field": {
+            "id": "HTtHXGOPndJ2",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": true
+        },
+        {
+          "field": {
+            "id": "klWL166MWjAL",
+            "type": "picture_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Pug"
+          }
+        },
+        {
+          "field": {
+            "id": "Jh8sBM9KyUUG",
+            "type": "opinion_scale"
+          },
+          "type": "number",
+          "number": 7
+        },
+        {
+          "field": {
+            "id": "a2wQaS5A6MyD",
+            "type": "rating"
+          },
+          "type": "number",
+          "number": 1
+        }
+      ],
+      "hidden": {},
+      "calculated": {
+        "score": 0
+      }
+    },
+    {
+      "landing_id": "18f2d199697ae6c1d06a366f83950f40",
+      "token": "18f2d199697ae6c1d06a366f83950f40",
+      "landed_at": "2018-02-07T13:17:40Z",
+      "submitted_at": "2018-02-07T13:19:39Z",
+      "metadata": {
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36",
+        "platform": "other",
+        "referer": "https://testfixture.typeform.com/to/gV0NkV",
+        "network_id": "5e0084e1bb",
+        "browser": "default"
+      },
+      "answers": [
+        {
+          "field": {
+            "id": "nLZ95TAWPkRx",
+            "type": "website"
+          },
+          "type": "url",
+          "url": "http://cool.tumblr.com"
+        },
+        {
+          "field": {
+            "id": "py472SYPHLU0",
+            "type": "long_text"
+          },
+          "type": "text",
+          "text": "I was born in the pacific ocean"
+        },
+        {
+          "field": {
+            "id": "ZQT25xTpDPw6",
+            "type": "email"
+          },
+          "type": "email",
+          "email": "ethel@coffeemorning.net"
+        },
+        {
+          "field": {
+            "id": "XYvKYFu5FmYM",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 0
+        },
+        {
+          "field": {
+            "id": "GLcFaEUbfeS6",
+            "type": "dropdown"
+          },
+          "type": "text",
+          "text": "Elf"
+        },
+        {
+          "field": {
+            "id": "qwHwfPR5CyVm",
+            "type": "multiple_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Watermelon"
+          }
+        },
+        {
+          "field": {
+            "id": "HTtHXGOPndJ2",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": false
+        },
+        {
+          "field": {
+            "id": "klWL166MWjAL",
+            "type": "picture_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Dalmation"
+          }
+        },
+        {
+          "field": {
+            "id": "Jh8sBM9KyUUG",
+            "type": "opinion_scale"
+          },
+          "type": "number",
+          "number": 3
+        },
+        {
+          "field": {
+            "id": "a2wQaS5A6MyD",
+            "type": "rating"
+          },
+          "type": "number",
+          "number": 2
+        },
+        {
+          "field": {
+            "id": "S5pKZHZlqTV1",
+            "type": "file_upload"
+          },
+          "type": "file_url",
+          "file_url": "https://admin.typeform.com/form/gV0NkV/field/S5pKZHZlqTV1/results/ac41e773a2e2-pug.jpg/download"
+        },
+        {
+          "field": {
+            "id": "ha1jnILfN4oN",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "cyan"
+        },
+        {
+          "field": {
+            "id": "ArkpVe4qWBEI",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "angry sad confused"
+        },
+        {
+          "field": {
+            "id": "RQ26eUMXJvfr",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": true
+        },
+        {
+          "field": {
+            "id": "doKQ6gb0u9z4",
+            "type": "date"
+          },
+          "type": "date",
+          "date": "2019-10-04T00:00:00Z"
+        },
+        {
+          "field": {
+            "id": "gVN6Cv65AJDY",
+            "type": "legal"
+          },
+          "type": "boolean",
+          "boolean": true
+        },
+        {
+          "field": {
+            "id": "OEXIx8deNahg",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 8
+        }
+      ],
+      "hidden": {},
+      "calculated": {
+        "score": 0
+      }
+    },
+    {
+      "landing_id": "17f93ae48319e83e42194c1f393aac03",
+      "token": "17f93ae48319e83e42194c1f393aac03",
+      "landed_at": "2018-02-07T13:19:42Z",
+      "submitted_at": "2018-02-07T13:21:10Z",
+      "metadata": {
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36",
+        "platform": "other",
+        "referer": "https://testfixture.typeform.com/to/gV0NkV",
+        "network_id": "5e0084e1bb",
+        "browser": "default"
+      },
+      "answers": [
+        {
+          "field": {
+            "id": "qwHwfPR5CyVm",
+            "type": "multiple_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Watermelon"
+          }
+        },
+        {
+          "field": {
+            "id": "HTtHXGOPndJ2",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": true
+        },
+        {
+          "field": {
+            "id": "klWL166MWjAL",
+            "type": "picture_choice"
+          },
+          "type": "choice",
+          "choice": {
+            "label": "Husky"
+          }
+        },
+        {
+          "field": {
+            "id": "Jh8sBM9KyUUG",
+            "type": "opinion_scale"
+          },
+          "type": "number",
+          "number": 10
+        },
+        {
+          "field": {
+            "id": "a2wQaS5A6MyD",
+            "type": "rating"
+          },
+          "type": "number",
+          "number": 2
+        },
+        {
+          "field": {
+            "id": "ArkpVe4qWBEI",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "hot woke chick"
+        },
+        {
+          "field": {
+            "id": "RQ26eUMXJvfr",
+            "type": "yes_no"
+          },
+          "type": "boolean",
+          "boolean": false
+        },
+        {
+          "field": {
+            "id": "doKQ6gb0u9z4",
+            "type": "date"
+          },
+          "type": "date",
+          "date": "2019-03-08T00:00:00Z"
+        },
+        {
+          "field": {
+            "id": "gVN6Cv65AJDY",
+            "type": "legal"
+          },
+          "type": "boolean",
+          "boolean": false
+        },
+        {
+          "field": {
+            "id": "ha1jnILfN4oN",
+            "type": "short_text"
+          },
+          "type": "text",
+          "text": "tiger"
+        },
+        {
+          "field": {
+            "id": "OEXIx8deNahg",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 77
+        },
+        {
+          "field": {
+            "id": "py472SYPHLU0",
+            "type": "long_text"
+          },
+          "type": "text",
+          "text": "I grew up in the forest and my parents were owls"
+        },
+        {
+          "field": {
+            "id": "ZQT25xTpDPw6",
+            "type": "email"
+          },
+          "type": "email",
+          "email": "gwen@stefa.ni"
+        },
+        {
+          "field": {
+            "id": "XYvKYFu5FmYM",
+            "type": "number"
+          },
+          "type": "number",
+          "number": 0
+        },
+        {
+          "field": {
+            "id": "GLcFaEUbfeS6",
+            "type": "dropdown"
+          },
+          "type": "text",
+          "text": "Mermaid"
+        },
+        {
+          "field": {
+            "id": "nLZ95TAWPkRx",
+            "type": "website"
+          },
+          "type": "url",
+          "url": "http://goo.tumblr.goo"
+        }
+      ],
+      "hidden": {},
+      "calculated": {
+        "score": 0
+      }
+    }
+  ]
+}
