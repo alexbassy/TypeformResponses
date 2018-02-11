@@ -38,6 +38,16 @@ describe('getResponsesForQuestion', () => {
     expect(r3.length).toBe(3)
     expect(r4.length).toBe(0)
   })
+
+  it('should add the submission time to each answer', function () {
+    const { fields } = form
+    const field = findQuestion(fields, f => f.title === 'Do you believe in the afterlife?')
+    const answers = getResponsesForQuestion(field, responses)
+
+    expect(answers[0].submissionTime).toBe('2018-02-11T15:35:03Z')
+    expect(answers[1].submissionTime).toBe('2018-02-07T13:21:10Z')
+    expect(answers[2].submissionTime).toBe('2018-02-07T13:19:39Z')
+  })
 })
 
 describe('tallyMultipleChoiceAnswers', () => {

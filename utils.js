@@ -35,7 +35,10 @@ export const getResponsesForQuestion = (field, responses) => {
     }
     entry.answers.forEach(answer => {
       if (answer.field.id === id) {
-        result.push(answer)
+        result.push({
+          submissionTime: entry.submitted_at,
+          ...answer
+        })
       }
     })
     return result
