@@ -4,9 +4,9 @@ import Block from './Block'
 import HorizontalBarChart from '../HorizontalBarChart'
 import { tallyMultipleChoiceAnswers } from '../../utils'
 
-const MultipleChoice = (props) => {
-  const { responses } = props
-  const choices = tallyMultipleChoiceAnswers({ responses })
+const PictureChoice = (props) => {
+  const { field, responses } = props
+  const choices = tallyMultipleChoiceAnswers({ field, responses })
   return (
     <Block {...props}>
       <View>
@@ -16,4 +16,4 @@ const MultipleChoice = (props) => {
   )
 }
 
-export default MultipleChoice
+export default PictureChoice
