@@ -5,7 +5,8 @@ import LinearGradient from 'react-native-linear-gradient'
 class Expandable extends React.Component {
   state = {
     isExpanded: false,
-    animation: new Animated.Value(100),
+    heightAnimation: new Animated.Value(100),
+    curtainAnimation: new Animated.Value(1),
     minHeight: 100,
     buttonHeight: 0
   }
@@ -22,44 +23,54 @@ class Expandable extends React.Component {
   }
 
   toggle = () => {
-    const { isExpanded, minHeight, maxHeight, animation } = this.state
+    const { isExpanded, minHeight, maxHeight, heightAnimation, curtainAnimation } = this.state
 
     this.setState({
       isExpanded: !isExpanded
     })
 
-    animation.setValue(isExpanded ? maxHeight : minHeight)
+    curtainAnimation.setValue(isExpanded ? 1 : 0)
+    heightAnimation.setValue(isExpanded ? maxHeight : minHeight)
 
-    Animated.spring(animation, {
+    Animated.spring(heightAnimation, {
       toValue: isExpanded ? minHeight : maxHeight
+    }).start()
+
+    Animated.spring(curtainAnimation, {
+      toValue: isExpanded ? 1 : 0
     }).start()
   }
 
   render () {
     const { children } = this.props
-    const { animation, isExpanded, buttonHeight } = this.state
+    const { heightAnimation, isExpanded, buttonHeight, curtainAnimation } = this.state
 
     return (
       <View>
         <Animated.View
           style={[style.expandingContainer, {
-            height: animation
+            height: heightAnimation
           }]}
         >
           {React.cloneElement(children, {
             onLayout: this.setMaxHeight
           })}
         </Animated.View>
-        <LinearGradient
-          colors={['rgba(255, 255, 255, .1)', 'rgba(255, 255, 255, 1)']}
-          style={[style.curtain, { bottom: buttonHeight }]}
-        />
+        <Animated.View style={[style.curtain, {
+          bottom: buttonHeight,
+          opacity: curtainAnimation
+        }]}>
+          <LinearGradient
+            colors={['rgba(255, 255, 255, .1)', 'rgba(255, 255, 255, 1)']}
+            style={[style.gradient]}
+          />
+        </Animated.View>
         <TouchableOpacity
           style={style.toggleButton}
           onPress={this.toggle}
           onLayout={this.setButtonLayout}
         >
-          <Text>Show {isExpanded ? 'less' : 'more'}</Text>
+          <Text style={style.label}>Show {isExpanded ? 'less' : 'more'}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -79,9 +90,16 @@ const style = StyleSheet.create({
     flex: 1,
     bottom: 25
   },
+  gradient: {
+    width: '100%',
+    flex: 1
+  },
   toggleButton: {
     alignItems: 'center',
     paddingTop: 8,
     paddingBottom: 4
+  },
+  label: {
+    fontFamily: 'Apercu Pro'
   }
 })
