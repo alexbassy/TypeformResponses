@@ -36,6 +36,7 @@ export const getResponsesForQuestion = (field, responses) => {
     entry.answers.forEach(answer => {
       if (answer.field.id === id) {
         result.push({
+          id: entry.landing_id,
           submissionTime: entry.submitted_at,
           ...answer
         })
@@ -46,24 +47,45 @@ export const getResponsesForQuestion = (field, responses) => {
 }
 
 export const tallyMultipleChoiceAnswers = ({ field, responses }) => {
-  // first create object of all possible answers
-  const totalAnswers = responses.length
-  return responses.reduce((result, answerItem) => {
-    const answer = answerItem.choice.label
-    if (!result[answer]) {
-      result[answer] = {
-        label: answer,
-        count: 0
-      }
+  // make a smaller object for each choice
+  const fields = field.properties.choices.reduce((result, choice) => {
+    result[choice.label] = {
+      label: choice.label,
+      count: 0
     }
-
-    if (field && field.type === 'picture_choice') {
-      const choice = field.properties.choices.find(x => x.label === answer)
-      result[answer].imageURL = choice.attachment.href
+    if (field.type === 'picture_choice') {
+      Object.assign(result[choice.label], {
+        imageURL: choice.attachment.href
+      })
     }
-
-    result[answer].count++
-    result[answer].percentage = (result[answer].count / totalAnswers) * 100
     return result
   }, {})
+
+  // increment each count
+  responses.forEach(response => {
+    if (field.properties.allow_multiple_selection) {
+      response.choices.labels.forEach(label => {
+        fields[label].count++
+      })
+    } else {
+      const label = response.choice.label
+      fields[label].count++
+    }
+  })
+
+  // get real total
+  const total = Object.keys(fields).reduce((result, label) => {
+    result += fields[label].count
+    return result
+  }, 0)
+
+  // work out percentages from real total
+  const responsesWithPercentages = Object.keys(fields).reduce((result, label) => {
+    result[label] = Object.assign({}, fields[label], {
+      percentage: fields[label].count / total * 100
+    })
+    return result
+  }, {})
+
+  return responsesWithPercentages
 }

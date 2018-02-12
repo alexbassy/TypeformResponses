@@ -68,9 +68,10 @@ describe('tallyMultipleChoiceAnswers', () => {
     const result = tallyMultipleChoiceAnswers({ field: puppyQuestion, responses: questionResponses })
 
     expect(result).not.toBe(null)
-    expect(Object.keys(result).length).toBe(3)
+    expect(Object.keys(result).length).toBe(4)
     expect(result.Pug.imageURL).toBe('https://images.typeform.com/images/cQ4Gc4Abwvrp')
     expect(Math.round(result.Husky.percentage)).toBe(Math.round(100 / 3))
     expect(result.Dalmation.count).toBe(1)
+    expect(result.Retriever.count).toBe(0)
   })
 })
