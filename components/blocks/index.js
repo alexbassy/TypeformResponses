@@ -4,7 +4,7 @@ import { getResponsesForQuestion } from '../../utils'
 import Block from './Block'
 import MultipleChoice from './MultipleChoice'
 import PictureChoice from './PictureChoice'
-import ShortText from './ShortText'
+import TextBlock from './TextBlock'
 
 export default (field, responses) => {
   const questionResponses = getResponsesForQuestion(field, responses)
@@ -20,7 +20,12 @@ export default (field, responses) => {
     case 'multiple_choice':
       return <MultipleChoice {...props} />
     case 'short_text':
-      return <ShortText {...props} />
+    case 'long_text':
+    case 'email':
+    case 'number':
+    case 'url':
+    case 'date':
+      return <TextBlock {...props} />
     case 'picture_choice':
       return <PictureChoice {...props} />
     case 'statement':
