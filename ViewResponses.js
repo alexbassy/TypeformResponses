@@ -45,7 +45,6 @@ export default class ViewResponses extends BaseComponent {
   }
 
   componentDidMount () {
-    const { id, title } = this.props.navigation.state.params
     this.getFormAndResponses()
   }
 
@@ -55,8 +54,8 @@ export default class ViewResponses extends BaseComponent {
 
     const requestOptions = {
       headers: {
-        'Accept': 'application/json',
-        'Authorization': `bearer ${token}`
+        Accept: 'application/json',
+        Authorization: `bearer ${token}`
       }
     }
 
@@ -89,8 +88,8 @@ export default class ViewResponses extends BaseComponent {
         <Statistics responses={responses} />
         <ScrollView
           style={{flex: 1}}
-          contentInset={{top: 16}}
-          contentOffset={{y: -16}}
+          contentInset={{top: 12}}
+          contentOffset={{y: -12}}
         >
           {form.fields.map(field => renderResponseBlock(field, responses))}
         </ScrollView>
