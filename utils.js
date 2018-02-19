@@ -1,3 +1,9 @@
+// omit ".00"
+export const formatPercentage = n => {
+  const pc = typeof n === 'number' ? n.toFixed(2) : n
+  return /\.00$/.test(pc) ? pc.match(/([0-9]+)/)[0] : pc
+}
+
 export const getResponsesCount = responses => {
   return responses.items.filter(response => response.answers).length
 }
