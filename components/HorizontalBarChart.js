@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import { formatPercentage } from '../utils'
 
 export const sortByCount = (obj) => {
   const keys = Object.keys(obj)
@@ -22,7 +23,6 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
           const { percentage, count, label, imageURL } = responses[item]
           const isPhotoChoice = Boolean(imageURL)
           const pc = percentage.toFixed(2)
-          const pcFormatted = /\.00$/.test(pc) ? pc.match(/([0-9]+)/)[0] : pc // omit ".00"
 
           const Photo = (
             <Image

@@ -1,7 +1,16 @@
-import { findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers } from '../utils'
+import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers } from '../utils'
 
 import form from './fixtures/form'
 import responses from './fixtures/responses'
+
+describe('formatPercentage', () => {
+  it('should format a percentage without trailing zeros', () => {
+    expect(formatPercentage(2)).toBe('2')
+    expect(formatPercentage(2.2379)).toBe('2.24')
+    expect(formatPercentage('2.00')).toBe('2')
+    expect(formatPercentage('2.56')).toBe('2.56')
+  })
+})
 
 describe('findQuestion', () => {
   it('should find a field within a list of fields', () => {
