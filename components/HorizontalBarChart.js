@@ -31,14 +31,17 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
             />
           )
 
-          const Percentage = (
-            <Text style={style.percentageComplete}>
-              {pcFormatted}%
+          const Percentage = isPictureChoice => (
+            <Text style={[
+              isPictureChoice ? style.barLabelColour : null,
+              style.percentageComplete
+            ]}>
+              {formatPercentage(pc)}%
             </Text>
           )
 
           const BarLabel = (
-            <Text style={style.barLabel}>
+            <Text style={[style.barLabelColour, style.barLabel]}>
               {label}
             </Text>
           )
@@ -46,11 +49,14 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
           return (
             <View key={label} style={[style.row, style.barContainer]}>
               <View>
-                {isPhotoChoice ? Photo : Percentage}
+                {isPhotoChoice ? Photo : Percentage()}
               </View>
               <View style={[style.row, style.bar]}>
-                <View style={[style.barCompletion, { width: `${pcFormatted}%` }]}/>
-                {isPhotoChoice ? Percentage : BarLabel}
+                <View style={[
+                  style.barCompletion,
+                  { width: `${pcFormatted}%` }
+                ]} />
+                {isPhotoChoice ? Percentage(true) : BarLabel}
                 <Text style={[style.responseCount, style.responseCountNumber]}>
                   {count}
                 </Text>
@@ -68,7 +74,6 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
 
 export default HorizontalBarChart
 
-const fontFamily = 'Apercu Pro'
 const style = StyleSheet.create({
   chartContainer: {
     marginTop: 8,
@@ -102,9 +107,11 @@ const style = StyleSheet.create({
     borderRadius: 3,
     marginRight: 8
   },
-  barLabel: {
-    fontSize: 12,
+  barLabelColour: {
     color: '#455e76'
+  },
+  barLabel: {
+    fontSize: 12
   },
   barCompletion: {
     position: 'absolute',
