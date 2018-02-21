@@ -22,7 +22,7 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
         {sortedKeys.map(item => {
           const { percentage, count, label, imageURL } = responses[item]
           const isPhotoChoice = Boolean(imageURL)
-          const pc = percentage.toFixed(2)
+          const pc = formatPercentage(percentage.toFixed(2))
 
           const Photo = (
             <Image
@@ -36,7 +36,7 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
               isPictureChoice ? style.barLabelColour : null,
               style.percentageComplete
             ]}>
-              {formatPercentage(pc)}%
+              {pc}%
             </Text>
           )
 
@@ -54,7 +54,7 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
               <View style={[style.row, style.bar]}>
                 <View style={[
                   style.barCompletion,
-                  { width: `${pcFormatted}%` }
+                  { width: `${pc}%` }
                 ]} />
                 {isPhotoChoice ? Percentage(true) : BarLabel}
                 <Text style={[style.responseCount, style.responseCountNumber]}>
