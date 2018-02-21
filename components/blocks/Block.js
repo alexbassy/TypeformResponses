@@ -1,6 +1,7 @@
 import React from 'react'
 import camelCase from 'lodash.camelcase'
 import { View, Text, StyleSheet } from 'react-native'
+import Question from '../Question'
 
 const blockColors = {
   multipleChoice: '#72bec8',
