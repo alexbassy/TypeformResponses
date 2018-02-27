@@ -1,6 +1,6 @@
 import React from 'react'
 import { AsyncStorage } from 'react-native'
-import BaseComponent from './base'
+import BaseComponent from '../base'
 
 export default class Start extends BaseComponent {
   async componentDidMount () {

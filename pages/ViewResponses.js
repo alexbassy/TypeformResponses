@@ -1,9 +1,9 @@
 import React from 'react'
-import BaseComponent from './base'
+import BaseComponent from '../base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
-import renderResponseBlock from './components/blocks'
-import { getCompletionRate, getResponsesCount } from './utils'
-import { endpoint } from './secrets'
+import renderResponseBlock from '../components/blocks/index'
+import { getCompletionRate, getResponsesCount } from '../utils'
+import { endpoint } from '../secrets'
 
 const Statistics = ({ responses }) => {
   // @todo: Work out completion rate same way as in the platform
