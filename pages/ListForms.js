@@ -43,18 +43,9 @@ export default class ListForms extends BaseComponent {
   }
 
   async getTypeforms (isRefreshing = false) {
-    const token = await this.getToken()
+    const items = await Api.listForms()
 
-    console.log(`Token: ${token}`)
-
-    const response = await fetch(endpoint.listForms, {
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `bearer ${token}`
-      }
-    })
-
-    const { items } = await response.json()
+    console.log(items)
 
     console.log(`Got forms:`, items)
 
@@ -69,15 +60,19 @@ export default class ListForms extends BaseComponent {
     })
   }
 
-  async getResponseCount (form) {
-    const token = await this.getToken()
-    const response = await fetch(endpoint.listForms, {
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `bearer ${token}`
-      }
-    })
-    const { items } = await response.json()
+  async getResponseCount ({ id }) {
+    const responsesForForm = this.state.responses[id]
+    if (!responsesForForm) {
+      const responses = await Api.getFormResponses(id, { page_size: 0 })
+      this.setState({
+        responses: {
+          ...this.state.responses,
+          responses
+        }
+      })
+    } else {
+      return responsesForForm
+    }
   }
 
   viewResponses (form) {
@@ -106,7 +101,7 @@ export default class ListForms extends BaseComponent {
         fontFamily='Apercu Pro'
         underlayColor='#efeff4'
         title={item.title}
-        subtitle='Loading responses...'
+        subtitle={'...'}
         onPress={onPress}
       />
     )
