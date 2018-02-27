@@ -11,7 +11,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="react-native" level="project" />
     <orderEntry type="library" name="jest" level="project" />
+    <orderEntry type="library" name="Types" level="project" />
+    <orderEntry type="library" name="@types/react-native" level="application" />
   </component>
 </module>

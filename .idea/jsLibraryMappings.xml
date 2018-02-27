@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{jest, react-native}" />
+    <file url="PROJECT" libraries="{@types/react-native, Types, jest}" />
     <includedPredefinedLibrary name="Node.js Core" />
     <excludedPredefinedLibrary name="TypeformResponses/node_modules" />
   </component>
