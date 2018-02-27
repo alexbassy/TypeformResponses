@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import { View, Text, StyleSheet } from 'react-native'
 import Block from './Block'
+import Expandable from '../Expandable'
 
 class Date extends Component {
   state = {
@@ -41,43 +42,36 @@ const TextBlock = (props) => {
   console.log(props)
 
   return (
-    <Block {...props}>
-      <View style={style.container}>
-        {responses.map((response, i) => {
-          console.log(response)
-          const { id, submissionTime, type } = response
-          const isFirst = i === 0
+    <Block {...props} answerBackground='#eee'>
+      <Expandable>
+        <View style={style.container}>
+          {responses.map((response, i) => {
+            const { id, submissionTime, type } = response
+            const isFirst = i === 0
 
-          let value = (
-            <Text>
-              {response[type]}
-            </Text>
-          )
+            let value = <Text>{response[type]}</Text>
 
-          if (type === 'date') {
-            value = (
-              <Date>
-                {response[type]}
-              </Date>
+            if (type === 'date') {
+              value = <Date>{response[type]}</Date>
+            }
+
+            return (
+              <View
+                key={id}
+                style={[
+                  style.answerContainer,
+                  isFirst ? style.firstAnswer : {}
+                ]}
+              >
+                {value}
+                <Text style={style.date}>
+                  {moment.utc(submissionTime).fromNow()}
+                </Text>
+              </View>
             )
-          }
-
-          return (
-            <View
-              key={id}
-              style={[
-                style.answerContainer,
-                isFirst ? style.firstAnswer : {}
-              ]}
-            >
-              {value}
-              <Text style={style.date}>
-                {moment.utc(submissionTime).fromNow()}
-              </Text>
-            </View>
-          )
-        })}
-      </View>
+          })}
+        </View>
+      </Expandable>
     </Block>
   )
 }
