@@ -22,7 +22,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator=\"iPhone X\"",
     "test": "node node_modules/jest/bin/jest.js",
     "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
     "storybook": "storybook start -p 7007"
