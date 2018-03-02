@@ -50,32 +50,32 @@ class Expandable extends React.Component {
     const { heightAnimation, isExpanded, buttonHeight, curtainAnimation } = this.state
 
     return (
-      <View>
+      <View style={style.container}>
         <Animated.View
           style={[style.expandingContainer, {
             height: heightAnimation
           }]}
         >
-          {React.cloneElement(children, {
-            onLayout: this.setMaxHeight
-          })}
+          {React.cloneElement(children, { onLayout: this.setMaxHeight })}
         </Animated.View>
         <Animated.View style={[style.curtain, {
           bottom: buttonHeight,
-          opacity: curtainAnimation
+          scaleX: curtainAnimation
         }]}>
           <LinearGradient
             colors={['rgba(255, 255, 255, .1)', 'rgba(255, 255, 255, 1)']}
             style={[style.gradient]}
           />
         </Animated.View>
-        <TouchableOpacity
-          style={style.toggleButton}
-          onPress={this.toggle}
-          onLayout={this.setButtonLayout}
-        >
-          <Text style={style.label}>Show {isExpanded ? 'less' : 'more'}</Text>
-        </TouchableOpacity>
+        <View style={style.buttonBackground}>
+          <TouchableOpacity
+            style={style.toggleButton}
+            onPress={this.toggle}
+            onLayout={this.setButtonLayout}
+          >
+            <Text style={style.label}>Show {isExpanded ? 'less' : 'more'}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -84,8 +84,17 @@ class Expandable extends React.Component {
 export default Expandable
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: -8,
+    zIndex: 2
+  },
+  buttonBackground: {
+    backgroundColor: '#fff'
+  },
   expandingContainer: {
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginHorizontal: 8
   },
   curtain: {
     position: 'absolute',
@@ -96,12 +105,14 @@ const style = StyleSheet.create({
   },
   gradient: {
     width: '100%',
-    flex: 1
+    flex: 1,
+    zIndex: 2
   },
   toggleButton: {
     alignItems: 'center',
     paddingTop: 8,
-    paddingBottom: 4
+    paddingBottom: 4,
+    backgroundColor: '#fff'
   },
   label: {
     fontFamily: 'Apercu Pro'
