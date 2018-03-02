@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { View, Text, StyleSheet } from 'react-native'
-import Block from './Block'
+import BaseBlock from './BaseBlock'
 import Expandable from '../Expandable'
 
 class Date extends Component {
@@ -42,7 +42,7 @@ const TextBlock = (props) => {
   console.log(props)
 
   return (
-    <Block {...props} answerBackground='#eee'>
+    <BaseBlock {...props} answerBackground='#eee'>
       <Expandable>
         <View style={style.container}>
           {responses.map((response, i) => {
@@ -72,7 +72,7 @@ const TextBlock = (props) => {
           })}
         </View>
       </Expandable>
-    </Block>
+    </BaseBlock>
   )
 }
 

@@ -21,17 +21,15 @@ const blockColors = {
   group: '#cb722b'
 }
 
-const Block = ({ field, responses, allResponses, answerBackground = '#fff', children }) => {
+const BaseBlock = ({ field, responses, totalResponsesCount, answerBackground = '#fff', children }) => {
   const count = responses.length
-  const totalCount = allResponses.items.length
-  const responseRateText = `${count} out of ${totalCount} people answered this question`
   const iconStyle = {
     backgroundColor: blockColors[camelCase(field.type)]
   }
   return (
     <View style={style.blockContainer}>
       <View style={{ flexDirection: 'row', flex: 1 }}>
-        <View style={[style.questionTypeIcon, iconStyle]} />
+        <View style={[style.questionTypeIcon, iconStyle]}/>
         <View style={{ flex: 1 }}>
           <View>
             <Text>
@@ -39,7 +37,8 @@ const Block = ({ field, responses, allResponses, answerBackground = '#fff', chil
             </Text>
             {responses && (
               <Text style={style.responseRate}>
-                {responseRateText}
+                {totalResponsesCount &&
+                `${count} out of ${totalResponsesCount} people answered this question`}
               </Text>
             )}
           </View>
@@ -52,7 +51,7 @@ const Block = ({ field, responses, allResponses, answerBackground = '#fff', chil
   )
 }
 
-export default Block
+export default BaseBlock
 
 const style = StyleSheet.create({
   blockContainer: {

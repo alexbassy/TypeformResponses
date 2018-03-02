@@ -10,14 +10,22 @@
     "jest-react-native": "^18.0.0",
     "json-server": "^0.12.1",
     "react-test-renderer": "16.2.0",
-    "standard": "^11.0.0-beta.0"
+    "standard": "^11.0.0-beta.0",
+    "@storybook/react-native": "^3.3.14",
+    "@storybook/addon-actions": "^3.3.14",
+    "@storybook/addon-links": "^3.3.14",
+    "@storybook/addons": "^3.3.14",
+    "babel-core": "^6.26.0",
+    "react-dom": "16.2.0",
+    "prop-types": "^15.6.1"
   },
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator=\"iPhone X\"",
     "test": "node node_modules/jest/bin/jest.js",
-    "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json"
+    "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
+    "storybook": "storybook start -p 7007"
   },
   "jest": {
     "preset": "react-native"

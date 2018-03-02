@@ -1,0 +1,309 @@
+{
+  "id": "gV0NkV",
+  "title": "All Fields",
+  "theme": {
+    "href": "https://api.typeform.com/themes/sAHfAa"
+  },
+  "workspace": {
+    "href": "https://api.typeform.com/workspaces/5830041"
+  },
+  "settings": {
+    "is_public": true,
+    "is_trial": false,
+    "language": "en",
+    "progress_bar": "proportion",
+    "show_progress_bar": true,
+    "show_typeform_branding": true,
+    "meta": {
+      "allow_indexing": true
+    }
+  },
+  "thankyou_screens": [
+    {
+      "ref": "default_tys",
+      "title": "Done! Your information was sent perfectly.",
+      "properties": {
+        "show_button": false,
+        "share_icons": false
+      }
+    }
+  ],
+  "fields": [
+    {
+      "id": "qwHwfPR5CyVm",
+      "title": "Do you prefer pineapples or watermelon?",
+      "ref": "cb2b9f5e-d87b-4fe8-94dd-dd80e753c8a6",
+      "properties": {
+        "randomize": false,
+        "allow_multiple_selection": false,
+        "allow_other_choice": false,
+        "vertical_alignment": true,
+        "choices": [
+          {
+            "id": "YHrwTJANWbZE",
+            "ref": "6975edae-3b39-4cf7-beaa-83c4a3ac1d7e",
+            "label": "Pineapple"
+          },
+          {
+            "id": "xat2Hkc3QWQJ",
+            "ref": "858ecd1f-17b9-432e-954f-a4ad683efbcf",
+            "label": "Watermelon"
+          }
+        ]
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "multiple_choice"
+    },
+    {
+      "id": "ArkpVe4qWBEI",
+      "title": "Describe yourself in 3 words...",
+      "ref": "73eebc15-3770-4893-8dc8-3b3dd164cee8",
+      "validations": {
+        "required": false
+      },
+      "type": "short_text"
+    },
+    {
+      "id": "xpdRV1cSyh2l",
+      "title": "Keeping up so far?",
+      "ref": "c7f43224-a5d6-4950-af59-3e94b4aa1666",
+      "properties": {
+        "hide_marks": false,
+        "button_text": "Continue"
+      },
+      "type": "statement"
+    },
+    {
+      "id": "klWL166MWjAL",
+      "title": "Choose one of these puppies ",
+      "ref": "af53c330-e687-4af6-8a92-40595ef96cbf",
+      "properties": {
+        "randomize": false,
+        "allow_multiple_selection": false,
+        "allow_other_choice": false,
+        "supersized": false,
+        "show_labels": true,
+        "choices": [
+          {
+            "id": "KeivU1b4Rdn7",
+            "ref": "74eac1d7-d47d-42d1-8022-9b387fc9048a",
+            "label": "Husky",
+            "attachment": {
+              "type": "image",
+              "href": "https://images.typeform.com/images/haDp7TWJMHpY"
+            }
+          },
+          {
+            "id": "XR5FqxIYngQv",
+            "ref": "bc102dc4-85d3-47f9-9206-83470651262d",
+            "label": "Pug",
+            "attachment": {
+              "type": "image",
+              "href": "https://images.typeform.com/images/cQ4Gc4Abwvrp"
+            }
+          },
+          {
+            "id": "FFE8EFavBHHw",
+            "ref": "ba1d4be5-6898-429f-a393-75c2034d5c18",
+            "label": "Retriever",
+            "attachment": {
+              "type": "image",
+              "href": "https://images.typeform.com/images/wBY7JUedJg8G"
+            }
+          },
+          {
+            "id": "KX4pnOKCkNws",
+            "ref": "d46998ca-56e7-4834-a1ac-6c3db29437c3",
+            "label": "Dalmation",
+            "attachment": {
+              "type": "image",
+              "href": "https://images.typeform.com/images/LahxARUZCjRc"
+            }
+          }
+        ]
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "picture_choice"
+    },
+    {
+      "id": "RQ26eUMXJvfr",
+      "title": "Do you believe in the afterlife?",
+      "ref": "3756fde9-8797-4b64-8f4a-7f3619e998b3",
+      "validations": {
+        "required": false
+      },
+      "type": "yes_no"
+    },
+    {
+      "id": "py472SYPHLU0",
+      "title": "Tell me a short story about your past...",
+      "ref": "a39fa616-9af8-45c3-9b57-f536d82e1850",
+      "validations": {
+        "required": false
+      },
+      "type": "long_text"
+    },
+    {
+      "id": "ZQT25xTpDPw6",
+      "title": "What's your grandma's email address?",
+      "ref": "f7cd64f1-3827-421e-8d43-ba67846c2b8d",
+      "validations": {
+        "required": false
+      },
+      "type": "email"
+    },
+    {
+      "id": "Jh8sBM9KyUUG",
+      "title": "How would you rate *beans on toast*?",
+      "ref": "1814956e-9bb8-47fd-a0f6-ee9d33a6c14b",
+      "properties": {
+        "steps": 11,
+        "start_at_one": false
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "opinion_scale"
+    },
+    {
+      "id": "a2wQaS5A6MyD",
+      "title": "Rate this question",
+      "ref": "d20575f7-55c1-47bf-b0d8-a4d672fea6e5",
+      "properties": {
+        "steps": 3,
+        "shape": "star"
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "rating"
+    },
+    {
+      "id": "doKQ6gb0u9z4",
+      "title": "When's your next dentist appointment?",
+      "ref": "acaeb571-7b6e-4560-ac7a-0bb11e00459b",
+      "properties": {
+        "structure": "MMDDYYYY",
+        "separator": "/"
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "date"
+    },
+    {
+      "id": "XYvKYFu5FmYM",
+      "title": "How many axes can you juggle at once?",
+      "ref": "7e47cbcd-931c-44ff-84d9-c18a26e1ba0b",
+      "validations": {
+        "required": false
+      },
+      "type": "number"
+    },
+    {
+      "id": "GLcFaEUbfeS6",
+      "title": "Pick a mythical creature",
+      "ref": "43d12e29-2551-4b67-afb0-bfe915e8455a",
+      "properties": {
+        "alphabetical_order": false,
+        "choices": [
+          {
+            "label": "Unicorn"
+          },
+          {
+            "label": "Leprechaun"
+          },
+          {
+            "label": "Pixie"
+          },
+          {
+            "label": "Elf"
+          },
+          {
+            "label": "Mermaid"
+          },
+          {
+            "label": "choice 6"
+          }
+        ]
+      },
+      "validations": {
+        "required": false
+      },
+      "type": "dropdown"
+    },
+    {
+      "id": "gVN6Cv65AJDY",
+      "title": "Do you accept the charges?",
+      "ref": "3904444f-1466-4197-b4b7-40f55a9fae7e",
+      "validations": {
+        "required": false
+      },
+      "type": "legal"
+    },
+    {
+      "id": "S5pKZHZlqTV1",
+      "title": "Upload a picture of anything",
+      "ref": "510347ff-f116-4846-a8f5-3199d5cc2fb9",
+      "validations": {
+        "required": false
+      },
+      "type": "file_upload"
+    },
+    {
+      "id": "nLZ95TAWPkRx",
+      "title": "What's your tumblr profile?",
+      "ref": "016ded26-5968-47b3-812f-2493a9a01534",
+      "validations": {
+        "required": false
+      },
+      "type": "website"
+    },
+    {
+      "id": "CJaiWe9HCeE5",
+      "title": "The next three questions are related to the colour orange",
+      "ref": "38e391b3-bcdd-4c3b-9088-1e26e69049e7",
+      "properties": {
+        "show_button": true,
+        "button_text": "Continue",
+        "fields": [
+          {
+            "id": "HTtHXGOPndJ2",
+            "title": "Do you like orange?",
+            "ref": "6efb7b4e-a82f-43fc-a4fc-8de06e753abd",
+            "validations": {
+              "required": false
+            },
+            "type": "yes_no"
+          },
+          {
+            "id": "ha1jnILfN4oN",
+            "title": "What is your favourite shade of orange?",
+            "ref": "d993b2a4-6e51-43b1-94f5-a13dfb2a537d",
+            "validations": {
+              "required": false
+            },
+            "type": "short_text"
+          },
+          {
+            "id": "OEXIx8deNahg",
+            "title": "How many shades of orange can you name?",
+            "ref": "a2632f1b-049e-4010-b343-7fd54ca8bf93",
+            "validations": {
+              "required": false
+            },
+            "type": "number"
+          }
+        ]
+      },
+      "type": "group"
+    }
+  ],
+  "_links": {
+    "display": "https://testfixture.typeform.com/to/gV0NkV"
+  }
+}
