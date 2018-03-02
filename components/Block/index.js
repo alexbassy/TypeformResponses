@@ -1,22 +1,12 @@
 import React from 'react'
-import { getResponsesForQuestion } from '../../utils'
 
-import Block from './Block'
+import BaseBlock from './BaseBlock'
 import MultipleChoice from './MultipleChoice'
 import PictureChoice from './PictureChoice'
 import TextBlock from './TextBlock'
 
-export default (field, responses) => {
-  const questionResponses = getResponsesForQuestion(field, responses)
-
-  const props = {
-    key: field.id,
-    field: field,
-    responses: questionResponses,
-    allResponses: responses
-  }
-
-  switch (field.type) {
+const Block = (props) => {
+  switch (props.field.type) {
     case 'multiple_choice':
       return <MultipleChoice {...props} />
     case 'short_text':
@@ -30,7 +20,8 @@ export default (field, responses) => {
       return <PictureChoice {...props} />
     case 'statement':
       return null
-    default:
-      return <Block {...props} />
   }
+  return <BaseBlock {...props} />
 }
+
+export default Block

@@ -1,8 +1,8 @@
 import React from 'react'
 import BaseComponent from '../base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
-import renderResponseBlock from '../components/blocks/index'
-import { getCompletionRate, getResponsesCount } from '../utils'
+import Block from '../components/Block'
+import { getCompletionRate, getResponsesCount, getResponsesForQuestion } from '../utils'
 import Api from '../api'
 
 const Statistics = ({ responses }) => {
@@ -82,7 +82,14 @@ export default class ViewResponses extends BaseComponent {
           contentInset={{top: 12}}
           contentOffset={{y: -12}}
         >
-          {form.fields.map(field => renderResponseBlock(field, responses))}
+          {form.fields.map(field => (
+            <Block
+              key={field.id}
+              field={field}
+              responses={getResponsesForQuestion(field, responses)}
+              totalResponsesCount={responses.length}
+            />
+          ))}
         </ScrollView>
       </View>
     )
