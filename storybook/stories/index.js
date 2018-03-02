@@ -1,15 +1,18 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from 'react'
+import { Text } from 'react-native'
 
-import { storiesOf } from '@storybook/react-native';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
+import form from '../../__tests__/fixtures/form'
+import responses from '../../__tests__/fixtures/responses'
 
-import Button from './Button';
-import CenterView from './CenterView';
-import Welcome from './Welcome';
+import { storiesOf } from '@storybook/react-native'
+import { action } from '@storybook/addon-actions'
+import { linkTo } from '@storybook/addon-links'
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
+import CenterView from './CenterView'
+
+import Block from '../../components/blocks/Block'
+
+storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />)
 
 storiesOf('Button', module)
   .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
@@ -22,4 +25,4 @@ storiesOf('Button', module)
     <Button onPress={action('clicked-emoji')}>
       <Text>😀 😎 👍 💯</Text>
     </Button>
-  ));
+  ))
