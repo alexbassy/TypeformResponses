@@ -23,30 +23,30 @@ const blockColors = {
 
 const BaseBlock = ({ field, responses, totalResponsesCount, answerBackground = '#fff', children }) => {
   const count = responses.length
+  const isStatement = field.type !== 'statement'
+  const showResponses = isStatement && !!responses
   const iconStyle = {
     backgroundColor: blockColors[camelCase(field.type)]
   }
   return (
     <View style={style.blockContainer}>
       <View style={{ flexDirection: 'row', flex: 1 }}>
-        <View style={[style.questionTypeIcon, iconStyle]}/>
-        <View style={{ flex: 1 }}>
-          <View>
-            <Text>
-              {field.title}
+        <View style={[style.questionTypeIcon, iconStyle]} />
+        <View style={{ flex: 1, marginRight: 16 }}>
+          <Text style={style.question}>
+            {field.title}
+          </Text>
+          {showResponses && (
+            <Text style={style.responseRate}>
+              {totalResponsesCount &&
+              `${count} out of ${totalResponsesCount} people answered this question`}
             </Text>
-            {responses && (
-              <Text style={style.responseRate}>
-                {totalResponsesCount &&
-                `${count} out of ${totalResponsesCount} people answered this question`}
-              </Text>
-            )}
-          </View>
+          )}
         </View>
       </View>
-      <View style={[style.answerContainer, { backgroundColor: answerBackground }]}>
+      {isStatement && <View style={[style.answerContainer, { backgroundColor: answerBackground }]}>
         {children}
-      </View>
+      </View>}
     </View>
   )
 }
@@ -56,9 +56,7 @@ export default BaseBlock
 const style = StyleSheet.create({
   blockContainer: {
     backgroundColor: '#fff',
-    borderRadius: 3,
-    marginHorizontal: 8,
-    paddingVertical: 8,
+    paddingVertical: 16,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -67,18 +65,24 @@ const style = StyleSheet.create({
   },
   answerContainer: {
     flex: 1,
-    paddingHorizontal: 8
+    marginTop: 16
+  },
+  question: {
+    fontSize: 20,
+    lineHeight: 26,
+    fontFamily: 'Apercu Pro'
   },
   questionTypeIcon: {
-    width: 20,
-    height: 10,
+    width: 5,
+    height: 5,
     borderRadius: 10,
-    marginHorizontal: 8,
-    marginTop: 3
+    marginHorizontal: 16,
+    marginTop: 8
   },
   responseRate: {
     fontSize: 12,
     lineHeight: 18,
+    marginTop: 8,
     color: '#999'
   }
 })

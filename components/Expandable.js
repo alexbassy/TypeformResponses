@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, StyleSheet, TouchableOpacity, Text } from 'react-native'
+import { View, Animated, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 class Expandable extends React.Component {
@@ -9,10 +9,10 @@ class Expandable extends React.Component {
 
   state = {
     isExpanded: false,
-    heightAnimation: new Animated.Value(100),
-    curtainAnimation: new Animated.Value(1),
     minHeight: 100,
-    buttonHeight: 0
+    buttonHeight: 0,
+    heightAnimation: new Animated.Value(100),
+    curtainAnimation: new Animated.Value(1)
   }
 
   setButtonLayout = ev => {
@@ -21,7 +21,7 @@ class Expandable extends React.Component {
 
   setMaxHeight = ev => {
     this.setState({
-      maxHeight: ev.nativeEvent.layout.height,
+      maxHeight: ev.nativeEvent.layout.height + 32,
       isExpanded: false
     })
   }
@@ -60,21 +60,20 @@ class Expandable extends React.Component {
         </Animated.View>
         <Animated.View style={[style.curtain, {
           bottom: buttonHeight,
-          scaleX: curtainAnimation
+          opacity: curtainAnimation
         }]}>
           <LinearGradient
-            colors={['rgba(255, 255, 255, .1)', 'rgba(255, 255, 255, 1)']}
+            colors={['rgba(255, 0, 0, .4)', 'rgba(0, 255, 0, .4)', 'rgba(255, 255, 0, 1)']}
             style={[style.gradient]}
           />
         </Animated.View>
         <View style={style.buttonBackground}>
-          <TouchableOpacity
+          <Button
             style={style.toggleButton}
             onPress={this.toggle}
             onLayout={this.setButtonLayout}
-          >
-            <Text style={style.label}>Show {isExpanded ? 'less' : 'more'}</Text>
-          </TouchableOpacity>
+            title={`Show ${isExpanded ? 'less' : 'more'}`}
+          />
         </View>
       </View>
     )
@@ -86,15 +85,11 @@ export default Expandable
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: -8,
     zIndex: 2
-  },
-  buttonBackground: {
-    backgroundColor: '#fff'
   },
   expandingContainer: {
     overflow: 'hidden',
-    marginHorizontal: 8
+    marginLeft: 30
   },
   curtain: {
     position: 'absolute',
@@ -108,11 +103,12 @@ const style = StyleSheet.create({
     flex: 1,
     zIndex: 2
   },
+  buttonBackground: {
+    backgroundColor: '#fff',
+    paddingTop: 12
+  },
   toggleButton: {
-    alignItems: 'center',
-    paddingTop: 8,
-    paddingBottom: 4,
-    backgroundColor: '#fff'
+    alignItems: 'center'
   },
   label: {
     fontFamily: 'Apercu Pro'

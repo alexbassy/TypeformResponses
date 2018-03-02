@@ -19,7 +19,7 @@ const Block = (props) => {
     case 'picture_choice':
       return <PictureChoice {...props} />
     case 'statement':
-      return null
+      return <BaseBlock {...props} />
   }
   return <BaseBlock {...props} />
 }
