@@ -31,8 +31,8 @@ const Block = ({ field, responses, allResponses, answerBackground = '#fff', chil
   return (
     <View style={style.blockContainer}>
       <View style={{ flexDirection: 'row', flex: 1 }}>
-        <View style={[style.questionTypeIcon, iconStyle]}/>
-        <View style={{ flex: 1, backgroundColor: answerBackground }}>
+        <View style={[style.questionTypeIcon, iconStyle]} />
+        <View style={{ flex: 1 }}>
           <View>
             <Text>
               {field.title}
@@ -45,7 +45,9 @@ const Block = ({ field, responses, allResponses, answerBackground = '#fff', chil
           </View>
         </View>
       </View>
-      {children}
+      <View style={[style.answerContainer, { backgroundColor: answerBackground }]}>
+        {children}
+      </View>
     </View>
   )
 }
@@ -54,17 +56,19 @@ export default Block
 
 const style = StyleSheet.create({
   blockContainer: {
-    flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 3,
     marginHorizontal: 8,
     paddingVertical: 8,
-    paddingRight: 16,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8
+  },
+  answerContainer: {
+    flex: 1,
+    paddingHorizontal: 8
   },
   questionTypeIcon: {
     width: 20,
