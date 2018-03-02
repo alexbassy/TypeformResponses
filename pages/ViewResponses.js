@@ -87,7 +87,7 @@ export default class ViewResponses extends BaseComponent {
               key={field.id}
               field={field}
               responses={getResponsesForQuestion(field, responses)}
-              totalResponsesCount={responses.length}
+              totalResponsesCount={responses.items.length}
             />
           ))}
         </ScrollView>
