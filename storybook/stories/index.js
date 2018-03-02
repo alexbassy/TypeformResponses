@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { View } from 'react-native'
 
-import form from '../../__tests__/fixtures/form'
-import responses from '../../__tests__/fixtures/responses'
+import form from './fixtures/form.json'
+import responses from './fixtures/responses.json'
+import { getResponsesForQuestion } from '../../utils'
 
 import { storiesOf } from '@storybook/react-native'
 import { action } from '@storybook/addon-actions'
@@ -10,19 +11,22 @@ import { linkTo } from '@storybook/addon-links'
 
 import CenterView from './CenterView'
 
-import Block from '../../components/blocks/Block'
+import Block from '../../components/Block'
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />)
+storiesOf('Block', module)
+  .add('normal', () => {
+    const field = form.fields[0]
+    const fieldResponses = getResponsesForQuestion(field, responses)
+    const totalResponsesCount = 24
+    console.log(form, fieldResponses)
 
-storiesOf('Button', module)
-  .addDecorator(getStory => <CenterView>{getStory()}</CenterView>)
-  .add('with text', () => (
-    <Button onPress={action('clicked-text')}>
-      <Text>Hello Button</Text>
-    </Button>
-  ))
-  .add('with some emoji', () => (
-    <Button onPress={action('clicked-emoji')}>
-      <Text>😀 😎 👍 💯</Text>
-    </Button>
-  ))
+    return (
+      <View style={{ flex: 1 }}>
+        <Block
+          field={field}
+          responses={fieldResponses}
+          totalResponsesCount={totalResponsesCount}
+        />
+      </View>
+    )
+  })
