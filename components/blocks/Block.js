@@ -21,7 +21,7 @@ const blockColors = {
   group: '#cb722b'
 }
 
-const Block = ({ field, responses, allResponses, children }) => {
+const Block = ({ field, responses, allResponses, answerBackground = '#fff', children }) => {
   const count = responses.length
   const totalCount = allResponses.items.length
   const responseRateText = `${count} out of ${totalCount} people answered this question`
@@ -30,20 +30,22 @@ const Block = ({ field, responses, allResponses, children }) => {
   }
   return (
     <View style={style.blockContainer}>
-      <View style={[style.questionTypeIcon, iconStyle]} />
-      <View style={{flex: 1}}>
-        <View>
-          <Text>
-            {field.title}
-          </Text>
-          {responses && (
-            <Text style={style.responseRate}>
-              {responseRateText}
+      <View style={{ flexDirection: 'row', flex: 1 }}>
+        <View style={[style.questionTypeIcon, iconStyle]}/>
+        <View style={{ flex: 1, backgroundColor: answerBackground }}>
+          <View>
+            <Text>
+              {field.title}
             </Text>
-          )}
+            {responses && (
+              <Text style={style.responseRate}>
+                {responseRateText}
+              </Text>
+            )}
+          </View>
         </View>
-        {children}
       </View>
+      {children}
     </View>
   )
 }

@@ -3,6 +3,10 @@ import { View, Animated, StyleSheet, TouchableOpacity, Text } from 'react-native
 import LinearGradient from 'react-native-linear-gradient'
 
 class Expandable extends React.Component {
+  static defaultProps = {
+    maxHeight: 300
+  }
+
   state = {
     isExpanded: false,
     heightAnimation: new Animated.Value(100),

@@ -1,11 +1,12 @@
 import React from 'react'
-import BaseComponent from './base'
+import BaseComponent from '../base'
+import Api from '../api'
+import { CLIENT_ID, OAUTH_CALLBACK, APPLICATION_SCOPES } from '../secrets'
 import url from 'url'
 import querystring from 'querystring'
-import { StyleSheet, View, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
-import { clientID, clientSecret, callback, endpoint, scopes } from './secrets'
-import { TFHeading2 } from './components/typography'
-import { TFForm, TFButton } from './components/form-elements'
+import { StyleSheet, View, KeyboardAvoidingView, Linking } from 'react-native'
+import { TFHeading2 } from '../components/typography'
+import { TFForm, TFButton } from '../components/form-elements'
 
 export default class Login extends BaseComponent {
   _handleOauthCallback = async (ev) => {
@@ -18,32 +19,14 @@ export default class Login extends BaseComponent {
       return
     }
 
-    const body = querystring.stringify({
-      'code': code,
-      'client_id': clientID,
-      'client_secret': clientSecret,
-      'redirect_uri': callback
-    })
-
-    const response = await fetch(endpoint.token, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body
-    })
-
-    const json = await response.json()
-
-    const token = json['access_token']
-    await AsyncStorage.setItem('AccessToken', json['access_token'])
+    await Api.getOauthTokenAndSave({ code })
 
     this.goToListForms()
   }
 
   _doAuthentication = () => {
-    const requestUri = `${endpoint.authorize}?client_id=${clientID}&redirect_uri=${callback}&scope=${scopes}`
+    const scopes = APPLICATION_SCOPES.join('+')
+    const requestUri = `${Api.baseEndpoint}/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${OAUTH_CALLBACK}&scope=${scopes}`
     Linking.openURL(requestUri)
     Linking.addEventListener('url', this._handleOauthCallback)
   }

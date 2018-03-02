@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { AsyncStorage, ActionSheetIOS} from 'react-native'
+import { AsyncStorage, ActionSheetIOS } from 'react-native'
 import { NavigationActions } from 'react-navigation'
+import Api from './api'
 
 export default class BaseComponent extends Component {
   async getToken () {
@@ -15,7 +16,7 @@ export default class BaseComponent extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'Login'})
+        NavigationActions.navigate({ routeName: 'Login' })
       ]
     })
     this.props.navigation.dispatch(resetAction)
@@ -25,18 +26,18 @@ export default class BaseComponent extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'ListForms'})
+        NavigationActions.navigate({ routeName: 'ListForms' })
       ]
     })
     this.props.navigation.dispatch(resetAction)
   }
 
   doLogout = async () => {
-    await AsyncStorage.removeItem('AccessToken')
+    await Api.clearCache()
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'Login'})
+        NavigationActions.navigate({ routeName: 'Login' })
       ]
     })
     this.props.navigation.dispatch(resetAction)
