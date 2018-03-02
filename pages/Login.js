@@ -4,7 +4,7 @@ import Api from '../api'
 import { CLIENT_ID, OAUTH_CALLBACK, APPLICATION_SCOPES } from '../secrets'
 import url from 'url'
 import querystring from 'querystring'
-import { StyleSheet, View, KeyboardAvoidingView, Linking, AsyncStorage } from 'react-native'
+import { StyleSheet, View, KeyboardAvoidingView, Linking } from 'react-native'
 import { TFHeading2 } from '../components/typography'
 import { TFForm, TFButton } from '../components/form-elements'
 
@@ -19,17 +19,14 @@ export default class Login extends BaseComponent {
       return
     }
 
-    const authentication = await Api.getToken({ code })
-
-    const token = authentication['access_token']
-    await AsyncStorage.setItem('AccessToken', token)
+    await Api.getOauthTokenAndSave({ code })
 
     this.goToListForms()
   }
 
   _doAuthentication = () => {
     const scopes = APPLICATION_SCOPES.join('+')
-    const requestUri = `${Api.baseEndpoint}/authorize?client_id=${CLIENT_ID}&redirect_uri=${OAUTH_CALLBACK}&scope=${scopes}`
+    const requestUri = `${Api.baseEndpoint}/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${OAUTH_CALLBACK}&scope=${scopes}`
     Linking.openURL(requestUri)
     Linking.addEventListener('url', this._handleOauthCallback)
   }

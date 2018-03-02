@@ -3,7 +3,7 @@ import BaseComponent from '../base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import renderResponseBlock from '../components/blocks/index'
 import { getCompletionRate, getResponsesCount } from '../utils'
-import { endpoint } from '../secrets'
+import Api from '../api'
 
 const Statistics = ({ responses }) => {
   // @todo: Work out completion rate same way as in the platform
@@ -49,21 +49,12 @@ export default class ViewResponses extends BaseComponent {
   }
 
   async getFormAndResponses () {
-    const token = await this.getToken()
-    const { id } = this.props.navigation.state.params
+    const { id: formId } = this.props.navigation.state.params
 
-    const requestOptions = {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `bearer ${token}`
-      }
-    }
-
-    const formRequest = fetch(`${endpoint.base}/forms/${id}`, requestOptions)
-    const responsesRequest = fetch(`${endpoint.base}/forms/${id}/responses`, requestOptions)
-
-    const data = await Promise.all([formRequest, responsesRequest])
-    const [form, responses] = await Promise.all([data[0].json(), data[1].json()])
+    const [form, responses] = await Promise.all([
+      Api.getFormDefinition(formId),
+      Api.getFormResponses(formId)
+    ])
 
     this.setState({
       form,

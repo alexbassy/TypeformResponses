@@ -27,13 +27,25 @@ class Api {
 
   async getOauthToken ({ code }) {
     return this.makeRequest('/oauth/token', {
-      body: querystring.stringify({
+      body: {
         'code': code,
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
         'redirect_uri': OAUTH_CALLBACK
-      })
+      }
+    }, {
+      method: 'POST',
+      isAuth: false,
+      isQs: true
     })
+  }
+
+  async getOauthTokenAndSave ({ code }) {
+    const authorisation = await this.getOauthToken({ code })
+    const token = authorisation.access_token
+    console.log(authorisation)
+    await AsyncStorage.setItem('AccessToken', token)
+    return token
   }
 
   async listForms () {
@@ -48,12 +60,14 @@ class Api {
     return this.makeRequest(`/forms/${id}/responses`, {})
   }
 
-  async makeRequest (uri, options = {}, config = {
-    isAuth: true,
-    isJson: true,
-    isQs: false
-  }) {
-    const { isAuth, isQs, isJson } = config
+  async makeRequest (uri, options = {}, config = {}) {
+    const defaultConfig = {
+      method: 'GET',
+      isAuth: true,
+      isJson: true,
+      isQs: false
+    }
+    const { isAuth, isQs, isJson, method } = Object.assign({}, defaultConfig, config)
     const requestOptions = {
       ...options,
       body: isQs ? querystring.stringify(options.body) : options.body,
@@ -63,10 +77,10 @@ class Api {
       } : defaultHeaders
     }
 
-    console.log(`Requesting URL: ${this.baseEndpoint + uri}\nWith options:\n`, requestOptions)
+    console.info(`Requesting URL: ${this.baseEndpoint + uri}\nWith options:`, requestOptions)
 
     const response = await fetch(this.baseEndpoint + uri, {
-      method: 'POST',
+      method: method,
       headers: defaultHeaders,
       ...requestOptions
     })

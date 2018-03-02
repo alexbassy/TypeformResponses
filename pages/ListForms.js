@@ -1,6 +1,5 @@
 import React from 'react'
 import BaseComponent from '../base'
-import { endpoint } from '../secrets'
 import Api from '../api'
 import {
   View,
@@ -36,28 +35,30 @@ export default class ListForms extends BaseComponent {
 
   componentDidMount () {
     // hack to suppress error for updating unmounted component
-    setTimeout(() => {
-      this.props.navigation.setParams({ logout: this.logout })
-    }, 1)
+    setTimeout(() => this.props.navigation.setParams({ logout: this.logout }), 1)
     this.getTypeforms()
   }
 
   async getTypeforms (isRefreshing = false) {
-    const items = await Api.listForms()
+    try {
+      const { items } = await Api.listForms()
 
-    console.log(items)
+      console.log(items)
 
-    console.log(`Got forms:`, items)
+      console.log(`Got forms:`, items)
 
-    const processed = items.map(form => {
-      form.key = form.id
-      return form
-    })
+      const processed = items.map(form => {
+        form.key = form.id
+        return form
+      })
 
-    this.setState({
-      forms: processed,
-      refreshing: isRefreshing ? false : this.state.refreshing
-    })
+      this.setState({
+        forms: processed,
+        refreshing: isRefreshing ? false : this.state.refreshing
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async getResponseCount ({ id }) {
