@@ -1,7 +1,37 @@
 {
   "name": "TypeformResponses",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexbassy/TypeformResponses.git"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios --simulator=\"iPhone X\"",
+    "test": "node node_modules/jest/bin/jest.js",
+    "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
+    "storybook": "storybook start -p 7007",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "lodash.camelcase": "^4.3.0",
+    "moment": "^2.20.1",
+    "react": "16.2.0",
+    "react-native": "0.52.0",
+    "react-native-elements": "^0.19.0",
+    "react-native-linear-gradient": "^2.4.0",
+    "react-native-typography": "^1.3.0",
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "^1.0.0-beta.27",
+    "styled-components": "^3.1.6",
+    "url": "^0.11.0"
+  },
   "devDependencies": {
     "@commitlint/cli": "^6.1.3",
     "@commitlint/config-conventional": "^6.1.3",
@@ -20,32 +50,16 @@
     "prop-types": "^15.6.1",
     "react-dom": "^16.2.0",
     "react-test-renderer": "16.2.0",
-    "standard": "^11.0.0-beta.0"
+    "standard": "^11.0.0-beta.0",
+    "semantic-release": "^12.4.1"
   },
-  "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator=\"iPhone X\"",
-    "test": "node node_modules/jest/bin/jest.js",
-    "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
-    "storybook": "storybook start -p 7007",
-    "commitmsg": "commitlint -e $GIT_PARAMS"
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   },
   "jest": {
     "preset": "react-native"
-  },
-  "dependencies": {
-    "lodash.camelcase": "^4.3.0",
-    "moment": "^2.20.1",
-    "react": "16.2.0",
-    "react-native": "0.52.0",
-    "react-native-elements": "^0.19.0",
-    "react-native-linear-gradient": "^2.4.0",
-    "react-native-typography": "^1.3.0",
-    "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.0.0-beta.27",
-    "styled-components": "^3.1.6",
-    "url": "^0.11.0"
   },
   "standard": {
     "parser": "babel-eslint",
@@ -55,11 +69,6 @@
     "env": {
       "jest": true
     }
-  },
-  "rnpm": {
-    "assets": [
-      "./assets/fonts/"
-    ]
   },
   "commitlint": {
     "extends": [
