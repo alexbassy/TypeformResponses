@@ -1,5 +1,8 @@
+// @flow
+import type { Field } from './flow-types/types'
+
 // omit ".00"
-export const formatPercentage = n => {
+export const formatPercentage = (n: number) => {
   const pc = typeof n === 'number' ? n.toFixed(2) : n
   return /\.00$/.test(pc) ? pc.match(/([0-9]+)/)[0] : pc
 }
@@ -13,7 +16,7 @@ export const getCompletionRate = responses => {
   return completed ? responses.total_items / completed : 0
 }
 
-export const findQuestion = (fields, comparison) => {
+export const findQuestion = (fields: Field[], comparison: Function) => {
   for (let field of fields) {
     if (field.type !== 'group') {
       if (comparison(field)) {
@@ -30,7 +33,7 @@ export const findQuestion = (fields, comparison) => {
   return null
 }
 
-export const getResponsesForQuestion = (field, responses) => {
+export const getResponsesForQuestion = (field: Field, responses) => {
   if (!field) {
     return []
   }
