@@ -30,8 +30,11 @@ export default class ListForms extends BaseComponent {
 
   state = {
     forms: [],
-    refreshing: false
+    refreshing: false,
+    responsesCounts: {}
   }
+
+  requestedResponseCount = []
 
   componentDidMount () {
     // hack to suppress error for updating unmounted component
@@ -43,10 +46,6 @@ export default class ListForms extends BaseComponent {
     try {
       const { items } = await Api.listForms()
 
-      console.log(items)
-
-      console.log(`Got forms:`, items)
-
       const processed = items.map(form => {
         form.key = form.id
         return form
@@ -57,23 +56,36 @@ export default class ListForms extends BaseComponent {
         refreshing: isRefreshing ? false : this.state.refreshing
       })
     } catch (e) {
+      // API error ?
       console.log(e)
     }
   }
 
-  async getResponseCount ({ id }) {
-    const responsesForForm = this.state.responses[id]
-    if (!responsesForForm) {
-      const responses = await Api.getFormResponses(id, { page_size: 0 })
-      this.setState({
-        responses: {
-          ...this.state.responses,
-          responses
-        }
-      })
-    } else {
-      return responsesForForm
+  getResponseCount ({ id }) {
+    const hasRequested = this.requestedResponseCount.includes(id)
+    const responsesCountForForm = this.state.responsesCounts[id]
+
+    if (hasRequested && typeof responsesCountForForm === 'undefined') {
+      console.log(`Already made request for form#${id}`)
+      return 'Still loading...'
     }
+
+    if (typeof responsesCountForForm === 'undefined') {
+      console.log(`Requesting response count for form#${id}`)
+      this.requestedResponseCount.push(id)
+      Api.getFormResponses(id, { page_size: 0 }).then(responses => {
+        console.log(id, responses.total_items)
+        this.setState({
+          responsesCounts: {
+            ...this.state.responsesCounts,
+            [id]: responses.total_items
+          }
+        })
+      })
+      return 'Loading...'
+    }
+
+    return `${responsesCountForForm} responses`
   }
 
   viewResponses (form) {
@@ -86,7 +98,6 @@ export default class ListForms extends BaseComponent {
   }
 
   refreshForms = () => {
-    console.log('Refreshing!')
     this.setState({ refreshing: true })
     return this.getTypeforms(true)
   }
@@ -102,7 +113,7 @@ export default class ListForms extends BaseComponent {
         fontFamily='Apercu Pro'
         underlayColor='#efeff4'
         title={item.title}
-        subtitle={'...'}
+        subtitle={this.getResponseCount({ id: item.id })}
         onPress={onPress}
       />
     )
@@ -125,6 +136,7 @@ export default class ListForms extends BaseComponent {
         renderItem={this._renderListItem}
         refreshing={refreshing}
         onRefresh={this.refreshForms}
+        extraData={this.state}
       />
     )
   }
