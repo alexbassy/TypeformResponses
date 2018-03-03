@@ -28,10 +28,11 @@ const BaseBlock = ({ field, responses, totalResponsesCount, answerBackground = '
   const iconStyle = {
     backgroundColor: blockColors[camelCase(field.type)]
   }
+
   return (
     <View style={style.blockContainer}>
-      <View style={{ flexDirection: 'row', flex: 1 }}>
-        <View style={[style.questionTypeIcon, iconStyle]} />
+      <View style={style.questionContainer}>
+        <View style={[style.questionTypeIcon, iconStyle]}/>
         <View style={{ flex: 1, marginRight: 16 }}>
           <Text style={style.question}>
             {field.title}
@@ -56,19 +57,22 @@ export default BaseBlock
 const style = StyleSheet.create({
   blockContainer: {
     backgroundColor: '#fff',
-    paddingVertical: 16,
     marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8
   },
+  questionContainer: {
+    marginVertical: 16,
+    flexDirection: 'row',
+    flex: 1
+  },
   answerContainer: {
-    flex: 1,
-    marginTop: 16
+    flex: 1
   },
   question: {
-    fontSize: 20,
+    fontSize: 18,
     lineHeight: 26,
     fontFamily: 'Apercu Pro'
   },

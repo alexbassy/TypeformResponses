@@ -9,7 +9,7 @@ const PictureChoice = (props) => {
   const choices = tallyMultipleChoiceAnswers({ field, responses })
   return (
     <BaseBlock {...props}>
-      <Expandable maxHeight={300}>
+      <Expandable>
         <HorizontalBarChart responses={choices} />
       </Expandable>
     </BaseBlock>

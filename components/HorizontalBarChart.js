@@ -55,13 +55,13 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
                 <View style={[
                   style.barCompletion,
                   { width: `${pc}%` }
-                ]} />
+                ]}/>
                 {isPhotoChoice ? Percentage(true) : BarLabel}
                 <Text style={[style.responseCount, style.responseCountNumber]}>
                   {count}
                 </Text>
                 <Text style={style.responseCount}>
-                  {`response${(count > 1 ? 's' : '')}`.toUpperCase()}
+                  {`response${(count > 1 ? 's' : '')}`}
                 </Text>
               </View>
             </View>
@@ -84,8 +84,8 @@ const style = StyleSheet.create({
     flexDirection: 'row'
   },
   barContainer: {
-    marginVertical: 4,
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 2
   },
   percentageComplete: {
     fontSize: 12,
@@ -95,38 +95,32 @@ const style = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f1f8f9',
     alignItems: 'center',
-    paddingLeft: 12,
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 4,
-    height: 32
+    height: 36
   },
   photo: {
-    width: 32,
-    height: 32,
-    borderRadius: 3,
-    marginRight: 8
+    width: 36,
+    height: 36
   },
   barLabelColour: {
     color: '#455e76'
   },
   barLabel: {
-    fontSize: 12
+    fontSize: 16
   },
   barCompletion: {
     position: 'absolute',
     backgroundColor: '#cae6ea',
-    borderRadius: 4,
-    height: 32
+    height: 36
   },
   responseCountNumber: {
     marginLeft: 'auto',
-    marginRight: 2,
-    color: 'rgba(0, 0, 0, .5)'
+    marginRight: 2
   },
   responseCount: {
-    fontSize: 9,
-    letterSpacing: -0.25,
-    color: 'rgba(0, 0, 0, .3)'
+    fontSize: 12,
+    color: '#455e76'
   }
 })
