@@ -15,6 +15,8 @@
     "ios": "react-native run-ios --simulator=\"iPhone X\"",
     "test": "node node_modules/jest/bin/jest.js",
     "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
+    "flow": "flow",
+    "flow-stop": "flow stop",
     "storybook": "storybook start -p 7007",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "semantic-release": "semantic-release"
@@ -39,10 +41,13 @@
     "@storybook/addon-links": "^3.3.14",
     "@storybook/addons": "^3.3.14",
     "@storybook/react-native": "^3.3.14",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "eslint-plugin-jest": "^21.8.0",
+    "flow-bin": "^0.61.0",
     "husky": "^0.14.3",
     "jest": "^22.2.2",
     "jest-react-native": "^18.0.0",
@@ -50,8 +55,8 @@
     "prop-types": "^15.6.1",
     "react-dom": "^16.2.0",
     "react-test-renderer": "16.2.0",
-    "standard": "^11.0.0-beta.0",
-    "semantic-release": "^12.4.1"
+    "semantic-release": "^12.4.1",
+    "standard": "^11.0.0-beta.0"
   },
   "rnpm": {
     "assets": [
@@ -76,6 +81,8 @@
     ]
   },
   "release": {
-    "publish": ["@semantic-release/github"]
+    "publish": [
+      "@semantic-release/github"
+    ]
   }
 }
