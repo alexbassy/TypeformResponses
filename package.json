@@ -74,5 +74,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "release": {
+    "publish": ["@semantic-release/github"]
   }
 }
