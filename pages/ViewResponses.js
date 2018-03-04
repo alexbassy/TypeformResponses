@@ -1,5 +1,5 @@
 import React from 'react'
-import BaseComponent from '../base'
+import BaseComponent from './base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
 import Block from '../components/Block'
 import { getCompletionRate, getResponsesCount, getResponsesForQuestion } from '../utils'
@@ -30,16 +30,6 @@ const Statistics = ({ responses }) => {
 }
 
 export default class ViewResponses extends BaseComponent {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state
-    return {
-      title: params.title,
-      headerTitleStyle: {
-        fontFamily: 'Apercu Pro'
-      }
-    }
-  }
-
   state = {
     loading: true
   }

@@ -6469,7 +6469,7 @@ lodash.upperfirst@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/lodash.upperfirst/-/lodash.upperfirst-4.3.1.tgz#1365edf431480481ef0d1c68957a5ed99d49f7ce"
 
-lodash@4, lodash@^4.11.2, lodash@^4.13.1, lodash@^4.17.3, lodash@^4.2.1:
+lodash@4, lodash@4.x.x, lodash@^4.11.2, lodash@^4.13.1, lodash@^4.17.3, lodash@^4.2.1:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
@@ -8288,6 +8288,12 @@ react-native-linear-gradient@^2.4.0:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.0.tgz#51d8ea12bb72a59bede9edc87b694b16b64cf435"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-navigation@^1.1.397:
+  version "1.1.397"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.397.tgz#f8336ac7ff76b36288ad202402b6491f440368bd"
+  dependencies:
+    lodash "4.x.x"
 
 react-native-tab-view@^0.0.74:
   version "0.0.74"

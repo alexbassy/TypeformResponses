@@ -1,14 +1,19 @@
 import React from 'react'
-import BaseComponent from '../base'
+import BaseComponent from './base'
 import Api from '../api'
 import { CLIENT_ID, OAUTH_CALLBACK, APPLICATION_SCOPES } from '../secrets'
 import url from 'url'
 import querystring from 'querystring'
-import { StyleSheet, View, KeyboardAvoidingView, Linking } from 'react-native'
+import { StyleSheet, View, ScrollView, Linking } from 'react-native'
 import { TFHeading2 } from '../components/typography'
 import { TFForm, TFButton } from '../components/form-elements'
 
 export default class Login extends BaseComponent {
+  static navigatorStyle = {
+    drawUnderNavBar: true,
+    navBarTranslucent: true
+  }
+
   _handleOauthCallback = async (ev) => {
     Linking.removeEventListener('url', this._handleOauthCallback)
     const parsed = url.parse(ev.url)
@@ -31,15 +36,11 @@ export default class Login extends BaseComponent {
     Linking.addEventListener('url', this._handleOauthCallback)
   }
 
-  goToListForms () {
-    this.navigate('ListForms')
-  }
-
   render () {
     return (
-      <KeyboardAvoidingView
+      <ScrollView
         behavior='padding'
-        style={styles.container}
+        contentContainerStyle={styles.container}
       >
         <View style={styles.headingWrap}>
           <TFHeading2>
@@ -53,7 +54,7 @@ export default class Login extends BaseComponent {
             title='Login to Typeform'
           />
         </TFForm>
-      </KeyboardAvoidingView>
+      </ScrollView>
     )
   }
 }

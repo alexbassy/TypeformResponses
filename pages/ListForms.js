@@ -1,31 +1,22 @@
 import React from 'react'
-import BaseComponent from '../base'
+import BaseComponent from './base'
 import Api from '../api'
 import {
   View,
   StyleSheet,
   ActivityIndicator,
   TouchableHighlight,
-  Button,
+  ScrollView,
   FlatList
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 
 export default class ListForms extends BaseComponent {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state
-    return {
-      title: 'Your typeforms',
-      headerLeft: null,
-      headerTitleStyle: styles.font,
-      headerRight: (
-        <Button
-          onPress={params ? params.menuButtonAction : () => {}}
-          style={styles.font}
-          title='Settings'
-        />
-      )
-    }
+  static navigatorButtons = {
+    rightButtons: [{
+      id: 'open-settings',
+      title: 'Settings'
+    }]
   }
 
   state = {
@@ -36,15 +27,26 @@ export default class ListForms extends BaseComponent {
 
   requestedResponseCount = []
 
+  constructor (props) {
+    super(props)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+  }
+
   componentDidMount () {
-    // hack to suppress error for updating unmounted component
-    setTimeout(() => this.props.navigation.setParams({ menuButtonAction: this.openSettings }), 1)
     this.getTypeforms()
+  }
+
+  onNavigatorEvent (event) {
+    if (event.type === 'NavBarButtonPress') {
+      if (event.id === 'open-settings') {
+        this.openSettings()
+      }
+    }
   }
 
   async getTypeforms (isRefreshing = false) {
     try {
-      const { items } = await Api.listForms()
+      const {items} = await Api.listForms()
 
       const processed = items.map(form => {
         form.key = form.id
@@ -61,7 +63,7 @@ export default class ListForms extends BaseComponent {
     }
   }
 
-  getResponseCount ({ id }) {
+  getResponseCount ({id}) {
     const hasRequested = this.requestedResponseCount.includes(id)
     const responsesCountForForm = this.state.responsesCounts[id]
 
@@ -73,7 +75,7 @@ export default class ListForms extends BaseComponent {
     if (typeof responsesCountForForm === 'undefined') {
       console.log(`Requesting response count for form#${id}`)
       this.requestedResponseCount.push(id)
-      Api.getFormResponses(id, { page_size: 0 }).then(responses => {
+      Api.getFormResponses(id, {page_size: 0}).then(responses => {
         console.log(id, responses.total_items)
         this.setState({
           responsesCounts: {
@@ -89,20 +91,15 @@ export default class ListForms extends BaseComponent {
   }
 
   viewResponses (form) {
-    const { id, title } = form
-    this.props.navigation.navigate('ViewResponses', {
-      id,
-      title,
-      token: this.getToken()
-    })
+    this.goToFormResponses(form)
   }
 
   refreshForms = () => {
-    this.setState({ refreshing: true })
+    this.setState({refreshing: true})
     return this.getTypeforms(true)
   }
 
-  _renderListItem = ({ item }) => {
+  _renderListItem = ({item}) => {
     const onPress = () => this.viewResponses(item)
     return (
       <ListItem
@@ -120,7 +117,7 @@ export default class ListForms extends BaseComponent {
   }
 
   render () {
-    const { forms, refreshing } = this.state
+    const {forms, refreshing} = this.state
 
     if (!forms.length) {
       return (
@@ -131,25 +128,32 @@ export default class ListForms extends BaseComponent {
     }
 
     return (
-      <FlatList
-        data={this.state.forms}
-        renderItem={this._renderListItem}
-        refreshing={refreshing}
-        onRefresh={this.refreshForms}
-        extraData={this.state}
-      />
+      <ScrollView style={styles.page}>
+        <FlatList
+          data={this.state.forms}
+          renderItem={this._renderListItem}
+          refreshing={refreshing}
+          onRefresh={this.refreshForms}
+          extraData={this.state}
+        />
+      </ScrollView>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#efeff4',
+    paddingTop: 18
+  },
   loadingContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
   },
   listItem: {
-    borderBottomColor: '#cdccd1'
+    backgroundColor: '#fff',
+    borderBottomColor: '#eee'
   },
   formTitle: {
     lineHeight: 16 * 1.6

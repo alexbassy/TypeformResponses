@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import BaseComponent from '../base'
+import BaseComponent from './base'
 import {
   View, StyleSheet, ActivityIndicator, TouchableHighlight,
   FlatList, SectionList, Switch, Text, ScrollView
@@ -30,11 +30,16 @@ const SectionTitle = ({section}) => {
 }
 
 class AppSettings extends BaseComponent<Props, State> {
-  static navigationOptions = ({navigation}) => {
-    return {
-      title: 'Settings',
-      largeTitle: true
-    }
+  static navigatorButtons = {
+    rightButtons: [{
+      id: 'close',
+      systemItem: 'done',
+    }]
+  }
+
+  constructor (props) {
+    super(props)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
   }
 
   state = {
@@ -89,6 +94,16 @@ class AppSettings extends BaseComponent<Props, State> {
     })
   }
 
+  onNavigatorEvent (ev) {
+    if (ev.type === 'NavBarButtonPress') {
+      if (ev.id === 'close') {
+        this.props.navigator.dismissModal({
+          animationType: 'slide-down'
+        })
+      }
+    }
+  }
+
   onToggle (id: string) {
     Settings.toggle(id)
   }
@@ -109,7 +124,7 @@ class AppSettings extends BaseComponent<Props, State> {
       />,
       item.description && (
         <View key={`description_${item.id}`}>
-          <Text subtitleStyle={styles.subtitle}>{item.description}</Text>
+          <Text style={styles.subtitle}>{item.description}</Text>
         </View>
       )
     ]
@@ -139,7 +154,7 @@ class AppSettings extends BaseComponent<Props, State> {
     }
 
     return (
-      <ScrollView>
+      <ScrollView style={styles.page} >
         <FlatList
           style={styles.listGroup}
           data={this.state.settings}
@@ -170,6 +185,9 @@ class AppSettings extends BaseComponent<Props, State> {
 export default AppSettings
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#efeff4'
+  },
   listGroup: {
     marginTop: 32
   },
@@ -187,8 +205,8 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   subheading: {
-    paddingHorizontal: 8,
-    paddingVertical: 4
+    paddingHorizontal: 16,
+    paddingVertical: 6
   },
   subheadingText: {
     color: '#8E8E93',
@@ -196,8 +214,11 @@ const styles = StyleSheet.create({
     lineHeight: 18
   },
   subtitle: {
+    color: '#8E8E93',
     fontWeight: '400',
-    lineHeight: 14 * 1.6
+    lineHeight: 14 * 1.6,
+    marginTop: 4,
+    marginLeft: 16
   },
   font: {
     fontSize: 17,
