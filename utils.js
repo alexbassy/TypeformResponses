@@ -55,7 +55,7 @@ export const getResponsesForQuestion = (field: Field, responses) => {
   }, [])
 }
 
-export const tallyMultipleChoiceAnswers = ({ field, responses }) => {
+export const tallyMultipleChoiceAnswers = ({ field, responses } : { field: Field, responses: any }) => {
   // make a smaller object for each choice
   const fields = field.properties.choices.reduce((result, choice) => {
     result[choice.label] = {
