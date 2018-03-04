@@ -55,4 +55,8 @@ export default class BaseComponent extends Component {
       }
     })
   }
+
+  openSettings = () => {
+    this.props.navigation.navigate('Settings')
+  }
 }
