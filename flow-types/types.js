@@ -69,3 +69,56 @@ export type Form = {
     display: boolean
   },
 }
+
+
+
+// responses
+
+type Metadata = {
+  user_agent: string,
+  platform: string,
+  referer: string,
+  network_id: string,
+  browser: string
+}
+
+type Choice = {
+  label: string
+}
+
+type Answer = {
+  field: {
+    id: string,
+    type: string
+  },
+  type: string,
+  choice?: Choice,
+  choices?: Choice[],
+  url?: string,
+  number?: number,
+  date?: string,
+  file_url?: string,
+  text?: string,
+  email?: string,
+  boolean?: boolean,
+  payment: string,
+}
+
+export type Response = {
+  landing_id: string,
+  token: string,
+  landed_at: string,
+  submitted_at: string,
+  metadata: Metadata,
+  answers: Answer[],
+  hidden?: ,
+  calculated: {
+    score: number
+  },
+}
+
+export type Responses = {
+  total_items: number,
+  page_count: number,
+  items: Responses[]
+}
