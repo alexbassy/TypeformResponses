@@ -32,7 +32,8 @@ const SectionTitle = ({section}) => {
 class AppSettings extends BaseComponent<Props, State> {
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Settings'
+      title: 'Settings',
+      largeTitle: true
     }
   }
 
@@ -60,6 +61,12 @@ class AppSettings extends BaseComponent<Props, State> {
         console.log(settings)
       }
     }, {
+      id: 'log-settings',
+      title: 'Log State',
+      onPress: async () => {
+        console.log(this.state)
+      }
+    }, {
       id: 'reset-settings',
       title: 'Reset settings to default',
       onPress: async () => {
@@ -72,51 +79,55 @@ class AppSettings extends BaseComponent<Props, State> {
     const settings = await Settings.getAllOptions()
 
     Settings.watch(async (settings, changes) => {
-      this.setState({settings})
+      console.log('Changed', settings)
+      this.setState({settings: settings})
     })
 
     this.setState({
       loading: false,
-      settings: settings
+      settings: Array.from(settings)
     })
   }
 
+  onToggle (id: string) {
+    Settings.toggle(id)
+  }
+
   renderListItem = ({item}: { item: Setting }) => {
-    return (
+    return [
       <ListItem
+        key={`option_${item.id}`}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
         underlayColor='#fff'
         title={item.label}
-        subtitle={item.description}
-        subtitleStyle={styles.subtitle}
-        rightIcon={
-          <Switch
-            onValueChange={() => {
-              Settings.toggle(item.id)
-            }}
-            value={item.value}
-          />
-        }
-      />
-    )
+        hideChevron
+        onSwitch={() => this.onToggle(item.id)}
+        switchButton
+        switched={item.value}
+      />,
+      item.description && (
+        <View key={`description_${item.id}`}>
+          <Text subtitleStyle={styles.subtitle}>{item.description}</Text>
+        </View>
+      )
+    ]
   }
 
   renderDebugButton = ({item}) => {
     return (
       <ListItem
+        key={item.id}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
         underlayColor='#fff'
-        rightIcon={<View/>}
+        hideChevron
         {...item}
       />
     )
   }
-
-  keyExtractor = item => item.id
 
   render () {
     if (this.state.loading) {
@@ -134,7 +145,6 @@ class AppSettings extends BaseComponent<Props, State> {
           data={this.state.settings}
           renderItem={this.renderListItem}
           extraData={this.state}
-          keyExtractor={this.keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -143,7 +153,6 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Profile', data: this.appControls}
           ]}
           renderItem={this.renderDebugButton}
-          keyExtractor={this.keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -152,7 +161,6 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Debugging', data: this.debugButtons}
           ]}
           renderItem={this.renderDebugButton}
-          keyExtractor={this.keyExtractor}
         />
       </ScrollView>
     )

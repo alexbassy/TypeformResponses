@@ -26,7 +26,7 @@ export default class BaseComponent extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'ListForms' })
+        NavigationActions.navigate({ routeName: 'Settings' })
       ]
     })
     this.props.navigation.dispatch(resetAction)

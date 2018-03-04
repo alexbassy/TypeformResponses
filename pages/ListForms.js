@@ -113,7 +113,7 @@ export default class ListForms extends BaseComponent {
         fontFamily='Apercu Pro'
         underlayColor='#efeff4'
         title={item.title}
-        subtitle={this.getResponseCount({ id: item.id })}
+        subtitle={/* this.getResponseCount({ id: item.id }) */ `many responses!`}
         onPress={onPress}
       />
     )

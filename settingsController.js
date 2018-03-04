@@ -21,7 +21,7 @@ const SettingSchema = {
     id: 'string',
     label: 'string',
     description: 'string',
-    value: 'bool', // default value
+    value: {type: 'bool', default: true}, // default value
     order: 'int'
   }
 }
@@ -40,7 +40,6 @@ export class Settings {
   constructor (config: SettingsConfig) {
     const { options, connection } = config
     this.isReady = false
-    this.watchers = {}
     this.options = []
     this.defaultOptions = Object.freeze(options)
     this.connection = connection
@@ -54,15 +53,7 @@ export class Settings {
   async initialise () {
     const realm = await this.open()
     this.options = realm.objects('Setting')
-
-    try {
-      await this.writeDefaults()
-    } catch (e) {
-      if (e.message.toLowerCase().indexOf('migration') !== -1) {
-        const realm = await this.open({ incrementSchemaVersion: true })
-        realm.deleteModel('Setting')
-      }
-    }
+    await this.writeDefaults()
   }
 
   getOption (id: string) {
@@ -137,7 +128,7 @@ export default new Settings({
     const current = Realm.schemaVersion(Realm.defaultPath)
     return Realm.open({
       schema: [SettingSchema],
-      schemaVersion: incrementSchemaVersion ? current + 1 : current
+      deleteRealmIfMigrationNeeded: true
     })
   }
 })
