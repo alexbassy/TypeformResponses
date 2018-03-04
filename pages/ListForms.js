@@ -20,9 +20,9 @@ export default class ListForms extends BaseComponent {
       headerTitleStyle: styles.font,
       headerRight: (
         <Button
-          onPress={params ? params.logout : () => {}}
+          onPress={params ? params.menuButtonAction : () => {}}
           style={styles.font}
-          title='Logout'
+          title='Settings'
         />
       )
     }
@@ -38,7 +38,7 @@ export default class ListForms extends BaseComponent {
 
   componentDidMount () {
     // hack to suppress error for updating unmounted component
-    setTimeout(() => this.props.navigation.setParams({ logout: this.logout }), 1)
+    setTimeout(() => this.props.navigation.setParams({ menuButtonAction: this.openSettings }), 1)
     this.getTypeforms()
   }
 
