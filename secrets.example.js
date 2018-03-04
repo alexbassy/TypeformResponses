@@ -1,17 +1,7 @@
-const base = 'https://api.typeform.com'
-
-module.exports = {
-  clientID: '',
-  clientSecret: '',
-  callback: 'typeformresponses://oauth-callback',
-  endpoint: {
-    base,
-    authorize: 'https://api.typeform.com/oauth/authorize',
-    token: 'https://api.typeform.com/oauth/token',
-    listForms: `${base}/forms`
-  },
-  scopes: [
-    'forms:read',
-    'responses:read'
-  ].join('+')
-}
+export const CLIENT_ID = ''
+export const CLIENT_SECRET = ''
+export const OAUTH_CALLBACK = 'typeformresponses://oauth-callback'
+export const APPLICATION_SCOPES = [
+  'forms:read',
+  'responses:read'
+]
