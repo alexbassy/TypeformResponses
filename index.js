@@ -1,3 +1,14 @@
-import { AppRegistry } from 'react-native'
-import Router from './router'
-AppRegistry.registerComponent('TypeformResponses', () => Router)
+import { Navigation } from 'react-native-navigation'
+import { registerScreens } from './screens'
+
+registerScreens()
+
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: 'responses.Start',
+    navigatorButtons: {},
+    navigatorStyle: {
+      largeTitle: true
+    }
+  }
+})
