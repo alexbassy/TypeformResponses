@@ -1,6 +1,6 @@
 import React from 'react'
-import BaseComponent from './base'
-import Api from '../api'
+import BaseComponent from '../base'
+import Api from '../../api'
 import {
   View,
   StyleSheet,
