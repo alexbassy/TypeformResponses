@@ -39,7 +39,7 @@ export default class ViewResponses extends BaseComponent {
   }
 
   async getFormAndResponses () {
-    const { id: formId } = this.props.navigation.state.params
+    const { id: formId } = this.props.form
 
     const [form, responses] = await Promise.all([
       Api.getFormDefinition(formId),
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
-    backgroundColor: '#efeff4',
+    backgroundColor: '#fafafa',
     borderBottomColor: '#d1d1d6',
     borderBottomWidth: 1
   },

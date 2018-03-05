@@ -59,6 +59,7 @@ export default class BaseComponent extends Component {
     this.props.navigator.push({
       screen: 'responses.ViewResponses',
       title: form.title,
+      passProps: { form },
       ...pageProperties
     })
   }
