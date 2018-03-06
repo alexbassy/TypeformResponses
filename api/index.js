@@ -1,6 +1,7 @@
 import querystring from 'querystring'
-import { CLIENT_ID, CLIENT_SECRET, OAUTH_CALLBACK } from './secrets'
-import { AsyncStorage } from 'react-native'
+import { CLIENT_ID, CLIENT_SECRET, OAUTH_CALLBACK } from '../secrets'
+import Realm from 'realm'
+import schema from './db-schemas'
 
 const tokenKey = 'AccessToken'
 
@@ -10,15 +11,39 @@ const defaultHeaders = {
 }
 
 class Api {
+  constructor (realm) {
+    this.realm = realm
+  }
+
   baseEndpoint = 'https://api.typeform.com'
 
   async getToken () {
     if (this.token) {
       return this.token
     } else {
-      this.token = await AsyncStorage.getItem(tokenKey)
+      this.token = await this.getTokenRealm()
       return this.token
     }
+  }
+
+  async getTokenRealm () {
+    console.log('GetTokenRealm')
+    const realm = await this.realm.open({ schema, deleteRealmIfMigrationNeeded: true })
+    const token = realm.objects('Token')
+    console.log(token.length)
+    if (!token.length) {
+      return null
+    } else {
+      return token[0].value
+    }
+  }
+
+  async saveTokenRealm (token) {
+    console.log('SaveTokenRealm')
+    const realm = await this.realm.open({ schema, deleteRealmIfMigrationNeeded: true })
+    realm.write(() => {
+      realm.create('Token', { value: token })
+    })
   }
 
   async clearCache () {
@@ -43,8 +68,7 @@ class Api {
   async getOauthTokenAndSave ({ code }) {
     const authorisation = await this.getOauthToken({ code })
     const token = authorisation.access_token
-    console.log(authorisation)
-    await AsyncStorage.setItem('AccessToken', token)
+    await this.saveTokenRealm(token)
     return token
   }
 
@@ -53,11 +77,11 @@ class Api {
   }
 
   async getFormDefinition (id) {
-    return this.makeRequest(`/forms/${id}`, {})
+    return this.makeRequest(`/forms/${id}`)
   }
 
   async getFormResponses (id) {
-    return this.makeRequest(`/forms/${id}/responses`, {})
+    return this.makeRequest(`/forms/${id}/responses`)
   }
 
   async makeRequest (uri, options = {}, config = {}) {
@@ -93,4 +117,4 @@ class Api {
   }
 }
 
-export default new Api()
+export default new Api(Realm)

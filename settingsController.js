@@ -1,32 +1,7 @@
-// @flow
 import Realm from 'realm'
+import schema from './api/db-schemas'
 
-export type Setting = {
-  id: string,
-  label: string,
-  value: boolean,
-  description: string,
-  order: number
-}
-
-type SettingsConfig = {
-  options: Setting[],
-  connection: Function
-}
-
-const SettingSchema = {
-  name: 'Setting',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    label: 'string',
-    description: 'string',
-    value: {type: 'bool', default: true}, // default value
-    order: 'int'
-  }
-}
-
-const defaultOptions: Setting[] = [
+const defaultOptions = [
   {
     id: 'rich-text',
     label: 'Rich text in questions',
@@ -37,17 +12,15 @@ const defaultOptions: Setting[] = [
 ]
 
 export class Settings {
-  constructor (config: SettingsConfig) {
-    const { options, connection } = config
-    this.isReady = false
+  constructor (config) {
+    const {options, getConnection} = config
     this.options = []
     this.defaultOptions = Object.freeze(options)
-    this.connection = connection
-    this.initialise()
+    this.getConnection = getConnection
   }
 
   open (...args) {
-    return this.connection(...args)
+    return this.getConnection(...args)
   }
 
   async initialise () {
@@ -56,7 +29,7 @@ export class Settings {
     await this.writeDefaults()
   }
 
-  getOption (id: string) {
+  getOption (id) {
     const matching = this.getAllOptions().filtered(`id = $0`, id)
     if (matching.length === 1) {
       return matching[0]
@@ -90,7 +63,7 @@ export class Settings {
     })
   }
 
-  get (id: string) {
+  get (id) {
     return this.getOption(id)
   }
 
@@ -103,7 +76,7 @@ export class Settings {
     return this.options
   }
 
-  async toggle (id: string) {
+  async toggle (id) {
     const option = this.getOption(id)
     if (option) {
       const realm = await this.open()
@@ -122,13 +95,9 @@ export class Settings {
   }
 }
 
-export default new Settings({
+export default () => new Settings({
   options: defaultOptions,
-  connection: ({ incrementSchemaVersion } = {}) => {
-    const current = Realm.schemaVersion(Realm.defaultPath)
-    return Realm.open({
-      schema: [SettingSchema],
-      deleteRealmIfMigrationNeeded: true
-    })
+  getConnection: (options) => {
+    return Realm.open({schema, ...options})
   }
 })
