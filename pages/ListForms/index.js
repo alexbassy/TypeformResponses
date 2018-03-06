@@ -1,15 +1,10 @@
 import React from 'react'
 import BaseComponent from '../base'
 import Api from '../../api'
-import {
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableHighlight,
-  ScrollView,
-  FlatList
-} from 'react-native'
+import { View, StyleSheet, ActivityIndicator, TouchableHighlight} from 'react-native'
 import { ListItem } from 'react-native-elements'
+import Card from './Card'
+import HorizontalList from './HorizontalList'
 
 export default class ListForms extends BaseComponent {
   static navigatorButtons = {
@@ -68,12 +63,10 @@ export default class ListForms extends BaseComponent {
     const responsesCountForForm = this.state.responsesCounts[id]
 
     if (hasRequested && typeof responsesCountForForm === 'undefined') {
-      console.log(`Already made request for form#${id}`)
       return 'Still loading...'
     }
 
     if (typeof responsesCountForForm === 'undefined') {
-      console.log(`Requesting response count for form#${id}`)
       this.requestedResponseCount.push(id)
       Api.getFormResponses(id, {page_size: 0}).then(responses => {
         console.log(id, responses.total_items)
@@ -107,7 +100,6 @@ export default class ListForms extends BaseComponent {
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
         subtitleStyle={styles.subtitle}
-        fontFamily='Apercu Pro'
         underlayColor='#efeff4'
         title={item.title}
         subtitle={/* this.getResponseCount({ id: item.id }) */ `many responses!`}
@@ -128,15 +120,13 @@ export default class ListForms extends BaseComponent {
     }
 
     return (
-      <ScrollView style={styles.page}>
-        <FlatList
-          data={this.state.forms}
-          renderItem={this._renderListItem}
-          refreshing={refreshing}
-          onRefresh={this.refreshForms}
-          extraData={this.state}
-        />
-      </ScrollView>
+      <HorizontalList
+        data={this.state.forms}
+        renderItem={({ item }) => <Card item={item} />}
+        refreshing={refreshing}
+        onRefresh={this.refreshForms}
+        extraData={this.state}
+      />
     )
   }
 }
@@ -144,7 +134,7 @@ export default class ListForms extends BaseComponent {
 const styles = StyleSheet.create({
   page: {
     backgroundColor: '#efeff4',
-    paddingTop: 18
+    paddingTop: 16
   },
   loadingContainer: {
     flex: 1,
