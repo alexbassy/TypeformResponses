@@ -72,8 +72,15 @@ export class Settings {
     return setting.value
   }
 
-  getAllOptions () {
-    return this.options
+  async getAllOptions () {
+    const realm = await this.open()
+    const options = realm.objects('Setting')
+    if (!options.length) {
+      realm.write(() => {
+        this.options.forEach(option => realm.create('Setting', option))
+      })
+    }
+    return options
   }
 
   async toggle (id) {
@@ -85,19 +92,11 @@ export class Settings {
       })
     }
   }
-
-  watch (handler: Function) {
-    this.getAllOptions().addListener(handler)
-  }
-
-  unwatch (handler: Function) {
-    this.getAllOptions().removeListener(handler)
-  }
 }
 
-export default () => new Settings({
+export default (() => new Settings({
   options: defaultOptions,
   getConnection: (options) => {
     return Realm.open({schema, ...options})
   }
-})
+}))()

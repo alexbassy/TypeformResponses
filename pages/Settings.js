@@ -104,7 +104,7 @@ class AppSettings extends BaseComponent<Props, State> {
     }
   }
 
-  onToggle (id: string) {
+  onToggle = (id: string) => {
     Settings.toggle(id)
   }
 
