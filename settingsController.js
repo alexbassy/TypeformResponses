@@ -27,19 +27,27 @@ export class Settings {
     const { options, getConnection } = config
     this.defaultOptions = Object.freeze(options)
     this.getConnection = getConnection
+    this.open().then(realm => {
+      realm.write(() => {
+        this.defaultOptions.forEach(option =>
+          realm.create('Setting', option))
+      })
+    })
   }
 
   open (...args: any) {
     return this.getConnection(Realm, ...args)
   }
 
-  async reset () {
+  async resetToDefaults () {
     const realm = await this.open()
     const settings: Setting[] = realm.objects('Setting')
     realm.write(() => {
       for (let s of settings) {
         realm.delete(s)
       }
+      this.defaultOptions.forEach(opt =>
+        realm.create('Setting', opt))
     })
   }
 
@@ -51,17 +59,13 @@ export class Settings {
     }
   }
 
-  getValue = async (...args: any) => {
-    const { value } = await this.get(...args)
-    return value
-  }
-
   getAllOptions = async (): Promise<Setting[]> => {
     const realm = await this.open()
     const options = realm.objects('Setting')
     if (!options.length) {
       realm.write(() => {
-        this.defaultOptions.forEach(option => realm.create('Setting', option))
+        this.defaultOptions.forEach(option =>
+          realm.create('Setting', option))
       })
     }
     this.options = options
@@ -77,10 +81,11 @@ export class Settings {
     const option = await this.get(id)
     if (option) {
       const realm = await this.open()
-      realm.write(() => {
+      return realm.write(() => {
         option.value = !option.value
       })
     }
+    return console.warn(`No value matching "${id}"`)
   }
 }
 
