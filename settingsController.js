@@ -1,5 +1,7 @@
+// @flow
 import Realm from 'realm'
 import schema from './api/db-schemas'
+import type { Setting } from './flow-types/types'
 
 const defaultOptions = [
   {
@@ -11,80 +13,68 @@ const defaultOptions = [
   }
 ]
 
+type SettingsConfiguration = {
+  options: Setting[],
+  getConnection: Function
+}
+
 export class Settings {
-  constructor (config) {
-    const {options, getConnection} = config
-    this.options = []
+  options: Setting[]
+  defaultOptions: Setting[]
+  getConnection: Function
+
+  constructor (config: SettingsConfiguration) {
+    const { options, getConnection } = config
     this.defaultOptions = Object.freeze(options)
     this.getConnection = getConnection
   }
 
-  open (...args) {
-    return this.getConnection(...args)
+  open (...args: any) {
+    return this.getConnection(Realm, ...args)
   }
 
-  async initialise () {
+  async reset () {
     const realm = await this.open()
-    this.options = realm.objects('Setting')
-    await this.writeDefaults()
+    const settings: Setting[] = realm.objects('Setting')
+    realm.write(() => {
+      for (let s of settings) {
+        realm.delete(s)
+      }
+    })
   }
 
-  getOption (id) {
-    const matching = this.getAllOptions().filtered(`id = $0`, id)
+  get = async (id: Setting.id) => {
+    const realm = await this.open()
+    const matching = realm.objects('Setting').filtered(`id = $0`, id)
     if (matching.length === 1) {
       return matching[0]
     }
-    return null
   }
 
-  // Write default values to database
-  async writeDefaults () {
-    const realm = await this.open()
-    realm.write(() => {
-      for (let option of this.defaultOptions) {
-        const setting = this.getOption(option.id)
-        if (!setting) {
-          realm.create(SettingSchema.name, option)
-        }
-      }
-    })
+  getValue = async (...args: any) => {
+    const { value } = await this.get(...args)
+    return value
   }
 
-  // Reset to default values saved in DB
-  async resetToDefault () {
-    const realm = await this.open()
-    realm.write(() => {
-      for (let s of this.getAllOptions()) {
-        realm.delete(s)
-      }
-      for (let option of this.defaultOptions) {
-        realm.create(SettingSchema.name, option)
-      }
-    })
-  }
-
-  get (id) {
-    return this.getOption(id)
-  }
-
-  getValue (...args) {
-    const setting = this.getOption(...args)
-    return setting.value
-  }
-
-  async getAllOptions () {
+  getAllOptions = async (): Promise<Setting[]> => {
     const realm = await this.open()
     const options = realm.objects('Setting')
     if (!options.length) {
       realm.write(() => {
-        this.options.forEach(option => realm.create('Setting', option))
+        this.defaultOptions.forEach(option => realm.create('Setting', option))
       })
     }
+    this.options = options
     return options
   }
 
-  async toggle (id) {
-    const option = this.getOption(id)
+  getAllOptionsP = async () => {
+    const options = await this.getAllOptions()
+    return options.map(JSON.stringify).map(JSON.parse)
+  }
+
+  async toggle (id: Setting.id) {
+    const option = await this.get(id)
     if (option) {
       const realm = await this.open()
       realm.write(() => {
@@ -94,9 +84,9 @@ export class Settings {
   }
 }
 
-export default (() => new Settings({
+export default () => new Settings({
   options: defaultOptions,
-  getConnection: (options) => {
-    return Realm.open({schema, ...options})
+  getConnection: (realm, options) => {
+    return realm.open({ schema, ...options })
   }
-}))()
+})
