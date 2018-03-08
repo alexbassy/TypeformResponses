@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import Settings from '../settingsController'
-import type { Setting } from '../settingsController'
+import type { Setting } from '../api/db-schemas'
 
 type Props = {
   navigation: any

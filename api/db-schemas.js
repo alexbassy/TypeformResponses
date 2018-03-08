@@ -1,12 +1,22 @@
+// @flow
+
 import formSchemas from './form'
 
-const SettingSchema = {
+export type Setting = {
+  id: string,
+  label: string,
+  description?: string,
+  value: bool,
+  order: number
+}
+
+export const SettingSchema = {
   name: 'Setting',
   primaryKey: 'id',
   properties: {
     id: 'string',
     label: 'string',
-    description: 'string',
+    description: 'string?',
     value: {
       type: 'bool',
       default: true
@@ -15,7 +25,7 @@ const SettingSchema = {
   }
 }
 
-const Token = {
+export const TokenSchema = {
   name: 'Token',
   properties: {
     value: 'string'
@@ -25,5 +35,5 @@ const Token = {
 export default [
   // ...formSchemas,
   SettingSchema,
-  Token
+  TokenSchema
 ]
