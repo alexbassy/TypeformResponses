@@ -1,7 +1,6 @@
 // @flow
-import Realm from 'realm'
-import schema from './api/db-schemas'
-import type { Setting } from './flow-types/types'
+import { openDatabase } from './db'
+import type { Setting } from './types/api'
 
 const defaultOptions = [
   {
@@ -15,25 +14,19 @@ const defaultOptions = [
 
 type SettingsConfiguration = {
   options: Setting[],
-  getConnection: Function
+  open: Function
 }
 
 export class Settings {
   options: Setting[]
   defaultOptions: Setting[]
-  getConnection: Function
+  open: Function
 
   constructor (config: SettingsConfiguration) {
-    const { options, getConnection } = config
+    const {options, open} = config
     this.defaultOptions = Object.freeze(options)
-    this.getConnection = getConnection
-    this.open().then(realm => {
-      this.getAllOptions()
-    })
-  }
-
-  open (...args: any) {
-    return this.getConnection(Realm, ...args)
+    this.open = open
+    this.getAllOptions()
   }
 
   async resetToDefaults () {
@@ -50,7 +43,13 @@ export class Settings {
 
   get = async (id: Setting.id) => {
     const realm = await this.open()
-    const matching = realm.objects('Setting').filtered(`id = $0`, id)
+    const settings = realm.objects('Setting')
+
+    if (!settings.length) {
+      await this.getAllOptions()
+    }
+
+    const matching = settings.filtered(`id = $0`, id)
     if (matching.length === 1) {
       return matching[0]
     }
@@ -87,8 +86,6 @@ export class Settings {
 }
 
 export default () => new Settings({
-  options: defaultOptions,
-  getConnection: (realm, options) => {
-    return realm.open({ schema, ...options })
-  }
+  open: openDatabase,
+  options: defaultOptions
 })

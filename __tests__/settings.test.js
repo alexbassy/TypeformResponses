@@ -1,6 +1,6 @@
-import schemas from '../api/db-schemas'
+import { spawn } from 'child_process'
+import { openDatabase } from '../db'
 import { Settings } from '../settingsController'
-const getConnection = (realm) => realm.open({ schema: schemas, inMemory: true })
 
 const testOptions = [
   {
@@ -24,7 +24,10 @@ const testOptions = [
   }
 ]
 
-let settings = new Settings({ getConnection, options: testOptions })
+let settings = new Settings({
+  open: () => openDatabase({ inMemory: true }),
+  options: testOptions
+})
 
 describe('settingsController', () => {
   afterEach(async () => {
@@ -51,10 +54,12 @@ describe('settingsController', () => {
   })
 
   it('should be durable', async () => {
+    const initialValue = false
     const moon = await settings.get('moon')
-    expect(moon.value).toEqual(false)
+    expect(moon.value).toEqual(initialValue)
     for (let i = 0; i < 99; ++i) {
       await settings.toggle('moon')
+      expect(moon.value).toEqual(i % 2 === 0 ? !initialValue : initialValue)
     }
     expect(moon.value).toEqual(true)
   })

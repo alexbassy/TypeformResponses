@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
 import SettingsFactory from '../settingsController'
-import type { Setting } from '../api/db-schemas'
+import type { Setting } from '../types/settings'
 
 type Props = {
   navigation: any
@@ -102,9 +102,7 @@ class AppSettings extends BaseComponent<Props, State> {
 
   onToggle = async (id: string) => {
     await this.settings.toggle(id)
-    this.setState({
-      settings: await this.settings.getAllOptionsP()
-    })
+    this.setState({settings: await this.settings.getAllOptionsP()})
   }
 
   renderListItem = ({item}: { item: Setting }) => {
@@ -153,7 +151,7 @@ class AppSettings extends BaseComponent<Props, State> {
     }
 
     return (
-      <ScrollView style={styles.page} >
+      <ScrollView style={styles.page}>
         <FlatList
           style={styles.listGroup}
           data={this.state.settings}

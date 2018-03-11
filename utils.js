@@ -1,5 +1,5 @@
 // @flow
-import type { Field } from './flow-types/types'
+import type { Field } from './types/api'
 
 // omit ".00"
 export const formatPercentage = (n: number) => {

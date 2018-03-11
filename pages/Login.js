@@ -1,9 +1,6 @@
 import React from 'react'
 import BaseComponent from './base'
 import Api from '../api'
-import { CLIENT_ID, OAUTH_CALLBACK, APPLICATION_SCOPES } from '../secrets'
-import url from 'url'
-import querystring from 'querystring'
 import { StyleSheet, View, ScrollView, Linking } from 'react-native'
 import { TFHeading2 } from '../components/typography'
 import { TFForm, TFButton } from '../components/form-elements'
@@ -14,26 +11,25 @@ export default class Login extends BaseComponent {
     navBarTranslucent: true
   }
 
-  _handleOauthCallback = async (ev) => {
-    Linking.removeEventListener('url', this._handleOauthCallback)
-    const parsed = url.parse(ev.url)
-    const callbackParams = querystring.parse(parsed.query)
-    const { code } = callbackParams
+  handleAuthorisationCallback = async (ev) => {
+    // event contains the URL to which the API will redirect the user
+    // in our case, it'll be typeform-responses://authorization?code=XXX
+    Linking.removeEventListener('url', this.handleAuthorisationCallback)
+    const temporaryAuthorisationCode = Api.helpers.getTemporaryAuthorisationCode(ev.url)
 
-    if (!code) {
-      return
+    try {
+      const token = await Api.getOauthToken(temporaryAuthorisationCode)
+      await Api.setToken(token)
+      this.goToListForms()
+    } catch (e) {
+      this.setState({ loginError: true })
     }
-
-    await Api.getOauthTokenAndSave({ code })
-
-    this.goToListForms()
   }
 
   _doAuthentication = () => {
-    const scopes = APPLICATION_SCOPES.join('+')
-    const requestUri = `${Api.baseEndpoint}/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${OAUTH_CALLBACK}&scope=${scopes}`
-    Linking.openURL(requestUri)
-    Linking.addEventListener('url', this._handleOauthCallback)
+    const authorisationURL = Api.helpers.generateAuthorisationURL()
+    Linking.openURL(authorisationURL)
+    Linking.addEventListener('url', this.handleAuthorisationCallback)
   }
 
   render () {
