@@ -1,4 +1,4 @@
-import { spawn } from 'child_process'
+import { exec } from 'child_process'
 import { openDatabase } from '../db'
 import { Settings } from '../settingsController'
 
@@ -32,6 +32,10 @@ let settings = new Settings({
 describe('settingsController', () => {
   afterEach(async () => {
     await settings.resetToDefaults()
+  })
+
+  afterAll(done => {
+    exec('yarn clean', done)
   })
 
   it('should read a setting', async () => {
