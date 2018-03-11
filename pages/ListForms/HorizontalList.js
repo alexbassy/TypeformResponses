@@ -13,6 +13,7 @@ export default (props) => {
 
 const styles = StyleSheet.create({
   horizontal: {
+    paddingTop: 16,
     paddingLeft: 16,
     paddingRight: 32,
     paddingBottom: 16

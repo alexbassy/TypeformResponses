@@ -92,22 +92,6 @@ export default class ListForms extends BaseComponent {
     return this.getTypeforms(true)
   }
 
-  _renderListItem = ({item}) => {
-    const onPress = () => this.viewResponses(item)
-    return (
-      <ListItem
-        component={TouchableHighlight}
-        containerStyle={styles.listItem}
-        titleStyle={styles.formTitle}
-        subtitleStyle={styles.subtitle}
-        underlayColor='#efeff4'
-        title={item.title}
-        subtitle={/* this.getResponseCount({ id: item.id }) */ `many responses!`}
-        onPress={onPress}
-      />
-    )
-  }
-
   render () {
     const {forms, refreshing} = this.state
 

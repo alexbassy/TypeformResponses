@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native'
 
 class Card extends React.PureComponent {
   render () {
-    console.log(this.props)
     const {title} = this.props.item
     return (
       <View style={[$.container, $.shadow]}>
@@ -24,8 +23,8 @@ export default Card
 
 const $ = StyleSheet.create({
   container: {
-    width: 200,
-    height: 140,
+    width: 220,
+    height: 180,
     backgroundColor: '#fff',
     marginRight: 16,
 
