@@ -7,7 +7,7 @@ import {
   FlatList, SectionList, Switch, Text, ScrollView
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
-import Settings from '../settingsController'
+import SettingsFactory from '../settingsController'
 import type { Setting } from '../api/db-schemas'
 
 type Props = {
@@ -33,7 +33,7 @@ class AppSettings extends BaseComponent<Props, State> {
   static navigatorButtons = {
     rightButtons: [{
       id: 'close',
-      systemItem: 'done',
+      systemItem: 'done'
     }]
   }
 
@@ -62,7 +62,7 @@ class AppSettings extends BaseComponent<Props, State> {
       id: 'log-settings',
       title: 'Log Settings',
       onPress: async () => {
-        const settings = await Settings.getAllOptions()
+        const settings = await this.settings.getAllOptionsP()
         console.log(settings)
       }
     }, {
@@ -75,22 +75,18 @@ class AppSettings extends BaseComponent<Props, State> {
       id: 'reset-settings',
       title: 'Reset settings to default',
       onPress: async () => {
-        await Settings.resetToDefault()
+        await this.settings.resetToDefault()
       }
     }
   ]
 
   async componentDidMount () {
-    const settings = await Settings.getAllOptions()
-
-    Settings.watch(async (settings, changes) => {
-      console.log('Changed', settings)
-      this.setState({settings: settings})
-    })
+    this.settings = SettingsFactory()
+    const options = await this.settings.getAllOptionsP()
 
     this.setState({
       loading: false,
-      settings: Array.from(settings)
+      settings: options
     })
   }
 
@@ -104,8 +100,11 @@ class AppSettings extends BaseComponent<Props, State> {
     }
   }
 
-  onToggle = (id: string) => {
-    Settings.toggle(id)
+  onToggle = async (id: string) => {
+    await this.settings.toggle(id)
+    this.setState({
+      settings: await this.settings.getAllOptionsP()
+    })
   }
 
   renderListItem = ({item}: { item: Setting }) => {

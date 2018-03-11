@@ -28,10 +28,7 @@ export class Settings {
     this.defaultOptions = Object.freeze(options)
     this.getConnection = getConnection
     this.open().then(realm => {
-      realm.write(() => {
-        this.defaultOptions.forEach(option =>
-          realm.create('Setting', option))
-      })
+      this.getAllOptions()
     })
   }
 
