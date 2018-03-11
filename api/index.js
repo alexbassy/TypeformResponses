@@ -1,11 +1,12 @@
 import Config from 'react-native-config'
+import url from 'url'
 import qs from 'querystring'
 import { openDatabase } from '../db'
 
-class Api {
+export class Api {
   constructor ({ open, scopes, base, secrets, fetchMock }) {
     this.open = open
-    this.fetch = fetchMock || fetch
+    if (fetchMock) this.fetch = fetchMock
     this.config = { base, scopes, secrets }
   }
 
@@ -22,10 +23,10 @@ class Api {
     generateAuthorisationURL: () => {
       const options = qs.stringify({
         client_id: this.config.secrets.clientId,
-        redirect_uri: this.getOauthCallbackURL(),
+        redirect_uri: this.helpers.getOauthCallbackURL(),
         scope: this.config.scopes.join(' ')
       })
-      return `${this.base}/oauth/authorize?${options}`
+      return `${this.config.base}/oauth/authorize?${options}`
     }
   }
 
@@ -67,13 +68,6 @@ class Api {
     }
   }
 
-  async getOauthTokenAndSave ({ code }) {
-    const authorisation = await this.getOauthToken({ code })
-    const token = authorisation.access_token
-    await this.saveLocalToken(token)
-    return token
-  }
-
   async listForms () {
     return this.makeRequest(`/forms`)
   }
@@ -91,7 +85,7 @@ class Api {
     method = 'GET',
     isAuthenticated = true,
     isJson = true
-  }) {
+  } = {}) {
     const defaultHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -100,12 +94,12 @@ class Api {
     const headers = Object.assign({},
       defaultHeaders,
       isAuthenticated
-        ? { 'Authorization': `bearer ${await this.getLocalToken()}` }
+        ? { 'Authorization': `bearer ${await this.getToken()}` }
         : {}
     )
 
-    const response = await this.fetch(`${API_BASE}/${url}`,
-      { method, headers, body })
+    const request = this.fetch || fetch
+    const response = await request(`${this.config.base}/${url}`, { method, headers, body })
 
     if (isJson) {
       return response.json()

@@ -12,8 +12,6 @@ export default class Login extends BaseComponent {
   }
 
   handleAuthorisationCallback = async (ev) => {
-    // event contains the URL to which the API will redirect the user
-    // in our case, it'll be typeform-responses://authorization?code=XXX
     Linking.removeEventListener('url', this.handleAuthorisationCallback)
     const temporaryAuthorisationCode = Api.helpers.getTemporaryAuthorisationCode(ev.url)
 
@@ -26,7 +24,7 @@ export default class Login extends BaseComponent {
     }
   }
 
-  _doAuthentication = () => {
+  doAuthentication = () => {
     const authorisationURL = Api.helpers.generateAuthorisationURL()
     Linking.openURL(authorisationURL)
     Linking.addEventListener('url', this.handleAuthorisationCallback)
@@ -43,7 +41,7 @@ export default class Login extends BaseComponent {
         <TFForm>
           <TFButton
             large
-            onPress={this._doAuthentication}
+            onPress={this.doAuthentication}
             title='Login to Typeform'
           />
         </TFForm>

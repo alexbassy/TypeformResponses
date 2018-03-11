@@ -50,6 +50,7 @@ class AppSettings extends BaseComponent<Props, State> {
   appControls = [
     {
       id: 'logout',
+      key: 'logout',
       title: 'Logout',
       onPress: () => {
         this.logout()
@@ -66,7 +67,7 @@ class AppSettings extends BaseComponent<Props, State> {
         console.log(settings)
       }
     }, {
-      id: 'log-settings',
+      id: 'log-state',
       title: 'Log State',
       onPress: async () => {
         console.log(this.state)
@@ -108,7 +109,6 @@ class AppSettings extends BaseComponent<Props, State> {
   renderListItem = ({item}: { item: Setting }) => {
     return [
       <ListItem
-        key={`option_${item.id}`}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
@@ -130,7 +130,6 @@ class AppSettings extends BaseComponent<Props, State> {
   renderDebugButton = ({item}) => {
     return (
       <ListItem
-        key={item.id}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
@@ -142,6 +141,8 @@ class AppSettings extends BaseComponent<Props, State> {
   }
 
   render () {
+    const keyExtractor = (item) => `setting--${item.id}`
+
     if (this.state.loading) {
       return (
         <View style={styles.loadingContainer}>
@@ -157,6 +158,7 @@ class AppSettings extends BaseComponent<Props, State> {
           data={this.state.settings}
           renderItem={this.renderListItem}
           extraData={this.state}
+          keyExtractor={keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -165,6 +167,7 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Profile', data: this.appControls}
           ]}
           renderItem={this.renderDebugButton}
+          keyExtractor={keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -173,6 +176,7 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Debugging', data: this.debugButtons}
           ]}
           renderItem={this.renderDebugButton}
+          keyExtractor={keyExtractor}
         />
       </ScrollView>
     )
