@@ -19,7 +19,8 @@
     "flow-stop": "flow stop",
     "storybook": "storybook start -p 7007",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "rm-realm-cache": "rm -rf default.realm*"
   },
   "dependencies": {
     "lodash.camelcase": "^4.3.0",
