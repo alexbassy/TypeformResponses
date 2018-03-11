@@ -46,10 +46,6 @@ class Api {
     })
   }
 
-  async clearCache () {
-    await AsyncStorage.removeItem(tokenKey)
-  }
-
   async getOauthToken ({ code }) {
     return this.makeRequest('/oauth/token', {
       body: {
@@ -100,8 +96,6 @@ class Api {
         'Authorization': `bearer ${await this.getToken()}`
       } : defaultHeaders
     }
-
-    console.info(`Requesting URL: ${this.baseEndpoint + uri}\nWith options:`, requestOptions)
 
     const response = await fetch(this.baseEndpoint + uri, {
       method: method,
