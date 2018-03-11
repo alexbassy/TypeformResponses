@@ -38,13 +38,10 @@ export default class Login extends BaseComponent {
 
   render () {
     return (
-      <ScrollView
-        behavior='padding'
-        contentContainerStyle={styles.container}
-      >
+      <View style={styles.container}>
         <View style={styles.headingWrap}>
-          <TFHeading2>
-            Read your typeform responses on the go.
+          <TFHeading2 center>
+            Read your responses on the move
           </TFHeading2>
         </View>
         <TFForm>
@@ -54,7 +51,7 @@ export default class Login extends BaseComponent {
             title='Login to Typeform'
           />
         </TFForm>
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -72,6 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1ece4'
   },
   headingWrap: {
+    marginHorizontal: 40,
     marginBottom: 24
   }
 })

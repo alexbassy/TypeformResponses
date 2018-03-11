@@ -2,27 +2,27 @@ import React, { Component } from 'react'
 import { StyleSheet, Text } from 'react-native'
 
 export const TFHeading1 = props => (
-  <Text style={[style.Heading, style.Heading1]} {...props} />
+  <Text style={[style.Heading, style.Heading1, props.center && style.center]} {...props} />
 )
 
 export const TFHeading2 = props => (
-  <Text style={[style.Heading, style.Heading2]} {...props} />
+  <Text style={[style.Heading, style.Heading2, props.center && style.center]} {...props} />
 )
 
 export const TFHeading3 = props => (
-  <Text style={[style.Heading, style.Heading3]} {...props} />
+  <Text style={[style.Heading, style.Heading3, props.center && style.center]} {...props} />
 )
 
 export const TFHeading4 = props => (
-  <Text style={[style.Heading, style.Heading4]} {...props} />
+  <Text style={[style.Heading, style.Heading4, props.center && style.center]} {...props} />
 )
 
 export const TFHeading5 = props => (
-  <Text style={[style.Heading, style.Heading5]} {...props} />
+  <Text style={[style.Heading, style.Heading5, props.center && style.center]} {...props} />
 )
 
 export const TFHeading6 = props => (
-  <Text style={[style.Heading, style.Heading6]} {...props} />
+  <Text style={[style.Heading, style.Heading6, props.center && style.center]} {...props} />
 )
 
 const style = StyleSheet.create({
@@ -52,5 +52,8 @@ const style = StyleSheet.create({
   Heading6: {
     fontSize: 14,
     lineHeight: 18
+  },
+  center: {
+    textAlign: 'center'
   }
 })

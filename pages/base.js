@@ -31,7 +31,9 @@ export default class BaseComponent extends Component {
       screen: 'responses.Login',
       title: 'Login',
       animated: false,
-      ...pageProperties
+      navigatorStyle: {
+        navBarHidden: true
+      }
     }
     this.props.navigator.resetTo(ev)
   }
