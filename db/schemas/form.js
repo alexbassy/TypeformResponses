@@ -1,7 +1,14 @@
-const Meta = {
-  name: 'Meta',
+const FormMeta = {
+  name: 'FormMeta',
   properties: {
     allow_indexing: 'bool'
+  }
+}
+
+const FormWorkspace = {
+  name: 'FormWorkspace',
+  properties: {
+    href: 'string'
   }
 }
 
@@ -14,7 +21,15 @@ const FormSettings = {
     progress_bar: 'string',
     show_progress_bar: 'bool',
     show_typeform_branding: 'bool',
-    meta: 'Meta'
+    meta: 'FormMeta'
+  }
+}
+
+const ThankYouScreenProperties = {
+  name: 'ThankYouScreenProperties',
+  properties: {
+    show_button: 'bool',
+    share_icons: 'bool'
   }
 }
 
@@ -23,15 +38,12 @@ const ThankYouScreen = {
   properties: {
     ref: 'string',
     title: 'string',
-    properties: {
-      show_button: 'bool',
-      share_icons: 'bool'
-    }
+    properties: 'ThankYouScreenProperties'
   }
 }
 
-const Attachment = {
-  name: 'Attachment',
+const FormAttachment = {
+  name: 'FormAttachment',
   properties: {
     type: 'string',
     href: 'string'
@@ -44,46 +56,64 @@ const FieldChoice = {
     id: 'string',
     ref: 'string',
     label: 'string',
-    attachment: 'Attachment'
+    attachment: 'FormAttachment?'
+  }
+}
+
+const FieldLabels = {
+  name: 'FieldLabels',
+  properties: {
+    left: 'string',
+    right: 'string',
+    center: 'string'
   }
 }
 
 const FieldProperties = {
   name: 'FieldProperties',
   properties: {
+    labels: 'FieldLabels?',
     hide_marks: 'bool',
     button_text: 'string',
     randomize: 'bool',
     supersized: 'bool',
     show_labels: 'bool',
+    start_at_one: 'bool',
+    alphabetical_order: 'bool',
     allow_multiple_selection: 'bool',
     allow_other_choice: 'bool',
     vertical_alignment: 'bool',
-    choices: 'FieldChoice[]'
+    choices: 'FieldChoice[]',
+    steps: 'int?',
+    shape: 'string?'
   }
 }
 
-const Validations = {
-  name: 'Validations',
+const FormValidations = {
+  name: 'FormValidations',
   properties: {
-    required: 'bool'
+    required: 'bool',
+    max_length: 'int?',
+    min_value: 'int?',
+    max_value: 'int?'
   }
 }
 
-const Field = {
-  name: 'Field',
+const FormField = {
+  name: 'FormField',
+  primaryKey: 'id',
   properties: {
     id: 'string',
     title: 'string',
     ref: 'string',
     properties: 'FieldProperties',
-    validations: 'Validations',
+    validations: 'FormValidations',
     type: 'string'
   }
 }
 
-const Theme = {
-  name: 'Theme',
+const FormTheme = {
+  name: 'FormTheme',
   properties: {
     href: 'string'
   }
@@ -98,46 +128,32 @@ const _Links = {
 
 const Form = {
   name: 'Form',
+  primaryKey: 'id',
   properties: {
     id: 'string',
     title: 'string',
-    theme: 'Theme',
-    workspace: {
-      href: 'string'
-    },
+    theme: 'FormTheme',
+    workspace: 'FormWorkspace',
     settings: 'FormSettings',
     thankyou_screens: 'ThankYouScreen[]',
-    fields: 'Field[]',
+    fields: 'FormField[]',
     _links: '_Links'
   }
 }
 
-export const FormSchemas = [Form, FormSettings, Field, FieldChoice, FieldProperties, ThankYouScreen]
-
-export const SettingSchema = {
-  name: 'Setting',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    label: 'string',
-    description: 'string?',
-    value: {
-      type: 'bool',
-      default: true
-    },
-    order: 'int'
-  }
-}
-
-export const TokenSchema = {
-  name: 'Token',
-  properties: {
-    value: 'string'
-  }
-}
-
 export default [
-  // ...FormSchemas,
-  SettingSchema,
-  TokenSchema
+  FormMeta,
+  FormWorkspace,
+  FieldLabels,
+  FormSettings,
+  ThankYouScreen,
+  ThankYouScreenProperties,
+  FormAttachment,
+  FieldChoice,
+  FieldProperties,
+  FormValidations,
+  FormField,
+  FormTheme,
+  _Links,
+  Form
 ]

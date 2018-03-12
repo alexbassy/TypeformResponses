@@ -4,20 +4,20 @@ import qs from 'querystring'
 import { openDatabase } from '../db'
 
 export class Api {
-  constructor ({ open, scopes, base, secrets, fetchMock }) {
+  constructor ({open, scopes, base, secrets, fetchMock}) {
     this.open = open
     if (fetchMock) this.fetch = fetchMock
-    this.config = { base, scopes, secrets }
+    this.config = {base, scopes, secrets}
   }
 
   helpers = {
     getOauthCallbackURL: () => {
-      const { secrets } = this.config
+      const {secrets} = this.config
       return [secrets.deeplinkBase, secrets.deeplinkCallbackUrl].join('')
     },
     getTemporaryAuthorisationCode: (callbackURL) => {
       const parsed = url.parse(callbackURL)
-      const { code } = qs.parse(parsed.query)
+      const {code} = qs.parse(parsed.query)
       return code
     },
     generateAuthorisationURL: () => {
@@ -36,9 +36,9 @@ export class Api {
     }
 
     const realm = await this.open()
-    const token = realm.objects('Token')
-    if (token.length) {
-      this.token = token[0].value
+    const token = realm.objectForPrimaryKey('Token', 'token')
+    if (token) {
+      this.token = token.value
     }
 
     return this.token
@@ -46,7 +46,7 @@ export class Api {
 
   async setToken (token) {
     const realm = await this.open()
-    realm.write(() => realm.create('Token', { value: token }))
+    realm.write(() => realm.create('Token', {name: 'token', value: token}, true))
   }
 
   async getOauthToken (temporaryAuthorizationCode) {
@@ -94,12 +94,12 @@ export class Api {
     const headers = Object.assign({},
       defaultHeaders,
       isAuthenticated
-        ? { 'Authorization': `bearer ${await this.getToken()}` }
+        ? {'Authorization': `bearer ${await this.getToken()}`}
         : {}
     )
 
     const request = this.fetch || fetch
-    const response = await request(`${this.config.base}/${url}`, { method, headers, body })
+    const response = await request(`${this.config.base}/${url}`, {method, headers, body})
 
     if (isJson) {
       return response.json()
