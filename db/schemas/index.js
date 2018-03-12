@@ -1,6 +1,7 @@
 import form from './form'
 import responses from './responses'
 import answers from './answers'
+import themes from './themes'
 
 export const SettingSchema = {
   name: 'Setting',
@@ -30,6 +31,7 @@ export default [
   ...form,
   ...responses,
   ...answers,
+  ...themes,
   SettingSchema,
   TokenSchema
 ]

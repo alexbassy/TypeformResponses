@@ -8,6 +8,7 @@ export class Api {
     this.open = open
     if (fetchMock) this.fetch = fetchMock
     this.config = {base, scopes, secrets}
+    this.currentRequestURI = ''
   }
 
   helpers = {
@@ -26,7 +27,9 @@ export class Api {
         redirect_uri: this.helpers.getOauthCallbackURL(),
         scope: this.config.scopes.join(' ')
       })
-      return `${this.config.base}/oauth/authorize?${options}`
+      const url = `${this.config.base}/oauth/authorize?${options}`
+      console.log(url)
+      return url
     }
   }
 
@@ -68,6 +71,29 @@ export class Api {
     }
   }
 
+  async getThemes () {
+    return this.makeRequest(`/themes`, {
+      method: 'GET'
+    })
+  }
+
+  async getTheme (id) {
+    const realm = await this.open()
+    const theme = realm.objectForPrimaryKey('Theme', id)
+    console.log(`Realm.objectForPrimaryKey ===`, theme)
+
+    if (!theme) {
+      const theme = await this.makeRequest(`/themes/${id}`)
+      console.log(`Requested theme`, theme)
+      realm.write(() => {
+        realm.create('Theme', theme)
+      })
+      return theme
+    }
+
+    return theme
+  }
+
   async listForms () {
     return this.makeRequest(`/forms`)
   }
@@ -86,6 +112,8 @@ export class Api {
     isAuthenticated = true,
     isJson = true
   } = {}) {
+    this.currentRequestURI = url
+
     const defaultHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -101,6 +129,8 @@ export class Api {
     const request = this.fetch || fetch
     const response = await request(`${this.config.base}/${url}`, {method, headers, body})
 
+    this.currentRequestURI = ''
+
     if (isJson) {
       return response.json()
     }
@@ -113,7 +143,9 @@ export const API_BASE = 'https://api.typeform.com'
 export const SCOPES = [
   'forms:read',
   'forms:write',
-  'responses:read'
+  'responses:read',
+  'images:read',
+  'themes:read'
 ]
 
 export default new Api({

@@ -2,9 +2,8 @@ import React from 'react'
 import BaseComponent from '../base'
 import Api from '../../api'
 import { View, StyleSheet, ActivityIndicator, TouchableHighlight} from 'react-native'
-import { ListItem } from 'react-native-elements'
-import Card from './Card'
 import HorizontalList from './HorizontalList'
+import ThemedCard from './ThemedCard'
 
 export default class ListForms extends BaseComponent {
   static navigatorButtons = {
@@ -106,7 +105,7 @@ export default class ListForms extends BaseComponent {
     return (
       <HorizontalList
         data={this.state.forms}
-        renderItem={({ item }) => <Card item={item} />}
+        renderItem={({ item }) => <ThemedCard item={item} />}
         refreshing={refreshing}
         onRefresh={this.refreshForms}
         extraData={this.state}
