@@ -13,7 +13,7 @@ const ThemeBackground = {
   properties: {
     href: 'string', // Background image URL
     layout: 'string', // fullscreen, repeat, no-repeat
-    brightness: 'string' // Brightness for the background. -1 is least bright (minimum) and 1 is most bright (maximum).
+    brightness: 'int' // Brightness for the background. -1 is least bright (minimum) and 1 is most bright (maximum).
   }
 }
 

@@ -27,9 +27,14 @@ export class Api {
         redirect_uri: this.helpers.getOauthCallbackURL(),
         scope: this.config.scopes.join(' ')
       })
-      const url = `${this.config.base}/oauth/authorize?${options}`
-      console.log(url)
-      return url
+      return `${this.config.base}/oauth/authorize?${options}`
+    },
+    getThemeIDFromHref: (href) => {
+      const leadingTrailingSlashes = /(^\/|\/$)/g
+      const { pathname } = url.parse(href)
+      const barePath = pathname.replace(leadingTrailingSlashes, '')
+      const split = barePath.split('/')
+      return split[split.length - 1]
     }
   }
 
