@@ -1,41 +1,65 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, Alert, Image } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native'
 
 class Card extends React.PureComponent {
-  render () {
-    const theme = this.props.theme
-    let backgroundImageHref = ''
-    const viewStyle = {backgroundColor: 'white'}
-    const textStyle = {color: '#000'}
-    const imageStyle = {}
+  getBackground () {
+    // @todo move this sort of logic to ThemedCard
+    if (!this.props.theme) {
+      return null
+    }
+    const { background, colors } = this.props.theme
 
-    if (theme) {
-      const {background, colors} = theme
-      if (background && background.href) {
-        backgroundImageHref = background.href
-        // imageStyle.opacity = background.brightness // @todo turn brightness into opacity
-        imageStyle.resizeMode = 'cover' // @todo polyfill the resizeMode
-      }
-      if (colors.background) viewStyle.backgroundColor = colors.background
-      if (colors.question) textStyle.color = colors.question
+    if (!background) {
+      const backgroundColor = colors.background
+      return (
+        <View style={[$.imageFill, { backgroundColor }]} />
+      )
     }
 
-    const {title} = this.props.item
+    const {brightness} = background
+    const isLighter = brightness < 0
+    const base = isLighter ? '255' : '0'
+    const opacity = isLighter ? brightness : brightness * -1
+    const brightnessFilter = {
+      backgroundColor: `rgba(${base}, ${base}, ${base}, ${opacity})`
+    }
+    console.log(brightnessFilter)
+
     return (
-      <View style={[$.container, $.shadow, viewStyle]}>
-        {backgroundImageHref ? (
-          <Image
-            source={{uri: backgroundImageHref}}
-            style={[$.backgroundImage, imageStyle]}
-          />
-        ) : null}
+      <View style={[$.imageFill]}>
+        <View style={[$.imageFill, brightnessFilter]} />
+        <Image
+          source={{ uri: background.href }}
+          style={$.imageFill}
+          resizeMode='cover'
+        />
+      </View>
+    )
+  }
+
+  render () {
+    const { theme, item, onPress } = this.props
+
+    const textStyle = { color: '#000' }
+
+    if (theme) {
+      if (theme.colors.question) {
+        textStyle.color = theme.colors.question
+      }
+    }
+
+    return (
+      <View style={[$.container, $.shadow]}>
         <TouchableOpacity
           style={[$.fill, $.centreChildren]}
-          onTouch={() => Alert.alert('onTap')}
+          onPress={onPress}
         >
-          <Text style={[$.title, textStyle]}>
-            {title}
-          </Text>
+          {this.getBackground()}
+          <View style={$.titleContainer}>
+            <Text style={[$.title, textStyle]}>
+              {item.title}
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
     )
@@ -46,12 +70,11 @@ export default Card
 
 const $ = StyleSheet.create({
   container: {
-    width: 220,
-    height: 180,
+    width: 240,
+    height: 200,
     backgroundColor: '#fff',
     marginRight: 16,
-
-    borderRadius: 3
+    borderRadius: 6
   },
   fill: {
     flex: 1,
@@ -68,25 +91,27 @@ const $ = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 14 * 1.6
   },
+  titleContainer: {
+    paddingHorizontal: 8
+  },
   title: {
     color: '#262627',
     fontFamily: 'Apercu Pro',
-    fontSize: 18,
-    fontWeight: '600'
+    fontSize: 24,
+    fontWeight: '600',
+    textAlign: 'center'
   },
   shadow: {
     shadowOpacity: 0.1,
     shadowRadius: 2,
     shadowColor: '#000',
-    shadowOffset: {height: 2, width: 0}
+    shadowOffset: { height: 2, width: 0 }
   },
-  backgroundImage: {
+  imageFill: {
     position: 'absolute',
     flex: 1,
     width: '100%',
     height: '100%',
-    top: 0,
-    left: 0,
-    resizeMode: 'cover'
+    borderRadius: 6
   }
 })

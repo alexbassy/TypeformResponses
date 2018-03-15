@@ -9,10 +9,6 @@ const pageProperties = {
 }
 
 export default class BaseComponent extends Component {
-  async getToken () {
-    return await Api.getToken('AccessToken')
-  }
-
   onNavigatorEvent (event) {
     console.log(event)
     // handle a deep link

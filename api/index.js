@@ -3,6 +3,8 @@ import url from 'url'
 import qs from 'querystring'
 import { openDatabase } from '../db'
 
+const toPlainObject = rObj => JSON.parse(JSON.stringify(rObj))
+
 export class Api {
   constructor ({open, scopes, base, secrets, fetchMock}) {
     this.open = open
@@ -84,23 +86,20 @@ export class Api {
 
   async getTheme (id) {
     const realm = await this.open()
-    const theme = realm.objectForPrimaryKey('Theme', id)
+    const localTheme = realm.objectForPrimaryKey('Theme', id)
 
-    if (!theme) {
-      const theme = await this.makeRequest(`/themes/${id}`)
-      console.log(`Requested theme`, theme)
-      realm.write(() => {
-        realm.create('Theme', theme)
-      })
+    if (!localTheme) {
+      const theme = await this.makeRequest(`/themes/${id}`, { method: 'GET' })
+      realm.write(() => { realm.create('Theme', theme) })
       return theme
     }
 
-    console.log(`Realm hit key for`, id)
-    return theme
+    return localTheme
   }
 
-  async listForms () {
-    return this.makeRequest(`/forms`)
+  async listForms (options = {}) {
+    const optionsQuery = '?' + qs.stringify(options)
+    return this.makeRequest(`/forms${options ? optionsQuery : ''}`)
   }
 
   async getFormDefinition (id) {
@@ -109,6 +108,13 @@ export class Api {
 
   async getFormResponses (id) {
     return this.makeRequest(`/forms/${id}/responses`)
+  }
+
+  async clearCache (key) {
+    const realm = await this.open()
+    realm.write(() => {
+
+    })
   }
 
   async makeRequest (url, {

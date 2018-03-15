@@ -1,7 +1,7 @@
 import React from 'react'
 import BaseComponent from '../base'
 import Api from '../../api'
-import { View, StyleSheet, ActivityIndicator, TouchableHighlight} from 'react-native'
+import { View, StyleSheet, ActivityIndicator } from 'react-native'
 import HorizontalList from './HorizontalList'
 import ThemedCard from './ThemedCard'
 
@@ -23,24 +23,24 @@ export default class ListForms extends BaseComponent {
 
   constructor (props) {
     super(props)
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this))
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
   }
 
   componentDidMount () {
-    this.getTypeforms()
+    this.retrieveForms()
   }
 
-  onNavigatorEvent (event) {
-    if (event.type === 'NavBarButtonPress') {
-      if (event.id === 'open-settings') {
+  onNavigatorEvent = ev => {
+    if (ev.type === 'NavBarButtonPress') {
+      if (ev.id === 'open-settings') {
         this.openSettings()
       }
     }
   }
 
-  async getTypeforms (isRefreshing = false) {
+  async retrieveForms (isRefreshing = false) {
     try {
-      const {items} = await Api.listForms()
+      const { items } = await Api.listForms()
 
       const processed = items.map(form => {
         form.key = form.id
@@ -57,7 +57,7 @@ export default class ListForms extends BaseComponent {
     }
   }
 
-  getResponseCount ({id}) {
+  getResponseCount ({ id }) {
     const hasRequested = this.requestedResponseCount.includes(id)
     const responsesCountForForm = this.state.responsesCounts[id]
 
@@ -67,8 +67,7 @@ export default class ListForms extends BaseComponent {
 
     if (typeof responsesCountForForm === 'undefined') {
       this.requestedResponseCount.push(id)
-      Api.getFormResponses(id, {page_size: 0}).then(responses => {
-        console.log(id, responses.total_items)
+      Api.getFormResponses(id, { page_size: 0 }).then(responses => {
         this.setState({
           responsesCounts: {
             ...this.state.responsesCounts,
@@ -87,17 +86,17 @@ export default class ListForms extends BaseComponent {
   }
 
   refreshForms = () => {
-    this.setState({refreshing: true})
-    return this.getTypeforms(true)
+    this.setState({ refreshing: true })
+    return this.retrieveForms(true)
   }
 
   render () {
-    const {forms, refreshing} = this.state
+    const { forms, refreshing } = this.state
 
     if (!forms.length) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size='large' color='#000'/>
+          <ActivityIndicator size='large' color='#000' />
         </View>
       )
     }
@@ -105,7 +104,12 @@ export default class ListForms extends BaseComponent {
     return (
       <HorizontalList
         data={this.state.forms}
-        renderItem={({ item }) => <ThemedCard item={item} />}
+        renderItem={({ item }) =>
+          <ThemedCard
+            item={item}
+            onPress={() => this.goToFormResponses(item)}
+          />
+        }
         refreshing={refreshing}
         onRefresh={this.refreshForms}
         extraData={this.state}
