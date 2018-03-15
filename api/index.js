@@ -85,7 +85,6 @@ export class Api {
   async getTheme (id) {
     const realm = await this.open()
     const theme = realm.objectForPrimaryKey('Theme', id)
-    console.log(`Realm.objectForPrimaryKey ===`, theme)
 
     if (!theme) {
       const theme = await this.makeRequest(`/themes/${id}`)
@@ -96,6 +95,7 @@ export class Api {
       return theme
     }
 
+    console.log(`Realm hit key for`, id)
     return theme
   }
 

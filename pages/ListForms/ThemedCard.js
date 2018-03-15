@@ -11,6 +11,7 @@ class ThemedCard extends React.Component {
 
   async getTheme () {
     const {href} = this.props.item.theme
+    if (!href) { return null }
     const themeID = Api.helpers.getThemeIDFromHref(href)
     const theme = await Api.getTheme(themeID)
     this.setState({
@@ -21,13 +22,13 @@ class ThemedCard extends React.Component {
   render () {
     if (!this.state.theme) {
       <Card
-        theme={this.state.theme}
         item={this.props.item}
       />
     }
 
     return (
       <Card
+        theme={this.state.theme}
         item={this.props.item}
       />
     )
