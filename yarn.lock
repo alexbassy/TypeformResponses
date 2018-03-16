@@ -232,6 +232,15 @@
     parse-github-url "^1.0.1"
     url-join "^3.0.0"
 
+"@semantic-release/last-release-git-tag@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/last-release-git-tag/-/last-release-git-tag-2.0.0.tgz#ff98badd04d55d4fbeda1c8bcfa85debe7389f77"
+  dependencies:
+    "@semantic-release/error" "^2.1.0"
+    debug "^3.1.0"
+    execa "^0.8.0"
+    semver "^5.4.1"
+
 "@semantic-release/npm@^2.0.0":
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/@semantic-release/npm/-/npm-2.7.0.tgz#69d6b28c969c658458135eb8d725356c73a7320a"
