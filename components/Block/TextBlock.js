@@ -42,8 +42,8 @@ const TextBlock = (props) => {
   console.log(props)
 
   return (
-    <BaseBlock {...props} answerBackground='#eee'>
-      <Expandable>
+    <BaseBlock {...props}>
+      <Expandable itemsCount={responses.length}>
         <View style={style.container}>
           {responses.map((response, i) => {
             const { id, submissionTime, type } = response
@@ -80,7 +80,8 @@ export default TextBlock
 
 const style = StyleSheet.create({
   container: {
-    marginTop: 8
+    marginTop: 8,
+    marginHorizontal: 20
   },
   answerContainer: {
     marginVertical: 4,

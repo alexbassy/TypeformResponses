@@ -1,8 +1,7 @@
 import React from 'react'
 import BaseComponent from '../base'
 import Api from '../../api'
-import { View, StyleSheet, ActivityIndicator } from 'react-native'
-import HorizontalList from './HorizontalList'
+import { FlatList, View, StyleSheet, ActivityIndicator } from 'react-native'
 import ThemedCard from './ThemedCard'
 
 export default class ListForms extends BaseComponent {
@@ -102,17 +101,19 @@ export default class ListForms extends BaseComponent {
     }
 
     return (
-      <HorizontalList
+      <FlatList
         data={this.state.forms}
         renderItem={({ item }) =>
           <ThemedCard
             item={item}
             onPress={() => this.goToFormResponses(item)}
+            isRefreshing={refreshing}
           />
         }
         refreshing={refreshing}
         onRefresh={this.refreshForms}
         extraData={this.state}
+        style={styles.list}
       />
     )
   }
@@ -141,5 +142,9 @@ const styles = StyleSheet.create({
   },
   font: {
     fontFamily: 'Apercu Pro'
+  },
+  list: {
+    flex: 1,
+    padding: 16
   }
 })

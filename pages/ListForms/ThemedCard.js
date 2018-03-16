@@ -9,12 +9,19 @@ class ThemedCard extends React.Component {
     this.getTheme()
   }
 
-  async getTheme () {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.isRefreshing) {
+      this.getTheme(true)
+    }
+  }
+
+  async getTheme (force = false) {
     const { href } = this.props.item.theme
     if (!href) return null
 
     const themeID = Api.helpers.getThemeIDFromHref(href)
-    const theme = await Api.getTheme(themeID)
+    const theme = await Api.getTheme(themeID, force)
+
     this.setState({ theme })
   }
 

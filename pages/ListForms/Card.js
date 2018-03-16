@@ -17,22 +17,24 @@ class Card extends React.PureComponent {
     }
 
     const {brightness} = background
-    const isLighter = brightness < 0
+    const alpha = brightness / 100
+    const isLighter = alpha > 0
     const base = isLighter ? '255' : '0'
-    const opacity = isLighter ? brightness : brightness * -1
+    const opacity = isLighter ? alpha : alpha * -1
     const brightnessFilter = {
       backgroundColor: `rgba(${base}, ${base}, ${base}, ${opacity})`
     }
-    console.log(brightnessFilter)
+
+    console.log(this.props.item.title, '\t', brightnessFilter.backgroundColor)
 
     return (
       <View style={[$.imageFill]}>
-        <View style={[$.imageFill, brightnessFilter]} />
         <Image
           source={{ uri: background.href }}
           style={$.imageFill}
           resizeMode='cover'
         />
+        <View style={[$.imageFill, brightnessFilter]} />
       </View>
     )
   }
@@ -70,11 +72,12 @@ export default Card
 
 const $ = StyleSheet.create({
   container: {
-    width: 240,
-    height: 200,
+    width: '100%',
+    height: 110,
     backgroundColor: '#fff',
-    marginRight: 16,
-    borderRadius: 6
+    marginBottom: 16,
+    borderRadius: 6,
+
   },
   fill: {
     flex: 1,

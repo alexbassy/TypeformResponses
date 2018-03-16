@@ -8,7 +8,7 @@ import Api from '../api'
 const Statistics = ({ responses }) => {
   // @todo: Work out completion rate same way as in the platform
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={styles.statisticContainer}>
       <View style={[styles.statistic, styles.firstStatistic]}>
         <Text style={styles.statisticValue}>
           {getResponsesCount(responses)}
@@ -66,12 +66,10 @@ export default class ViewResponses extends BaseComponent {
 
     return (
       <View style={{flex: 1}}>
-        <Statistics responses={responses} />
         <ScrollView
           style={{flex: 1}}
-          contentInset={{top: 12}}
-          contentOffset={{y: -12}}
         >
+          <Statistics responses={responses} />
           {form.fields.map(field => (
             <Block
               key={field.id}
@@ -92,23 +90,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  statisticContainer: {
+    flexDirection: 'row',
+    paddingTop: 8,
+    paddingHorizontal: 8,
+    marginBottom: 8
+  },
   statistic: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 16,
-    backgroundColor: '#fafafa',
-    borderBottomColor: '#d1d1d6',
-    borderBottomWidth: 1
+    paddingVertical: 8,
+    backgroundColor: '#f1ece5',
+    borderRadius: 4
   },
   firstStatistic: {
-    borderRightWidth: 1,
-    borderRightColor: '#d1d1d6'
+    marginRight: 8
   },
   statisticValue: {
-    fontSize: 24,
+    fontSize: 22,
     lineHeight: 32,
-    marginBottom: 4,
+    marginBottom: 2,
     fontFamily: 'Apercu Pro'
   },
   statisticTitle: {

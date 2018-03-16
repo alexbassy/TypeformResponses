@@ -84,13 +84,20 @@ export class Api {
     })
   }
 
-  async getTheme (id) {
+  // @todo refactor this inconsistent signature
+  async getTheme (id, overwriteCache) {
     const realm = await this.open()
     const localTheme = realm.objectForPrimaryKey('Theme', id)
 
-    if (!localTheme) {
+    // @todo add try-catch to not overwrite when offline
+    if (!localTheme || overwriteCache) {
       const theme = await this.makeRequest(`/themes/${id}`, { method: 'GET' })
-      realm.write(() => { realm.create('Theme', theme) })
+      realm.write(() => {
+        if (theme.background) {
+          theme.background.brightness *= 100
+        }
+        realm.create('Theme', theme, true)
+      })
       return theme
     }
 
