@@ -187,7 +187,6 @@ export default AppSettings
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#efeff4'
   },
   listGroup: {
     marginTop: 32
@@ -198,8 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listItem: {
-    borderBottomColor: '#cdccd1',
-    backgroundColor: '#fff'
+    borderBottomWidth: 0
   },
   formTitle: {
     lineHeight: 16 * 1.6,
