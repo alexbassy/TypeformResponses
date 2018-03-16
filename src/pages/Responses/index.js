@@ -1,9 +1,9 @@
 import React from 'react'
-import BaseComponent from './base'
+import BaseComponent from '../base'
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
-import Block from '../components/Block/index'
-import { getCompletionRate, getResponsesCount, getResponsesForQuestion } from '../utils'
-import Api from '../api/index'
+import Block from '../../components/Block/index'
+import { getCompletionRate, getResponsesCount, getResponsesForQuestion } from '../../utils'
+import Api from '../../api'
 
 const Statistics = ({ responses }) => {
   // @todo: Work out completion rate same way as in the platform

@@ -1,14 +1,14 @@
 // @flow
 
 import React from 'react'
-import BaseComponent from './base'
+import BaseComponent from '../base'
 import {
   View, StyleSheet, ActivityIndicator, TouchableHighlight,
-  FlatList, SectionList, Switch, Text, ScrollView
+  FlatList, SectionList, Text, ScrollView
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
-import SettingsFactory from '../settingsController'
-import type { Setting } from '../types/settings'
+import SettingsFactory from '../../settingsController'
+import type { Setting } from '../../types/settings'
 
 type Props = {
   navigation: any
@@ -19,7 +19,7 @@ type State = {
   settings: Setting[]
 }
 
-const SectionTitle = ({section}) => {
+const SectionTitle = ({ section }) => {
   return (
     <View style={styles.subheading}>
       <Text style={styles.subheadingText}>
@@ -103,10 +103,10 @@ class AppSettings extends BaseComponent<Props, State> {
 
   onToggle = async (id: string) => {
     await this.settings.toggle(id)
-    this.setState({settings: await this.settings.getAllOptionsP()})
+    this.setState({ settings: await this.settings.getAllOptionsP() })
   }
 
-  renderListItem = ({item}: { item: Setting }) => {
+  renderListItem = ({ item }: { item: Setting }) => {
     return [
       <ListItem
         component={TouchableHighlight}
@@ -127,7 +127,7 @@ class AppSettings extends BaseComponent<Props, State> {
     ]
   }
 
-  renderDebugButton = ({item}) => {
+  renderDebugButton = ({ item }) => {
     return (
       <ListItem
         component={TouchableHighlight}
@@ -164,7 +164,7 @@ class AppSettings extends BaseComponent<Props, State> {
           style={styles.listGroup}
           renderSectionHeader={SectionTitle}
           sections={[
-            {title: 'Profile', data: this.appControls}
+            { title: 'Profile', data: this.appControls }
           ]}
           renderItem={this.renderDebugButton}
           keyExtractor={keyExtractor}
@@ -173,7 +173,7 @@ class AppSettings extends BaseComponent<Props, State> {
           style={styles.listGroup}
           renderSectionHeader={SectionTitle}
           sections={[
-            {title: 'Debugging', data: this.debugButtons}
+            { title: 'Debugging', data: this.debugButtons }
           ]}
           renderItem={this.renderDebugButton}
           keyExtractor={keyExtractor}
@@ -186,8 +186,7 @@ class AppSettings extends BaseComponent<Props, State> {
 export default AppSettings
 
 const styles = StyleSheet.create({
-  page: {
-  },
+  page: {},
   listGroup: {
     marginTop: 32
   },

@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from './Card'
-import Api from '../../api/index'
+import Api from '../../api'
 
 class ThemedCard extends React.Component {
   state = {}

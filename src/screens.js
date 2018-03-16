@@ -2,8 +2,8 @@ import { Navigation } from 'react-native-navigation'
 
 import Start from './pages/Start'
 import Login from './pages/Login'
-import ListForms from './pages/ListForms/index'
-import ViewResponses from './pages/ViewResponses'
+import ListForms from './pages/Forms'
+import ViewResponses from './pages/Responses'
 import Settings from './pages/Settings'
 
 // register all screens of the app (including internal ones)

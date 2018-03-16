@@ -1,6 +1,6 @@
 import React from 'react'
-import Api from '../api/index'
-import BaseComponent from './base'
+import Api from '../../api'
+import BaseComponent from '../base'
 
 export default class Start extends BaseComponent {
   async componentDidMount () {
