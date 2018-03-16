@@ -55,6 +55,7 @@ class Card extends React.PureComponent {
         <TouchableOpacity
           style={[$.fill, $.centreChildren]}
           onPress={onPress}
+          activeOpacity={0.65}
         >
           {this.getBackground()}
           <View style={$.titleContainer}>
