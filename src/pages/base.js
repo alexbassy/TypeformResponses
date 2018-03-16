@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ActionSheetIOS } from 'react-native'
-import Api from '../api'
+import Api from '../api/index'
 
 const pageProperties = {
   navigatorStyle: {

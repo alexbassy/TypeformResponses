@@ -1,7 +1,7 @@
 import Config from 'react-native-config'
 import url from 'url'
 import qs from 'querystring'
-import { openDatabase } from '../db'
+import { openDatabase } from '../db/index'
 
 const toPlainObject = rObj => JSON.parse(JSON.stringify(rObj))
 

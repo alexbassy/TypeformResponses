@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation'
 
 import Start from './pages/Start'
 import Login from './pages/Login'
-import ListForms from './pages/ListForms'
+import ListForms from './pages/ListForms/index'
 import ViewResponses from './pages/ViewResponses'
 import Settings from './pages/Settings'
 

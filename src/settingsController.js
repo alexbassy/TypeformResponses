@@ -1,5 +1,5 @@
 // @flow
-import { openDatabase } from './db'
+import { openDatabase } from './db/index'
 import type { Setting } from './types/api'
 
 const defaultOptions = [

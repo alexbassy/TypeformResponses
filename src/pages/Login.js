@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from './base'
-import Api from '../api'
+import Api from '../api/index'
 import { StyleSheet, View, ScrollView, Linking } from 'react-native'
 import { TFHeading2 } from '../components/typography'
 import { TFForm, TFButton } from '../components/form-elements'

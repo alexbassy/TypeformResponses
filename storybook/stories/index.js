@@ -3,11 +3,11 @@ import { Text, View, StyleSheet, FlatList } from 'react-native'
 
 import form from './fixtures/form.json'
 import responses from './fixtures/responses.json'
-import { getResponsesForQuestion } from '../../utils'
+import { getResponsesForQuestion } from '../../src/utils'
 
 import { storiesOf } from '@storybook/react-native'
 
-import Card from '../../pages/ListForms/Card'
+import Card from '../../src/pages/ListForms/Card'
 
 storiesOf('Card', module)
   .add('Default', () => {

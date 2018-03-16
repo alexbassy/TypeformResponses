@@ -1,6 +1,6 @@
 import React from 'react'
 import BaseComponent from '../base'
-import Api from '../../api'
+import Api from '../../api/index'
 import {FlatList, View, StyleSheet, ActivityIndicator, SafeAreaView} from 'react-native'
 import ThemedCard from './ThemedCard'
 
