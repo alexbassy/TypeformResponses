@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ActionSheetIOS } from 'react-native'
+import { ActionSheetIOS, View, ActivityIndicator, StyleSheet } from 'react-native'
 
 const pageProperties = {
   navigatorStyle: {
@@ -7,7 +7,7 @@ const pageProperties = {
   }
 }
 
-export default class BaseComponent extends Component {
+export default class BasePage extends Component {
   onNavigatorEvent (event) {
     console.log(event)
     // handle a deep link
@@ -85,4 +85,20 @@ export default class BaseComponent extends Component {
       ...pageProperties
     })
   }
+
+  renderLoading () {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#000'/>
+      </View>
+    )
+  }
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+})

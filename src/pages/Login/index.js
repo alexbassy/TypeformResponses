@@ -2,7 +2,7 @@ import React from 'react'
 import BaseComponent from './../base'
 import Api from '../../api'
 import { StyleSheet, View, Linking } from 'react-native'
-import { TFHeading2 } from '../../components/typography'
+import { H2 } from '../../components/Type'
 import { TFForm, TFButton } from '../../components/form-elements'
 
 export default class Login extends BaseComponent {

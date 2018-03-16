@@ -2,7 +2,7 @@ import React from 'react'
 import Card from './Card'
 import Api from '../../api'
 
-class ThemedCard extends React.Component {
+class Form extends React.Component {
   state = {}
 
   componentDidMount () {
@@ -41,4 +41,4 @@ class ThemedCard extends React.Component {
   }
 }
 
-export default ThemedCard
+export default Form

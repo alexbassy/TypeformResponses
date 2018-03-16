@@ -1,10 +1,10 @@
 import React from 'react'
-import BaseComponent from '../base'
+import BasePage from '../base'
 import Api from '../../api'
-import {FlatList, View, StyleSheet, ActivityIndicator, SafeAreaView} from 'react-native'
-import ThemedCard from './ThemedCard'
+import { FlatList, View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
+import Form from '../../components/Form'
 
-export default class ListForms extends BaseComponent {
+export default class ListForms extends BasePage {
   static navigatorButtons = {
     rightButtons: [{
       id: 'open-settings',
@@ -14,18 +14,18 @@ export default class ListForms extends BaseComponent {
 
   state = {
     forms: [],
-    refreshing: false,
+    isRefreshing: false,
     responsesCounts: {}
   }
 
   requestedResponseCount = []
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.retrieveForms()
   }
 
@@ -37,9 +37,9 @@ export default class ListForms extends BaseComponent {
     }
   }
 
-  async retrieveForms(isRefreshing = false) {
+  async retrieveForms (isRefreshing = false) {
     try {
-      const {items} = await Api.listForms()
+      const { items } = await Api.listForms()
 
       const processed = items.map(form => {
         form.key = form.id
@@ -48,7 +48,7 @@ export default class ListForms extends BaseComponent {
 
       this.setState({
         forms: processed,
-        refreshing: isRefreshing ? false : this.state.refreshing
+        isRefreshing: isRefreshing ? false : this.state.isRefreshing
       })
     } catch (e) {
       // API error ?
@@ -56,7 +56,7 @@ export default class ListForms extends BaseComponent {
     }
   }
 
-  getResponseCount({id}) {
+  getResponseCount ({ id }) {
     const hasRequested = this.requestedResponseCount.includes(id)
     const responsesCountForForm = this.state.responsesCounts[id]
 
@@ -66,7 +66,7 @@ export default class ListForms extends BaseComponent {
 
     if (typeof responsesCountForForm === 'undefined') {
       this.requestedResponseCount.push(id)
-      Api.getFormResponses(id, {page_size: 0}).then(responses => {
+      Api.getFormResponses(id, { page_size: 0 }).then(responses => {
         this.setState({
           responsesCounts: {
             ...this.state.responsesCounts,
@@ -80,39 +80,39 @@ export default class ListForms extends BaseComponent {
     return `${responsesCountForForm} responses`
   }
 
-  viewResponses(form) {
+  viewResponses (form) {
     this.goToFormResponses(form)
   }
 
   refreshForms = () => {
-    this.setState({refreshing: true})
+    this.setState({ isRefreshing: true })
     return this.retrieveForms(true)
   }
 
-  render() {
-    const {forms, refreshing} = this.state
+  renderForm = ({ item }) => {
+    return (
+      <Form
+        item={item}
+        onPress={() => this.goToFormResponses(item)}
+        isRefreshing={this.state.isRefreshing}
+      />
+    )
+  }
+
+  render () {
+    const { forms, isRefreshing } = this.state
 
     if (!forms.length) {
-      return (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size='large' color='#000'/>
-        </View>
-      )
+      return this.renderLoading()
     }
 
     return (
       <SafeAreaView style={styles.page}>
         <FlatList
           data={this.state.forms}
-          renderItem={({item}) =>
-            <ThemedCard
-              item={item}
-              onPress={() => this.goToFormResponses(item)}
-              isRefreshing={refreshing}
-            />
-          }
-          refreshing={refreshing}
+          renderItem={this.renderForm}
           onRefresh={this.refreshForms}
+          refreshing={isRefreshing}
           extraData={this.state}
           style={styles.list}
         />
@@ -124,15 +124,6 @@ export default class ListForms extends BaseComponent {
 const styles = StyleSheet.create({
   page: {
     flex: 1
-  },
-  loadingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  listItem: {
-    backgroundColor: '#fff',
-    borderBottomColor: '#eee'
   },
   formTitle: {
     lineHeight: 16 * 1.6
@@ -146,6 +137,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    padding: 8
+    marginTop: 8,
+    paddingHorizontal: 8
   }
 })
