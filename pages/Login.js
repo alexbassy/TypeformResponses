@@ -1,9 +1,6 @@
 import React from 'react'
 import BaseComponent from './base'
 import Api from '../api'
-import { CLIENT_ID, OAUTH_CALLBACK, APPLICATION_SCOPES } from '../secrets'
-import url from 'url'
-import querystring from 'querystring'
 import { StyleSheet, View, ScrollView, Linking } from 'react-native'
 import { TFHeading2 } from '../components/typography'
 import { TFForm, TFButton } from '../components/form-elements'
@@ -14,47 +11,41 @@ export default class Login extends BaseComponent {
     navBarTranslucent: true
   }
 
-  _handleOauthCallback = async (ev) => {
-    Linking.removeEventListener('url', this._handleOauthCallback)
-    const parsed = url.parse(ev.url)
-    const callbackParams = querystring.parse(parsed.query)
-    const { code } = callbackParams
+  handleAuthorisationCallback = async (ev) => {
+    Linking.removeEventListener('url', this.handleAuthorisationCallback)
+    const temporaryAuthorisationCode = Api.helpers.getTemporaryAuthorisationCode(ev.url)
 
-    if (!code) {
-      return
+    try {
+      const token = await Api.getOauthToken(temporaryAuthorisationCode)
+      await Api.setToken(token)
+      this.goToListForms()
+    } catch (e) {
+      this.setState({ loginError: true })
     }
-
-    await Api.getOauthTokenAndSave({ code })
-
-    this.goToListForms()
   }
 
-  _doAuthentication = () => {
-    const scopes = APPLICATION_SCOPES.join('+')
-    const requestUri = `${Api.baseEndpoint}/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${OAUTH_CALLBACK}&scope=${scopes}`
-    Linking.openURL(requestUri)
-    Linking.addEventListener('url', this._handleOauthCallback)
+  doAuthentication = () => {
+    const authorisationURL = Api.helpers.generateAuthorisationURL()
+    Linking.openURL(authorisationURL)
+    Linking.addEventListener('url', this.handleAuthorisationCallback)
   }
 
   render () {
     return (
-      <ScrollView
-        behavior='padding'
-        contentContainerStyle={styles.container}
-      >
+      <View style={styles.container}>
         <View style={styles.headingWrap}>
-          <TFHeading2>
-            Read your typeform responses on the go.
+          <TFHeading2 center>
+            Read your responses on the move
           </TFHeading2>
         </View>
         <TFForm>
           <TFButton
             large
-            onPress={this._doAuthentication}
+            onPress={this.doAuthentication}
             title='Login to Typeform'
           />
         </TFForm>
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -72,6 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1ece4'
   },
   headingWrap: {
+    marginHorizontal: 40,
     marginBottom: 24
   }
 })

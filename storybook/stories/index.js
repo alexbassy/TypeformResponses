@@ -1,79 +1,59 @@
 import React from 'react'
-import { View, StyleSheet, ScrollView } from 'react-native'
+import { Text, View, StyleSheet } from 'react-native'
 
 import form from './fixtures/form.json'
 import responses from './fixtures/responses.json'
 import { getResponsesForQuestion } from '../../utils'
 
 import { storiesOf } from '@storybook/react-native'
-import { action } from '@storybook/addon-actions'
-import { linkTo } from '@storybook/addon-links'
 
-import Block from '../../components/Block'
+import Card from '../../pages/ListForms/Card'
+import HorizontalList from '../../pages/ListForms/HorizontalList'
 
-storiesOf('Block', module)
-  .add('Picture Choice', () => {
-    const statement = form.fields[2]
-    const field = form.fields[3]
-    const fieldResponses = getResponsesForQuestion(field, responses)
-    const totalResponsesCount = responses.items.length
-
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <Block
-            field={statement}
-            responses={fieldResponses}
-            totalResponsesCount={totalResponsesCount}
-          />
-          <Block
-            field={field}
-            responses={fieldResponses}
-            totalResponsesCount={totalResponsesCount}
-          />
-        </ScrollView>
-      </View>
-    )
-  })
-  .add('Multiple Choice', () => {
-    const field = form.fields[0]
-    const fieldResponses = getResponsesForQuestion(field, responses)
-    const totalResponsesCount = responses.items.length
-
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <Block
-            field={field}
-            responses={fieldResponses}
-            totalResponsesCount={totalResponsesCount}
-          />
-        </ScrollView>
-      </View>
-    )
-  })
-  .add('Short Text', () => {
+storiesOf('Card', module)
+  .add('Default', () => {
     const field = form.fields[1]
     const fieldResponses = getResponsesForQuestion(field, responses)
     const totalResponsesCount = responses.items.length
 
     return (
-      <View style={styles.container}>
-        <ScrollView>
-          <Block
-            field={field}
-            responses={fieldResponses}
-            totalResponsesCount={totalResponsesCount}
+      <View style={$.container}>
+        <View style={[$.paddedVertical, $.paddedHorizontal]}>
+          <Text style={$.labels}>In isolation:</Text>
+          <Card
+            item={{
+              title: 'My cool form'
+            }}
           />
-        </ScrollView>
+        </View>
+        <View style={$.paddedVertical}>
+          <View style={$.paddedHorizontal}>
+            <Text style={$.labels}>In horizontal list</Text>
+          </View>
+          <HorizontalList
+            data={[{title: 'Card 1'}, {title: 'Card 2'}, {title: 'Card 3'}]}
+            renderItem={({item}) => <Card item={item}/>}
+          >
+          </HorizontalList>
+        </View>
       </View>
     )
   })
 
-const styles = StyleSheet.create({
+const $ = StyleSheet.create({
+  paddedVertical: {
+    paddingVertical: 16
+  },
+  paddedHorizontal: {
+    paddingHorizontal: 16
+  },
+  labels: {
+    fontSize: 15,
+    color: 'rgba(0,0,0,.4)',
+    marginBottom: 8
+  },
   container: {
     flex: 1,
-    paddingVertical: 8,
     backgroundColor: '#eee'
   }
 })

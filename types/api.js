@@ -111,7 +111,7 @@ export type Response = {
   submitted_at: string,
   metadata: Metadata,
   answers: Answer[],
-  hidden?: ,
+  hidden?: string, // @todo add hidden type
   calculated: {
     score: number
   },

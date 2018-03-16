@@ -7,8 +7,8 @@ import {
   FlatList, SectionList, Switch, Text, ScrollView
 } from 'react-native'
 import { ListItem } from 'react-native-elements'
-import Settings from '../settingsController'
-import type { Setting } from '../settingsController'
+import SettingsFactory from '../settingsController'
+import type { Setting } from '../types/settings'
 
 type Props = {
   navigation: any
@@ -33,7 +33,7 @@ class AppSettings extends BaseComponent<Props, State> {
   static navigatorButtons = {
     rightButtons: [{
       id: 'close',
-      systemItem: 'done',
+      systemItem: 'done'
     }]
   }
 
@@ -50,6 +50,7 @@ class AppSettings extends BaseComponent<Props, State> {
   appControls = [
     {
       id: 'logout',
+      key: 'logout',
       title: 'Logout',
       onPress: () => {
         this.logout()
@@ -62,11 +63,11 @@ class AppSettings extends BaseComponent<Props, State> {
       id: 'log-settings',
       title: 'Log Settings',
       onPress: async () => {
-        const settings = await Settings.getAllOptions()
+        const settings = await this.settings.getAllOptionsP()
         console.log(settings)
       }
     }, {
-      id: 'log-settings',
+      id: 'log-state',
       title: 'Log State',
       onPress: async () => {
         console.log(this.state)
@@ -75,22 +76,18 @@ class AppSettings extends BaseComponent<Props, State> {
       id: 'reset-settings',
       title: 'Reset settings to default',
       onPress: async () => {
-        await Settings.resetToDefault()
+        await this.settings.resetToDefault()
       }
     }
   ]
 
   async componentDidMount () {
-    const settings = await Settings.getAllOptions()
-
-    Settings.watch(async (settings, changes) => {
-      console.log('Changed', settings)
-      this.setState({settings: settings})
-    })
+    this.settings = SettingsFactory()
+    const options = await this.settings.getAllOptionsP()
 
     this.setState({
       loading: false,
-      settings: Array.from(settings)
+      settings: options
     })
   }
 
@@ -104,14 +101,14 @@ class AppSettings extends BaseComponent<Props, State> {
     }
   }
 
-  onToggle (id: string) {
-    Settings.toggle(id)
+  onToggle = async (id: string) => {
+    await this.settings.toggle(id)
+    this.setState({settings: await this.settings.getAllOptionsP()})
   }
 
   renderListItem = ({item}: { item: Setting }) => {
     return [
       <ListItem
-        key={`option_${item.id}`}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
@@ -133,7 +130,6 @@ class AppSettings extends BaseComponent<Props, State> {
   renderDebugButton = ({item}) => {
     return (
       <ListItem
-        key={item.id}
         component={TouchableHighlight}
         containerStyle={styles.listItem}
         titleStyle={styles.formTitle}
@@ -145,6 +141,8 @@ class AppSettings extends BaseComponent<Props, State> {
   }
 
   render () {
+    const keyExtractor = (item) => `setting--${item.id}`
+
     if (this.state.loading) {
       return (
         <View style={styles.loadingContainer}>
@@ -154,12 +152,13 @@ class AppSettings extends BaseComponent<Props, State> {
     }
 
     return (
-      <ScrollView style={styles.page} >
+      <ScrollView style={styles.page}>
         <FlatList
           style={styles.listGroup}
           data={this.state.settings}
           renderItem={this.renderListItem}
           extraData={this.state}
+          keyExtractor={keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -168,6 +167,7 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Profile', data: this.appControls}
           ]}
           renderItem={this.renderDebugButton}
+          keyExtractor={keyExtractor}
         />
         <SectionList
           style={styles.listGroup}
@@ -176,6 +176,7 @@ class AppSettings extends BaseComponent<Props, State> {
             {title: 'Debugging', data: this.debugButtons}
           ]}
           renderItem={this.renderDebugButton}
+          keyExtractor={keyExtractor}
         />
       </ScrollView>
     )

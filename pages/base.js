@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AsyncStorage, ActionSheetIOS } from 'react-native'
+import { ActionSheetIOS } from 'react-native'
 import Api from '../api'
 
 const pageProperties = {
@@ -9,14 +9,6 @@ const pageProperties = {
 }
 
 export default class BaseComponent extends Component {
-  async getToken () {
-    return AsyncStorage.getItem('AccessToken')
-  }
-
-  navigate = (...args) => {
-    this.props.navigation.navigate(...args)
-  }
-
   onNavigatorEvent (event) {
     console.log(event)
     // handle a deep link
@@ -30,12 +22,16 @@ export default class BaseComponent extends Component {
     }
   }
 
-  goToLoginScreen () {
-    this.props.navigator.push({
+  goToLoginScreen ({ logout = false } = {}) {
+    const ev = {
       screen: 'responses.Login',
       title: 'Login',
-      ...pageProperties
-    })
+      animated: false,
+      navigatorStyle: {
+        navBarHidden: true
+      }
+    }
+    this.props.navigator.resetTo(ev)
   }
 
   skipLoginScreen () {
@@ -65,8 +61,8 @@ export default class BaseComponent extends Component {
   }
 
   doLogout = async () => {
-    await Api.clearCache()
-    this.goToLoginScreen()
+    console.log('[to do]: clear token from cache')
+    this.goToLoginScreen({ logout: true })
   }
 
   logout = async () => {

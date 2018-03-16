@@ -1,32 +1,8 @@
 // @flow
-import Realm from 'realm'
+import { openDatabase } from './db'
+import type { Setting } from './types/api'
 
-export type Setting = {
-  id: string,
-  label: string,
-  value: boolean,
-  description: string,
-  order: number
-}
-
-type SettingsConfig = {
-  options: Setting[],
-  connection: Function
-}
-
-const SettingSchema = {
-  name: 'Setting',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    label: 'string',
-    description: 'string',
-    value: {type: 'bool', default: true}, // default value
-    order: 'int'
-  }
-}
-
-const defaultOptions: Setting[] = [
+const defaultOptions = [
   {
     id: 'rich-text',
     label: 'Rich text in questions',
@@ -36,99 +12,80 @@ const defaultOptions: Setting[] = [
   }
 ]
 
+type SettingsConfiguration = {
+  options: Setting[],
+  open: Function
+}
+
 export class Settings {
-  constructor (config: SettingsConfig) {
-    const { options, connection } = config
-    this.isReady = false
-    this.options = []
+  options: Setting[]
+  defaultOptions: Setting[]
+  open: Function
+
+  constructor (config: SettingsConfiguration) {
+    const {options, open} = config
     this.defaultOptions = Object.freeze(options)
-    this.connection = connection
-    this.initialise()
+    this.open = open
+    this.getAllOptions()
   }
 
-  open (...args) {
-    return this.connection(...args)
-  }
-
-  async initialise () {
+  async resetToDefaults () {
     const realm = await this.open()
-    this.options = realm.objects('Setting')
-    await this.writeDefaults()
+    const settings: Setting[] = realm.objects('Setting')
+    realm.write(() => {
+      for (let s of settings) {
+        realm.delete(s)
+      }
+      this.defaultOptions.forEach(opt =>
+        realm.create('Setting', opt))
+    })
   }
 
-  getOption (id: string) {
-    const matching = this.getAllOptions().filtered(`id = $0`, id)
+  get = async (id: Setting.id) => {
+    const realm = await this.open()
+    const settings = realm.objects('Setting')
+
+    if (!settings.length) {
+      await this.getAllOptions()
+    }
+
+    const matching = settings.filtered(`id = $0`, id)
     if (matching.length === 1) {
       return matching[0]
     }
-    return null
   }
 
-  // Write default values to database
-  async writeDefaults () {
+  getAllOptions = async (): Promise<Setting[]> => {
     const realm = await this.open()
-    realm.write(() => {
-      for (let option of this.defaultOptions) {
-        const setting = this.getOption(option.id)
-        if (!setting) {
-          realm.create(SettingSchema.name, option)
-        }
-      }
-    })
+    const options = realm.objects('Setting')
+    if (!options.length) {
+      realm.write(() => {
+        this.defaultOptions.forEach(option =>
+          realm.create('Setting', option))
+      })
+    }
+    this.options = options
+    return options
   }
 
-  // Reset to default values saved in DB
-  async resetToDefault () {
-    const realm = await this.open()
-    realm.write(() => {
-      for (let s of this.getAllOptions()) {
-        realm.delete(s)
-      }
-      for (let option of this.defaultOptions) {
-        realm.create(SettingSchema.name, option)
-      }
-    })
+  getAllOptionsP = async () => {
+    const options = await this.getAllOptions()
+    return options.map(JSON.stringify).map(JSON.parse)
   }
 
-  get (id: string) {
-    return this.getOption(id)
-  }
-
-  getValue (...args) {
-    const setting = this.getOption(...args)
-    return setting.value
-  }
-
-  getAllOptions () {
-    return this.options
-  }
-
-  async toggle (id: string) {
-    const option = this.getOption(id)
+  async toggle (id: Setting.id) {
+    const option = await this.get(id)
     if (option) {
       const realm = await this.open()
-      realm.write(() => {
+      return realm.write(() => {
         option.value = !option.value
       })
     }
-  }
-
-  watch (handler: Function) {
-    this.getAllOptions().addListener(handler)
-  }
-
-  unwatch (handler: Function) {
-    this.getAllOptions().removeListener(handler)
+    return console.warn(`No value matching "${id}"`)
   }
 }
 
-export default new Settings({
-  options: defaultOptions,
-  connection: ({ incrementSchemaVersion } = {}) => {
-    const current = Realm.schemaVersion(Realm.defaultPath)
-    return Realm.open({
-      schema: [SettingSchema],
-      deleteRealmIfMigrationNeeded: true
-    })
-  }
+export default () => new Settings({
+  open: openDatabase,
+  options: defaultOptions
 })

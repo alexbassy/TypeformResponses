@@ -39,7 +39,8 @@ export const TFButton = props => {
 const style = StyleSheet.create({
   Form: {
     width: '100%',
-    paddingHorizontal: 32
+    paddingHorizontal: 32,
+    alignItems: 'center'
   },
   TextInputContainer: {
     borderWidth: 1,
@@ -57,9 +58,10 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#262627',
-    width: '100%',
-    height: 40,
-    borderRadius: 3
+    maxWidth: '80%',
+    paddingHorizontal: 24,
+    height: 32,
+    borderRadius: 5
   },
   ButtonContainerLarge: {
     height: 60
