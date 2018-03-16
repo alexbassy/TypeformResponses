@@ -1,25 +1,28 @@
 import React from 'react'
 import Card from './Card'
 import Api from '../../api'
+import { getThemeIDFromHref } from '../../utils'
 
 class Form extends React.Component {
   state = {}
 
   componentDidMount () {
-    this.getTheme()
+    if (!this.props.disableTheme) {
+      this.getTheme()
+    }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.isRefreshing) {
+    if (!this.props.disableTheme && nextProps.isRefreshing) {
       this.getTheme(true)
     }
   }
 
   async getTheme (force = false) {
-    const { href } = this.props.item.theme
-    if (!href) return null
+    const url = this.props.item.theme.href
+    if (!url) return null
 
-    const themeID = Api.helpers.getThemeIDFromHref(href)
+    const themeID = getThemeIDFromHref(url)
     const theme = await Api.getTheme(themeID, force)
 
     this.setState({ theme })

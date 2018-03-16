@@ -1,5 +1,6 @@
 // @flow
 import type { Field } from './types/api'
+import url from 'url'
 
 // omit ".00"
 export const formatPercentage = (n: number) => {
@@ -37,7 +38,7 @@ export const getResponsesForQuestion = (field: Field, responses) => {
   if (!field) {
     return []
   }
-  const { id } = field
+  const {id} = field
   return responses.items.reduce((result, entry) => {
     if (!entry.answers || !entry.answers.length) {
       return result
@@ -55,7 +56,7 @@ export const getResponsesForQuestion = (field: Field, responses) => {
   }, [])
 }
 
-export const tallyMultipleChoiceAnswers = ({ field, responses } : { field: Field, responses: any }) => {
+export const tallyMultipleChoiceAnswers = ({field, responses}: { field: Field, responses: any }) => {
   // make a smaller object for each choice
   const fields = field.properties.choices.reduce((result, choice) => {
     result[choice.label] = {
@@ -97,4 +98,12 @@ export const tallyMultipleChoiceAnswers = ({ field, responses } : { field: Field
   }, {})
 
   return responsesWithPercentages
+}
+
+export const getThemeIDFromHref = href => {
+  const leadingTrailingSlashes = /(^\/|\/$)/g
+  const {pathname} = url.parse(href)
+  const barePath = pathname.replace(leadingTrailingSlashes, '')
+  const split = barePath.split('/')
+  return split[split.length - 1]
 }

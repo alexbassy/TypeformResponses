@@ -30,13 +30,6 @@ export class Api {
         scope: this.config.scopes.join(' ')
       })
       return `${this.config.base}/oauth/authorize?${options}`
-    },
-    getThemeIDFromHref: (href) => {
-      const leadingTrailingSlashes = /(^\/|\/$)/g
-      const { pathname } = url.parse(href)
-      const barePath = pathname.replace(leadingTrailingSlashes, '')
-      const split = barePath.split('/')
-      return split[split.length - 1]
     }
   }
 
