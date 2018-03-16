@@ -21,35 +21,46 @@ const blockColors = {
   group: '#cb722b'
 }
 
-const BaseBlock = ({ field, responses, totalResponsesCount, answerBackground = '#fff', children }) => {
-  const count = responses.length
-  const isStatement = field.type !== 'statement'
-  const showResponses = isStatement && !!responses
-  const iconStyle = {
-    backgroundColor: blockColors[camelCase(field.type)]
-  }
+class BaseBlock extends React.PureComponent {
+  render () {
+    const {
+      field, responses, totalResponsesCount,
+      answerBackground = '#fff', children
+    } = this.props
+    const isStatement = field.type === 'statement'
+    const showResponses = !isStatement && !!responses
+    const count = responses.length
+    const iconStyle = {
+      backgroundColor: blockColors[camelCase(field.type)]
+    }
 
-  return (
-    <View style={style.blockContainer}>
-      <View style={style.questionContainer}>
-        <View style={[style.questionTypeIcon, iconStyle]}/>
-        <View style={{ flex: 1, marginRight: 16 }}>
-          <Text style={style.question}>
-            {field.title}
-          </Text>
-          {showResponses && (
-            <Text style={style.responseRate}>
-              {totalResponsesCount &&
-              `${count} out of ${totalResponsesCount} people answered this question`}
+    return (
+      <View style={style.blockContainer}>
+        <View style={style.questionContainer}>
+          <View style={[style.questionTypeIcon, iconStyle]}/>
+          <View style={{ flex: 1, marginRight: 16 }}>
+            <Text style={style.question}>
+              {field.title}
             </Text>
-          )}
+            {(showResponses && totalResponsesCount) ? (
+              <Text style={style.responseRate}>
+                {count
+                  ? `${count} out of ${totalResponsesCount} people answered this question`
+                  : `No one answered this question`}
+              </Text>
+            ) : null}
+          </View>
         </View>
+        {(!isStatement && count)
+          ? (
+            <View style={[style.answerContainer,
+              { backgroundColor: answerBackground }]}>
+              {children}
+            </View>
+          ) : null}
       </View>
-      {isStatement && <View style={[style.answerContainer, { backgroundColor: answerBackground }]}>
-        {children}
-      </View>}
-    </View>
-  )
+    )
+  }
 }
 
 export default BaseBlock
@@ -87,6 +98,15 @@ const style = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     marginTop: 8,
+    color: '#999'
+  },
+  noAnswers: {
+    marginLeft: 38,
+    marginTop: -8,
+    marginBottom: 16
+  },
+  noAnswersText: {
+    fontSize: 14,
     color: '#999'
   }
 })
