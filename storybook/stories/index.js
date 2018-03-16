@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, FlatList } from 'react-native'
 
 import form from './fixtures/form.json'
 import responses from './fixtures/responses.json'
@@ -8,7 +8,6 @@ import { getResponsesForQuestion } from '../../utils'
 import { storiesOf } from '@storybook/react-native'
 
 import Card from '../../pages/ListForms/Card'
-import HorizontalList from '../../pages/ListForms/HorizontalList'
 
 storiesOf('Card', module)
   .add('Default', () => {
@@ -30,11 +29,11 @@ storiesOf('Card', module)
           <View style={$.paddedHorizontal}>
             <Text style={$.labels}>In horizontal list</Text>
           </View>
-          <HorizontalList
+          <FlatList
             data={[{title: 'Card 1'}, {title: 'Card 2'}, {title: 'Card 3'}]}
             renderItem={({item}) => <Card item={item}/>}
           >
-          </HorizontalList>
+          </FlatList>
         </View>
       </View>
     )

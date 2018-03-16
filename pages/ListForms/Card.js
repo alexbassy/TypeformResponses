@@ -75,7 +75,7 @@ const $ = StyleSheet.create({
     width: '100%',
     height: 110,
     backgroundColor: '#fff',
-    marginBottom: 16,
+    marginBottom: 8,
     borderRadius: 6,
 
   },
