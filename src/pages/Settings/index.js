@@ -6,7 +6,6 @@ import {
   View, StyleSheet, ActivityIndicator, TouchableHighlight,
   FlatList, SectionList, Text, ScrollView
 } from 'react-native'
-import { ListItem } from 'react-native-elements'
 import SettingsFactory from '../../settingsController'
 import type { Setting } from '../../types/settings'
 
@@ -108,9 +107,8 @@ class AppSettings extends BaseComponent<Props, State> {
 
   renderListItem = ({ item }: { item: Setting }) => {
     return [
-      <ListItem
-        component={TouchableHighlight}
-        containerStyle={styles.listItem}
+      <TouchableHighlight
+        style={styles.listItem}
         titleStyle={styles.formTitle}
         underlayColor='#fff'
         title={item.label}
@@ -129,9 +127,8 @@ class AppSettings extends BaseComponent<Props, State> {
 
   renderDebugButton = ({ item }) => {
     return (
-      <ListItem
-        component={TouchableHighlight}
-        containerStyle={styles.listItem}
+      <TouchableHighlight
+        style={styles.listItem}
         titleStyle={styles.formTitle}
         underlayColor='#fff'
         hideChevron
