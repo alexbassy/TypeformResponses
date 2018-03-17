@@ -36,7 +36,7 @@ export default class BasePage extends Component {
   skipLoginScreen () {
     this.props.navigator.resetTo({
       screen: 'responses.ListForms',
-      title: 'Your typeforms',
+      title: 'My typeforms',
       animated: false,
       ...pageProperties
     })

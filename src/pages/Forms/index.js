@@ -1,7 +1,7 @@
 import React from 'react'
 import BasePage from '../base'
 import Api from '../../api'
-import { FlatList, View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native'
+import { FlatList, StyleSheet, SafeAreaView } from 'react-native'
 import Form from '../../components/Form'
 
 export default class ListForms extends BasePage {
