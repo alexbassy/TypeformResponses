@@ -3,10 +3,12 @@ import {View, StyleSheet, TouchableHighlight, SectionList, Text, Switch} from 'r
 
 export const SectionTitle = ({section}) => {
   return (
-    <View style={styles.sectionHeading}>
-      <Text style={styles.sectionHeadingText}>
-        {section.title}
-      </Text>
+    <View style={styles.sectionHeadingContainer}>
+      <View style={styles.sectionHeading}>
+        <Text style={styles.sectionHeadingText}>
+          {section.title}
+        </Text>
+      </View>
     </View>
   )
 }
@@ -52,7 +54,7 @@ export const ButtonListItem = ({id, title, onPress}) => {
 
 const styles = StyleSheet.create({
   sectionHeadingContainer: {
-    backgroundColor: `#ffffffb3`
+    backgroundColor: `#ffffffbb`
   },
   sectionHeading: {
     marginTop: 24,
