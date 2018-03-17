@@ -6,9 +6,21 @@ const defaultOptions = [
   {
     id: 'rich-text',
     label: 'Rich text in questions',
-    description: 'Bold and italic text will be displayed',
     value: true,
     order: 0
+  },
+  {
+    id: 'dark-theme',
+    label: 'Dark theme',
+    value: false,
+    order: 1
+  },
+  {
+    id: 'form-themes',
+    label: 'Enable themes',
+    description: 'Disable this to use less data',
+    value: true,
+    order: 1
   }
 ]
 
@@ -37,7 +49,7 @@ export class Settings {
         realm.delete(s)
       }
       this.defaultOptions.forEach(opt =>
-        realm.create('Setting', opt))
+        realm.create('Setting', opt, true))
     })
   }
 
