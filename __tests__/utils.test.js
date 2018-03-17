@@ -1,4 +1,4 @@
-import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers } from '../src/utils'
+import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers, getThemeIDFromHref } from '../src/utils'
 
 import form from './fixtures/form'
 import responses from './fixtures/responses'
@@ -82,5 +82,19 @@ describe('tallyMultipleChoiceAnswers', () => {
     expect(Math.round(result.Husky.percentage)).toBe(Math.round(100 / 3))
     expect(result.Dalmation.count).toBe(1)
     expect(result.Retriever.count).toBe(0)
+  })
+})
+
+describe('getThemeIDFromHref', () => {
+  it('should extract theme ID from href', () => {
+    const href = getThemeIDFromHref('https://api.typeform.com/themes/rGB4yU')
+    const differentHref = getThemeIDFromHref('https://api.typeform.com/themes/XXXXX')
+    const trailingSlash = getThemeIDFromHref('https://api.typeform.com/themes/YYYYY/')
+    const relativeUrl = getThemeIDFromHref('/themes/ZZZZZ/')
+
+    expect(href).toEqual('rGB4yU')
+    expect(differentHref).toEqual('XXXXX')
+    expect(trailingSlash).toEqual('YYYYY')
+    expect(relativeUrl).toEqual('ZZZZZ')
   })
 })

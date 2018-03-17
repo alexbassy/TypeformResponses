@@ -33,16 +33,4 @@ describe('api', () => {
     const code = API.helpers.getTemporaryAuthorisationCode(url)
     expect(code).toEqual('XXX')
   })
-
-  it('should extract theme ID from href', () => {
-    const href = API.helpers.getThemeIDFromHref('https://api.typeform.com/themes/rGB4yU')
-    const differentHref = API.helpers.getThemeIDFromHref('https://api.typeform.com/themes/XXXXX')
-    const trailingSlash = API.helpers.getThemeIDFromHref('https://api.typeform.com/themes/YYYYY/')
-    const relativeUrl = API.helpers.getThemeIDFromHref('/themes/ZZZZZ/')
-
-    expect(href).toEqual('rGB4yU')
-    expect(differentHref).toEqual('XXXXX')
-    expect(trailingSlash).toEqual('YYYYY')
-    expect(relativeUrl).toEqual('ZZZZZ')
-  })
 })
