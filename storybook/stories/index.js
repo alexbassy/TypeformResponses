@@ -1,39 +1,47 @@
 import React from 'react'
 import { Text, View, StyleSheet, FlatList } from 'react-native'
-
-import form from './fixtures/form.json'
-import responses from './fixtures/responses.json'
-import { getResponsesForQuestion } from '../../utils'
-
 import { storiesOf } from '@storybook/react-native'
+import Form from '../../src/components/Form'
 
-import Card from '../../pages/ListForms/Card'
+const defaultForm = {
+  title: 'My cool form'
+}
 
-storiesOf('Card', module)
-  .add('Default', () => {
-    const field = form.fields[1]
-    const fieldResponses = getResponsesForQuestion(field, responses)
-    const totalResponsesCount = responses.items.length
+const exampleListForm = [
+  {title: 'Card 1'},
+  {title: 'Card 2'},
+  {title: 'Card 3'}
+]
 
+const FormExample = ({item}) => (
+  <Form item={item || defaultForm} disableTheme />
+)
+
+const keyExtractor = (item) => item.title
+
+storiesOf('Form', module)
+  .add('default', () => {
     return (
       <View style={$.container}>
         <View style={[$.paddedVertical, $.paddedHorizontal]}>
           <Text style={$.labels}>In isolation:</Text>
-          <Card
-            item={{
-              title: 'My cool form'
-            }}
-          />
+          <FormExample />
         </View>
+      </View>
+    )
+  })
+  .add('list', () => {
+    return (
+      <View style={$.container}>
         <View style={$.paddedVertical}>
           <View style={$.paddedHorizontal}>
             <Text style={$.labels}>In horizontal list</Text>
           </View>
           <FlatList
-            data={[{title: 'Card 1'}, {title: 'Card 2'}, {title: 'Card 3'}]}
-            renderItem={({item}) => <Card item={item}/>}
-          >
-          </FlatList>
+            data={exampleListForm}
+            renderItem={FormExample}
+            keyExtractor={keyExtractor}
+          />
         </View>
       </View>
     )

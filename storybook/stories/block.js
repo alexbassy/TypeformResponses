@@ -3,11 +3,11 @@ import { View, StyleSheet, ScrollView } from 'react-native'
 
 import form from './fixtures/form.json'
 import responses from './fixtures/responses.json'
-import { getResponsesForQuestion } from '../../utils'
+import { getResponsesForQuestion } from '../../src/utils'
 
 import { storiesOf } from '@storybook/react-native'
 
-import Block from '../../components/Block'
+import Block from '../../src/components/Block'
 
 storiesOf('Block', module)
   .add('Picture Choice', () => {

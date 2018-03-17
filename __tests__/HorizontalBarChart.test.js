@@ -1,4 +1,4 @@
-import { sortByCount } from '../components/HorizontalBarChart'
+import { sortByCount } from '../src/components/HorizontalBarChart'
 
 describe('sortByCount', () => {
   it('should sort object their count property and return keys', function () {

@@ -1,4 +1,4 @@
-import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers } from '../utils'
+import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers } from '../src/utils'
 
 import form from './fixtures/form'
 import responses from './fixtures/responses'

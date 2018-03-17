@@ -1,5 +1,5 @@
-import { openDatabase } from '../db'
-import { Api } from '../api'
+import { openDatabase } from '../src/db'
+import { Api } from '../src/api'
 
 const secrets = {
   clientId: 'XXX',

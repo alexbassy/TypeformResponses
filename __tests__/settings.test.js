@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
-import { openDatabase } from '../db'
-import { Settings } from '../settingsController'
+import { openDatabase } from '../src/db'
+import { Settings } from '../src/settingsController'
 
 const testOptions = [
   {
