@@ -4,10 +4,10 @@ import React from 'react'
 import BaseComponent from '../base'
 import {
   View, StyleSheet, ActivityIndicator, TouchableHighlight,
-  FlatList, SectionList, Text, ScrollView
+  FlatList, SectionList, Text, ScrollView, Switch
 } from 'react-native'
 import SettingsFactory from '../../settingsController'
-import type { Setting } from '../../types/settings'
+import type {Setting} from '../../types/settings'
 
 type Props = {
   navigation: any
@@ -18,12 +18,51 @@ type State = {
   settings: Setting[]
 }
 
-const SectionTitle = ({ section }) => {
+const SectionTitle = ({section}) => {
   return (
-    <View style={styles.subheading}>
-      <Text style={styles.subheadingText}>
-        {section.title.toUpperCase()}
+    <View style={styles.sectionHeading}>
+      <Text style={styles.sectionHeadingText}>
+        {section.title}
       </Text>
+    </View>
+  )
+}
+
+const ListItem = ({item, onToggle}) => {
+  const {label, value, description} = item
+  const desc = !!description
+    ? <ItemDescription
+      key={`description_${item.id}`}
+      description={description}
+    />
+    : null
+  return (
+    <React.Fragment>
+      <View style={styles.listItem}>
+        <View style={styles.listItemTextContainer}>
+          <Text style={styles.listItemText}>{label}</Text>
+          {desc}
+        </View>
+        {onToggle
+          ? <Switch value={value} onValueChange={onToggle} onTintColor={'#262627'}/>
+          : null}
+      </View>
+    </React.Fragment>
+  )
+}
+
+const ButtonListItem = ({id, title, onPress}) => {
+  return (
+    <TouchableHighlight style={styles.listItem} onPress={onPress} underlayColor='#f1f1f1'>
+      <Text style={styles.listItemText}>{title}</Text>
+    </TouchableHighlight>
+  )
+}
+
+const ItemDescription = ({description}) => {
+  return (
+    <View>
+      <Text style={styles.itemDescription}>{description}</Text>
     </View>
   )
 }
@@ -59,29 +98,21 @@ class AppSettings extends BaseComponent<Props, State> {
 
   debugButtons = [
     {
-      id: 'log-settings',
-      title: 'Log Settings',
-      onPress: async () => {
-        const settings = await this.settings.getAllOptionsP()
-        console.log(settings)
-      }
-    }, {
-      id: 'log-state',
-      title: 'Log State',
-      onPress: async () => {
-        console.log(this.state)
-      }
-    }, {
       id: 'reset-settings',
       title: 'Reset settings to default',
       onPress: async () => {
-        await this.settings.resetToDefault()
+        await this.settings.resetToDefaults()
+        await this.getSettingsOptions()
       }
     }
   ]
 
   async componentDidMount () {
     this.settings = SettingsFactory()
+    this.getSettingsOptions()
+  }
+
+  async getSettingsOptions () {
     const options = await this.settings.getAllOptionsP()
 
     this.setState({
@@ -102,38 +133,12 @@ class AppSettings extends BaseComponent<Props, State> {
 
   onToggle = async (id: string) => {
     await this.settings.toggle(id)
-    this.setState({ settings: await this.settings.getAllOptionsP() })
+    this.setState({settings: await this.settings.getAllOptionsP()})
   }
 
-  renderListItem = ({ item }: { item: Setting }) => {
-    return [
-      <TouchableHighlight
-        style={styles.listItem}
-        titleStyle={styles.formTitle}
-        underlayColor='#fff'
-        title={item.label}
-        hideChevron
-        onSwitch={() => this.onToggle(item.id)}
-        switchButton
-        switched={item.value}
-      />,
-      item.description && (
-        <View key={`description_${item.id}`}>
-          <Text style={styles.subtitle}>{item.description}</Text>
-        </View>
-      )
-    ]
-  }
-
-  renderDebugButton = ({ item }) => {
+  renderDebugButton = ({item}) => {
     return (
-      <TouchableHighlight
-        style={styles.listItem}
-        titleStyle={styles.formTitle}
-        underlayColor='#fff'
-        hideChevron
-        {...item}
-      />
+      <ButtonListItem {...item}/>
     )
   }
 
@@ -149,11 +154,15 @@ class AppSettings extends BaseComponent<Props, State> {
     }
 
     return (
-      <ScrollView style={styles.page}>
-        <FlatList
+      <ScrollView>
+        <SectionList
           style={styles.listGroup}
-          data={this.state.settings}
-          renderItem={this.renderListItem}
+          renderSectionHeader={SectionTitle}
+          renderItem={({item}) =>
+            <ListItem item={item} onToggle={() => this.onToggle(item.id)}/>}
+          sections={[
+            {title: 'General', data: this.state.settings}
+          ]}
           extraData={this.state}
           keyExtractor={keyExtractor}
         />
@@ -161,7 +170,7 @@ class AppSettings extends BaseComponent<Props, State> {
           style={styles.listGroup}
           renderSectionHeader={SectionTitle}
           sections={[
-            { title: 'Profile', data: this.appControls }
+            {title: 'Profile', data: this.appControls}
           ]}
           renderItem={this.renderDebugButton}
           keyExtractor={keyExtractor}
@@ -170,7 +179,7 @@ class AppSettings extends BaseComponent<Props, State> {
           style={styles.listGroup}
           renderSectionHeader={SectionTitle}
           sections={[
-            { title: 'Debugging', data: this.debugButtons }
+            {title: 'Debugging', data: this.debugButtons}
           ]}
           renderItem={this.renderDebugButton}
           keyExtractor={keyExtractor}
@@ -183,9 +192,11 @@ class AppSettings extends BaseComponent<Props, State> {
 export default AppSettings
 
 const styles = StyleSheet.create({
-  page: {},
   listGroup: {
-    marginTop: 32
+    marginTop: 16,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee'
   },
   loadingContainer: {
     flex: 1,
@@ -193,26 +204,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listItem: {
-    borderBottomWidth: 0
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingRight: 16
   },
-  formTitle: {
-    lineHeight: 16 * 1.6,
-    color: '#000'
+  listItemTextContainer: {
+    flex: 1
   },
-  subheading: {
-    paddingHorizontal: 16,
-    paddingVertical: 6
+  listItemText: {
+    marginLeft: 16,
+    fontSize: 15,
+    lineHeight: 24,
+    color: '#262627'
   },
-  subheadingText: {
-    color: '#8E8E93',
-    fontSize: 13,
-    lineHeight: 18
+  sectionHeading: {
+    marginLeft: 16,
+    paddingBottom: 6
   },
-  subtitle: {
-    color: '#8E8E93',
+  sectionHeadingText: {
+    color: '#262627',
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '700'
+  },
+  itemDescription: {
+    color: '#8e8e93',
     fontWeight: '400',
-    lineHeight: 14 * 1.6,
-    marginTop: 4,
+    lineHeight: 22,
     marginLeft: 16
   },
   font: {
