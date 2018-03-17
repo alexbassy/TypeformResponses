@@ -39,9 +39,9 @@ class BaseBlock extends React.PureComponent {
         <View style={style.questionContainer}>
           <View style={[style.questionTypeIcon, iconStyle]}/>
           <View style={{ flex: 1, marginRight: 16 }}>
-            <Text style={style.question}>
+            <Question style={style.question}>
               {field.title}
-            </Text>
+            </Question>
             {(showResponses && totalResponsesCount) ? (
               <Text style={style.responseRate}>
                 {count
@@ -81,11 +81,6 @@ const style = StyleSheet.create({
   },
   answerContainer: {
     flex: 1
-  },
-  question: {
-    fontSize: 18,
-    lineHeight: 26,
-    fontFamily: 'Apercu Pro'
   },
   questionTypeIcon: {
     width: 5,

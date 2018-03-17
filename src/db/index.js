@@ -9,3 +9,8 @@ export const openDatabase = (extraOptions = {}) => {
     ...extraOptions
   })
 }
+
+export default async (callback) => {
+  const realm = await Realm.open({schema: schemas, deleteRealmIfMigrationNeeded: true})
+  return callback(realm)
+}

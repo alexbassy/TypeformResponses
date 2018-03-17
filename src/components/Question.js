@@ -1,74 +1,130 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-const findTags = /((\*(.+?)\*)|(_(.+?)_)|({{field:.+}}))/g
+import runQuery from '../db'
+import {View, Text, StyleSheet} from 'react-native'
+
+const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{field:.+}}))/g
 
 const types = {
   bold: {
-    test: /(\*(.+?)\*)/,
-    format: token => (
-      <Text style={{ fontWeight: '800' }}>{token}</Text>
+    expression: /(\*(.+?)\*)/,
+    render: (token) => (
+      <Text {...props} style={[{fontWeight: '800'}]}>
+        {token}
+      </Text>
     ),
-    remove: token => token.replace(/\*(.+?)\*/, '$1')
+    stripFormatting: token => token.replace(/\*(.+?)\*/, '$1')
   },
   italic: {
-    test: /(_(.+?)_)/,
-    format: token => (
-      <Text style={{ fontStyle: 'italic' }}>{token}</Text>
+    expression: /(_(.+?)_)/,
+    render: (token) => (
+      <Text {...props} style={[{fontStyle: 'italic'}]}>
+        {token}
+      </Text>
     ),
-    remove: token => token.replace(/_(.+?)_/, '$1')
+    stripFormatting: token => token.replace(/_(.+?)_/, '$1')
   },
   field: {
-    test: /({{field:.+}})/,
-    format: token => (
-      <Text style={{ color: 'red' }}>[[Field name]]</Text>
-    ),
-    remove: token => token.replace(/{{field:(.+?)}}/, '$1')
+    expression: /({{field:.+}})/,
+    render: (token, fields) => {
+      console.log(fields[token])
+      return (
+        <Text style={[{color: 'red'}]}>
+          {token}
+        </Text>
+      )
+    },
+    stripFormatting: token => token.replace(/{{field:(.+?)}}/, '$1')
   }
 }
 
-export const stringToRichTextComponents = (title, fields) => {
-  const tags = title.match(findTags)
-  const indices = tags.map(t => title.indexOf(t))
+class Question extends React.Component {
+  state = {
+    isPlain: true,
+    fields: {}
+  }
 
-  return tags.reduce((result, tag, i) => {
-    const index = indices[i]
+  async componentDidMount () {
+    const textContent = this.props.children
+    this.tags = textContent.match(FIND_TAGS)
+    if (!this.tags) {
+      return
+    }
+    await this.getFormFields()
+  }
 
-    Object.keys(types).forEach(t => {
-      const { test, format, remove } = types[t]
-      if (result.length === 0 && index > 0) {
-        result.push(<Text>{title.substr(0, index)}</Text>)
-      }
-      if (test.test(tag)) {
-        result.push(<Text>{format(remove(tag))}</Text>)
-      }
+  async getFormFields () {
+    const withPiping = this.tags.filter(tag => types.field.expression.test(tag))
+    const fieldIds = withPiping
+      .map(tag => tag.match(types.field.expression)[0])
+      .map(types.field.stripFormatting)
+
+    console.log(fieldIds)
+
+    const fields = await runQuery(realm => {
+      const f = fieldIds.map(id => realm.objectForPrimaryKey('FormField', id))
+      console.log(f)
+      return f
     })
 
-    result.push(<Text>{title.substring(index + tag.length, indices[i + 1])}</Text>)
+    const titles = fields.reduce((stateFields, field) => {
+      return field.title
+    }, {})
 
-    return result
-  }, [])
-}
+    this.setState({fields: titles, isPlain: false})
+  }
 
-const Question = ({ children, fields }) => {
-  if (!children.match(findTags)) {
+  renderRichTextWithPiping () {
+    const text = this.props.children
+    const indices = this.tags.map(t => text.indexOf(t))
+    const textComponents = this.tags.reduce((result, tag, i) => {
+      const index = indices[i]
+      const tokenTypes = Object.keys(types).map(t => types[t])
+
+      tokenTypes.forEach(({expression, render, stripFormatting}) => {
+        const prependBeginning = result.length === 0 && index > 0
+        if (prependBeginning) {
+          result.push(text.substr(0, index))
+        }
+
+        if (expression.test(tag)) {
+          result.push(render(stripFormatting(tag), this.state.fields))
+        }
+      })
+
+      // add the string contents between the end of
+      // this token and the beginning of the next one
+      result.push(text.substring(index + tag.length, indices[i + 1]))
+      return result
+    }, [])
+
     return (
-      <View>
-        <Text>{children}</Text>
-      </View>
+      <Text style={styles.question}>
+        {textComponents}
+      </Text>
     )
   }
 
-  return (
-    <View>
-      {stringToRichTextComponents(children)}
-    </View>
-  )
+  render () {
+    if (!this.state.isPlain) {
+      return this.renderRichTextWithPiping()
+    }
+
+    return (
+      <Text style={styles.question}>{this.props.children}</Text>
+    )
+  }
 }
 
 export default Question
 
-const styles = StyleSheet.create({
-  bold: {
-    fontWeight: '800'
-  }
-})
+const
+  styles = StyleSheet.create({
+    bold: {
+      fontWeight: '800'
+    },
+    question: {
+      fontSize: 15,
+      lineHeight: 26
+      // fontFamily: 'Apercu Pro'
+    }
+  })
