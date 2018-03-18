@@ -107,3 +107,5 @@ export const getThemeIDFromHref = href => {
   const split = barePath.split('/')
   return split[split.length - 1]
 }
+
+export const toPlainObject = rObj => JSON.parse(JSON.stringify(rObj))
