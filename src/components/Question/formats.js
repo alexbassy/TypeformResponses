@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native'
+import {Text, StyleSheet} from 'react-native'
 
 export const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{(field|hidden):.+}}))/g
 
@@ -26,7 +26,7 @@ export const types = {
     expression: /({{field:.+}})/,
     render: (token, fields) => {
       return (
-        <Text key={token} style={[{color: 'red'}]}>
+        <Text key={token} style={$.pipingText}>
           {fields[token]}
         </Text>
       )
@@ -45,3 +45,18 @@ export const types = {
     stripFormatting: token => token.replace(/{{hidden:(.+?)}}/, '$1')
   }
 }
+
+const $ = StyleSheet.create({
+  bold: {
+    fontWeight: '600'
+  },
+  italic: {
+    fontStyle: 'italic'
+  },
+  pipingText: {
+    color: '#4fb0ae'
+  },
+  hidden: {
+    backgroundColor: 'lightblue'
+  }
+})

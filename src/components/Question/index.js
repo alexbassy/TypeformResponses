@@ -81,14 +81,14 @@ class Question extends React.Component {
 
 export default Question
 
-const
-  styles = StyleSheet.create({
-    bold: {
-      fontWeight: '800'
-    },
-    question: {
-      fontSize: 15,
-      lineHeight: 26
-      // fontFamily: 'Apercu Pro'
-    }
-  })
+const styles = StyleSheet.create({
+  bold: {
+    fontWeight: '800'
+  },
+  question: {
+    fontSize: 18,
+    lineHeight: 26,
+    fontFamily: 'Apercu Pro',
+    color: '#262627'
+  }
+})
