@@ -34,9 +34,9 @@ export default class Login extends BaseComponent {
     return (
       <View style={styles.container}>
         <View style={styles.headingWrap}>
-          <TFHeading2 center>
+          <H2 center>
             Read your responses on the move
-          </TFHeading2>
+          </H2>
         </View>
         <TFForm>
           <TFButton
