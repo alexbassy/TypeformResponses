@@ -1,41 +1,7 @@
 import React from 'react'
-import runQuery from '../db'
-import {View, Text, StyleSheet} from 'react-native'
-
-const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{field:.+}}))/g
-
-const types = {
-  bold: {
-    expression: /(\*(.+?)\*)/,
-    render: (token) => (
-      <Text {...props} style={[{fontWeight: '800'}]}>
-        {token}
-      </Text>
-    ),
-    stripFormatting: token => token.replace(/\*(.+?)\*/, '$1')
-  },
-  italic: {
-    expression: /(_(.+?)_)/,
-    render: (token) => (
-      <Text {...props} style={[{fontStyle: 'italic'}]}>
-        {token}
-      </Text>
-    ),
-    stripFormatting: token => token.replace(/_(.+?)_/, '$1')
-  },
-  field: {
-    expression: /({{field:.+}})/,
-    render: (token, fields) => {
-      console.log(fields[token])
-      return (
-        <Text style={[{color: 'red'}]}>
-          {token}
-        </Text>
-      )
-    },
-    stripFormatting: token => token.replace(/{{field:(.+?)}}/, '$1')
-  }
-}
+import runQuery from '../../db/index'
+import {Text, StyleSheet} from 'react-native'
+import {FIND_TAGS, types} from './formats'
 
 class Question extends React.Component {
   state = {
@@ -46,10 +12,9 @@ class Question extends React.Component {
   async componentDidMount () {
     const textContent = this.props.children
     this.tags = textContent.match(FIND_TAGS)
-    if (!this.tags) {
-      return
+    if (this.tags) {
+      await this.getFormFields()
     }
-    await this.getFormFields()
   }
 
   async getFormFields () {
@@ -58,19 +23,18 @@ class Question extends React.Component {
       .map(tag => tag.match(types.field.expression)[0])
       .map(types.field.stripFormatting)
 
-    console.log(fieldIds)
-
-    const fields = await runQuery(realm => {
-      const f = fieldIds.map(id => realm.objectForPrimaryKey('FormField', id))
-      console.log(f)
-      return f
+    let fields = {}
+    await runQuery(realm => {
+      const objects = realm.objects('FormField')
+      fieldIds.forEach(id => {
+        const refs = objects.filtered('ref = $0', id)
+        if (!refs.length) return
+        const formField = refs[0]
+        fields[formField.ref] = formField.title
+      })
     })
 
-    const titles = fields.reduce((stateFields, field) => {
-      return field.title
-    }, {})
-
-    this.setState({fields: titles, isPlain: false})
+    this.setState({fields, isPlain: false})
   }
 
   renderRichTextWithPiping () {
