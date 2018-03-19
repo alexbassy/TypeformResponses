@@ -18,7 +18,7 @@ export default class Login extends BaseComponent {
     try {
       const token = await Api.getOauthToken(temporaryAuthorisationCode)
       await Api.setToken(token)
-      this.goToListForms()
+      this.skipLoginScreen()
     } catch (e) {
       this.setState({ loginError: true })
     }
