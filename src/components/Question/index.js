@@ -57,7 +57,8 @@ class Question extends React.Component {
 
       // add the string contents between the end of
       // this token and the beginning of the next one
-      result.push(text.substring(index + tag.length, indices[i + 1]))
+      const endOfStringContents = text.substring(index + tag.length, indices[i + 1])
+      if (endOfStringContents.length) result.push(endOfStringContents)
       return result
     }, [])
 
