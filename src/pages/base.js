@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { ActionSheetIOS, View, ActivityIndicator, StyleSheet } from 'react-native'
+import React, {Component} from 'react'
+import {ActionSheetIOS, View, ActivityIndicator, StyleSheet} from 'react-native'
 
 const pageProperties = {
   navigatorStyle: {
@@ -21,13 +21,14 @@ export default class BasePage extends Component {
     }
   }
 
-  goToLoginScreen ({ logout = false } = {}) {
+  goToLoginScreen ({logout = false} = {}) {
     const ev = {
       screen: 'responses.Login',
       title: 'Login',
       animated: false,
       navigatorStyle: {
-        navBarHidden: true
+        navBarHidden: true,
+        disabledBackGesture: true
       }
     }
     this.props.navigator.resetTo(ev)
@@ -42,26 +43,18 @@ export default class BasePage extends Component {
     })
   }
 
-  goToListForms () {
-    this.props.navigator.push({
-      screen: 'responses.ListForms',
-      title: 'Your typeforms',
-      ...pageProperties
-    })
-  }
-
   goToFormResponses (form) {
     this.props.navigator.push({
       screen: 'responses.ViewResponses',
       title: form.title,
-      passProps: { form },
+      passProps: {form},
       ...pageProperties
     })
   }
 
   doLogout = async () => {
     console.log('[to do]: clear token from cache')
-    this.goToLoginScreen({ logout: true })
+    this.goToLoginScreen({logout: true})
   }
 
   logout = async () => {
@@ -86,10 +79,10 @@ export default class BasePage extends Component {
     })
   }
 
-  renderLoading () {
+  renderLoading ({ light = false } = {}) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size='large' color='#000'/>
+        <ActivityIndicator size='large' color={light ? '#fff' : '#000'} />
       </View>
     )
   }

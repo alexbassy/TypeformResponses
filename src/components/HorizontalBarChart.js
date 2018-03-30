@@ -1,6 +1,45 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
-import { formatPercentage } from '../utils'
+import {StyleSheet, View, Text, Image} from 'react-native'
+import styled, {css} from 'styled-components'
+import {formatPercentage} from '../utils'
+
+const Container = styled.View`
+  margin-top: 8px;
+  margin-bottom: 4px;
+  height: auto;
+`
+
+const Bar = styled.View`
+  flex-direction: row;
+  flex: 1;
+  background-color: #f1f8f9;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  height: 36px;
+`
+
+const Completion = styled.View`
+  position: absolute;
+  background-color: #cae6ea;
+  height: 36px;
+  width: ${props => props.amount || 0}%;
+`
+
+const Photo = styled.Image`
+  width: 36px;
+  height: 36px;
+`
+
+const Percentage = styled.Text`
+  ${props => props.isPhotoChoice && css`color: #455e76`};
+  margin-right: 12px;
+`
+
+const Label = styled.Text`
+  font-size: 16px;
+  color: #455e76;
+`
 
 export const sortByCount = (obj) => {
   const keys = Object.keys(obj)
@@ -14,60 +53,37 @@ export const sortByCount = (obj) => {
   })
 }
 
-const HorizontalBarChart = ({ responses, onLayout }) => {
+const HorizontalBarChart = ({responses, onLayout}) => {
   const sortedKeys = sortByCount(responses)
   return (
     <View onLayout={onLayout}>
-      <View style={style.chartContainer}>
+      <Container>
         {sortedKeys.map(item => {
-          const { percentage, count, label, imageURL } = responses[item]
+          const {percentage, count, label, imageURL} = responses[item]
           const isPhotoChoice = Boolean(imageURL)
           const pc = formatPercentage(percentage.toFixed(2))
-
-          const Photo = (
-            <Image
-              source={{ uri: imageURL }}
-              style={style.photo}
-            />
-          )
-
-          const Percentage = isPictureChoice => (
-            <Text style={[
-              isPictureChoice ? style.barLabelColour : null,
-              style.percentageComplete
-            ]}>
-              {pc}%
-            </Text>
-          )
-
-          const BarLabel = (
-            <Text style={[style.barLabelColour, style.barLabel]}>
-              {label}
-            </Text>
-          )
 
           return (
             <View key={label} style={[style.row, style.barContainer]}>
               <View>
-                {isPhotoChoice ? Photo : Percentage()}
+                {isPhotoChoice && <Photo source={{uri: imageURL}} />}
               </View>
-              <View style={[style.row, style.bar]}>
-                <View style={[
-                  style.barCompletion,
-                  { width: `${pc}%` }
-                ]}/>
-                {isPhotoChoice ? Percentage(true) : BarLabel}
+              <Bar>
+                <Completion amount={pc} />
+                {isPhotoChoice
+                  ? <Percentage isPhotoChoice>{pc}%</Percentage>
+                  : <Label><Percentage isPhotoChoice>{pc}%</Percentage> {label}</Label>}
                 <Text style={[style.responseCount, style.responseCountNumber]}>
                   {count}
                 </Text>
                 <Text style={style.responseCount}>
                   {`response${(count > 1 ? 's' : '')}`}
                 </Text>
-              </View>
+              </Bar>
             </View>
           )
         })}
-      </View>
+      </Container>
     </View>
   )
 }
@@ -75,45 +91,12 @@ const HorizontalBarChart = ({ responses, onLayout }) => {
 export default HorizontalBarChart
 
 const style = StyleSheet.create({
-  chartContainer: {
-    marginTop: 8,
-    marginBottom: 4,
-    height: 'auto'
-  },
   row: {
     flexDirection: 'row'
   },
   barContainer: {
     alignItems: 'center',
     marginBottom: 2
-  },
-  percentageComplete: {
-    fontSize: 12,
-    marginRight: 12
-  },
-  bar: {
-    flex: 1,
-    backgroundColor: '#f1f8f9',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 4,
-    height: 36
-  },
-  photo: {
-    width: 36,
-    height: 36
-  },
-  barLabelColour: {
-    color: '#455e76'
-  },
-  barLabel: {
-    fontSize: 16
-  },
-  barCompletion: {
-    position: 'absolute',
-    backgroundColor: '#cae6ea',
-    height: 36
   },
   responseCountNumber: {
     marginLeft: 'auto',

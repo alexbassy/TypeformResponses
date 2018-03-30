@@ -75,11 +75,15 @@ export const tallyMultipleChoiceAnswers = ({field, responses}: { field: Field, r
   responses.forEach(response => {
     if (field.properties.allow_multiple_selection) {
       response.choices.labels.forEach(label => {
-        fields[label].count++
+        if (fields[label]) {
+          fields[label].count++
+        }
       })
     } else {
       const label = response.choice.label
-      fields[label].count++
+      if (fields[label]) {
+        fields[label].count++
+      }
     }
   })
 

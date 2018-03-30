@@ -10,6 +10,23 @@ import {storiesOf} from '@storybook/react-native'
 import Block from '../../src/components/Block'
 
 storiesOf('Block', module)
+  .add('Multiple Choice', () => {
+    const field = form.fields[0]
+    const fieldResponses = getResponsesForQuestion(field, responses)
+    const totalResponsesCount = responses.items.length
+
+    return (
+      <View style={styles.container}>
+        <ScrollView>
+          <Block
+            field={field}
+            responses={fieldResponses}
+            totalResponsesCount={totalResponsesCount}
+          />
+        </ScrollView>
+      </View>
+    )
+  })
   .add('Picture Choice', () => {
     const statement = form.fields[2]
     const field = form.fields[3]
@@ -24,23 +41,6 @@ storiesOf('Block', module)
             responses={fieldResponses}
             totalResponsesCount={totalResponsesCount}
           />
-          <Block
-            field={field}
-            responses={fieldResponses}
-            totalResponsesCount={totalResponsesCount}
-          />
-        </ScrollView>
-      </View>
-    )
-  })
-  .add('Multiple Choice', () => {
-    const field = form.fields[0]
-    const fieldResponses = getResponsesForQuestion(field, responses)
-    const totalResponsesCount = responses.items.length
-
-    return (
-      <View style={styles.container}>
-        <ScrollView>
           <Block
             field={field}
             responses={fieldResponses}
