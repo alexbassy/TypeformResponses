@@ -8,7 +8,8 @@ export default class ListForms extends BasePage {
   static navigatorButtons = {
     rightButtons: [{
       id: 'open-settings',
-      title: 'Settings'
+      icon: require('../../../assets/icon/settings.png'),
+      disableIconTint: true
     }]
   }
 
@@ -20,8 +21,8 @@ export default class ListForms extends BasePage {
 
   requestedResponseCount = []
 
-  constructor (props) {
-    super(props)
+  constructor (...args) {
+    super(...args)
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
   }
 

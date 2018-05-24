@@ -12,7 +12,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator=\"iPhone 8\"",
+    "ios": "react-native run-ios",
     "test": "node node_modules/jest/bin/jest.js --forceExit",
     "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
     "flow": "flow",
@@ -29,7 +29,7 @@
     "react-native": "^0.54.2",
     "react-native-config": "^0.11.5",
     "react-native-linear-gradient": "^2.4.0",
-    "react-native-navigation": "^1.1.397",
+    "react-native-navigation": "^1.1.444",
     "realm": "2.2.0",
     "styled-components": "^3.1.6",
     "url": "^0.11.0"

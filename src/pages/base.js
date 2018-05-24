@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {ActionSheetIOS, View, ActivityIndicator, StyleSheet} from 'react-native'
+import {AsyncStorage, ActionSheetIOS, View, ActivityIndicator, StyleSheet} from 'react-native'
 
 const pageProperties = {
   navigatorStyle: {
@@ -8,9 +8,21 @@ const pageProperties = {
 }
 
 export default class BasePage extends Component {
+  paths = {
+    '/login': this.goToLoginScreen,
+    '/callback': this.goToLoginScreen,
+    '/': this.skipLoginScreen,
+    '/form/:id': this.goToFormResponses
+  }
+
+  constructor (...args) {
+    super(...args)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
+  }
+
   onNavigatorEvent (event) {
-    console.log(event)
     // handle a deep link
+    console.log(`onNavigatorEvent:`, event)
     if (event.type === 'DeepLink') {
       const parts = event.link.split('/') // Link parts
       const payload = event.payload // (optional) The payload
@@ -85,6 +97,16 @@ export default class BasePage extends Component {
         <ActivityIndicator size='large' color={light ? '#fff' : '#000'} />
       </View>
     )
+  }
+
+  async saveLastLocation (path) {
+    await AsyncStorage.setItem('lastLocation', path)
+  }
+
+  async jumpToLocation () {
+    const lastLocation = await AsyncStorage.getItem('lastLocation')
+    if (!lastLocation || !this.paths[lastLocation]) return
+    this.paths[lastLocation]()
   }
 }
 
