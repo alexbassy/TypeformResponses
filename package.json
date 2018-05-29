@@ -23,6 +23,7 @@
     "clean": "rm -rf default.realm*"
   },
   "dependencies": {
+    "fetch-mock": "^6.3.0",
     "lodash.camelcase": "^4.3.0",
     "moment": "^2.20.1",
     "react": "16.2.0",
