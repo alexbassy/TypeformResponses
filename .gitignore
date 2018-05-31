@@ -57,3 +57,6 @@ default.realm*
 
 # misc
 secrets.js
+
+# Bundle artifact
+*.jsbundle
