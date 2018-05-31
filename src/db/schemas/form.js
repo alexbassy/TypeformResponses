@@ -15,8 +15,8 @@ const FormWorkspace = {
 const FormSelfNotifications = {
   name: 'FormSelfNotifications',
   properties: {
-    enable: 'bool',
-    recipient: 'string[]',
+    enable: 'bool?',
+    recipients: 'string[]',
     reply_to: 'string[]',
     subject: 'string',
     message: 'string'
@@ -26,8 +26,8 @@ const FormSelfNotifications = {
 const FormRespondentNotifications = {
   name: 'FormRespondentNotifications',
   properties: {
-    enable: 'bool',
-    recipients: 'string',
+    enable: 'bool?',
+    recipient: 'string',
     reply_to: 'string[]',
     subject: 'string',
     message: 'string'
@@ -37,7 +37,7 @@ const FormRespondentNotifications = {
 const FormNotifications = {
   name: 'FormNotifications',
   properties: {
-    self: 'FormRespondentNotifications?',
+    self: 'FormSelfNotifications?',
     respondent: 'FormRespondentNotifications?'
   }
 }
