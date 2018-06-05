@@ -1,9 +1,9 @@
-import React from 'react'
-import runQuery from '../../db/index'
+import React, { Component } from 'react'
+import runQuery from '../../db'
 import {Text, StyleSheet} from 'react-native'
 import {FIND_TAGS, types} from './formats'
 
-class Question extends React.Component {
+class Question extends Component {
   state = {
     isPlain: true,
     fields: {}
@@ -12,6 +12,9 @@ class Question extends React.Component {
   async componentDidMount () {
     const textContent = this.props.children
     this.tags = textContent.match(FIND_TAGS)
+
+
+
     if (this.tags) {
       await this.getFormFields()
     }
@@ -19,9 +22,14 @@ class Question extends React.Component {
 
   async getFormFields () {
     const withPiping = this.tags.filter(tag => types.field.expression.test(tag))
+
+    if (!withPiping) {
+      return this.setState({isPlain: false})
+    }
+
     const fieldIds = withPiping
       .map(tag => tag.match(types.field.expression)[0])
-      .map(types.field.stripFormatting)
+      .map(types.field.strip)
 
     let fields = {}
     await runQuery(realm => {
@@ -37,21 +45,33 @@ class Question extends React.Component {
     this.setState({fields, isPlain: false})
   }
 
+  getTextPart (token, {expression, render, strip}, fields) {
+    const stripped = strip(token)
+    if (stripped.match(FIND_TAGS)) {
+      const type = Object.values(types).find(type => type.expression.test(stripped))
+      console.log(token, stripped, type)
+      return this.getTextPart(stripped, type, fields)
+    }
+    return render(stripped, fields)
+  }
+
   renderRichTextWithPiping () {
     const text = this.props.children
-    const indices = this.tags.map(t => text.indexOf(t))
+    const indices = this.tags.map(tag => text.indexOf(tag))
+
     const textComponents = this.tags.reduce((result, tag, i) => {
       const index = indices[i]
-      const tokenTypes = Object.keys(types).map(t => types[t])
+      const tokenTypes = Object.values(types)
 
-      tokenTypes.forEach(({expression, render, stripFormatting}) => {
+      tokenTypes.forEach((type) => {
         const prependBeginning = result.length === 0 && index > 0
         if (prependBeginning) {
           result.push(text.substr(0, index))
         }
 
-        if (expression.test(tag)) {
-          result.push(render(stripFormatting(tag), this.state.fields))
+        if (type.expression.test(tag)) {
+          const textPart = this.getTextPart(tag, type, this.state.fields)
+          if (textPart) result.push(textPart)
         }
       })
 
@@ -83,9 +103,6 @@ class Question extends React.Component {
 export default Question
 
 const styles = StyleSheet.create({
-  bold: {
-    fontWeight: '800'
-  },
   question: {
     fontSize: 18,
     lineHeight: 26,

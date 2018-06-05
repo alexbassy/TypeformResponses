@@ -1,62 +1,47 @@
 import React from 'react'
-import {Text, StyleSheet} from 'react-native'
+import styled from 'styled-components'
 
-export const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{(field|hidden):.+}}))/g
+export const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{(field|hidden):.+?}}))/g
+
+const PipedField = styled.Text`
+  color: #4fb0ae;
+`
+
+const HiddenField = styled.Text`
+  color: red;
+`
 
 export const types = {
   bold: {
     expression: /(\*(.+?)\*)/,
-    render: (token) => (
-      <Text key={token} style={[{fontWeight: '800'}]}>
-        {token}
-      </Text>
-    ),
-    stripFormatting: token => token.replace(/\*(.+?)\*/, '$1')
+    render: (token) => token,
+    strip: token => token.replace(/\*(.+?)\*/, '$1')
   },
   italic: {
     expression: /(_(.+?)_)/,
-    render: (token) => (
-      <Text key={token} style={[{fontStyle: 'italic'}]}>
-        {token}
-      </Text>
-    ),
-    stripFormatting: token => token.replace(/_(.+?)_/, '$1')
+    render: (token) => token,
+    strip: token => token.replace(/_(.+?)_/, '$1')
   },
   field: {
     expression: /({{field:.+}})/,
     render: (token, fields) => {
       return (
-        <Text key={token} style={$.pipingText}>
+        <PipedField key={token}>
           {fields[token]}
-        </Text>
+        </PipedField>
       )
     },
-    stripFormatting: token => token.replace(/{{field:(.+?)}}/, '$1')
+    strip: token => token.replace(/{{field:(.+?)}}/, '$1')
   },
   hidden: {
     expression: /({{hidden:.+}})/,
     render: (token) => {
       return (
-        <Text key={token} style={[{color: 'red'}]}>
+        <HiddenField key={token}>
           {token}
-        </Text>
+        </HiddenField>
       )
     },
-    stripFormatting: token => token.replace(/{{hidden:(.+?)}}/, '$1')
+    strip: token => token.replace(/{{hidden:(.+?)}}/, '$1')
   }
 }
-
-const $ = StyleSheet.create({
-  bold: {
-    fontWeight: '600'
-  },
-  italic: {
-    fontStyle: 'italic'
-  },
-  pipingText: {
-    color: '#4fb0ae'
-  },
-  hidden: {
-    backgroundColor: 'lightblue'
-  }
-})
