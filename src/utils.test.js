@@ -1,7 +1,7 @@
-import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers, getThemeIDFromHref } from '../src/utils'
+import { formatPercentage, findQuestion, getResponsesForQuestion, tallyMultipleChoiceAnswers, getThemeIDFromHref } from './utils'
 
-import form from './fixtures/form'
-import responses from './fixtures/responses'
+import form from '../__tests__/fixtures/form'
+import responses from '../__tests__/fixtures/responses'
 
 describe('formatPercentage', () => {
   it('should format a percentage without trailing zeros', () => {
