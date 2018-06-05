@@ -1,5 +1,4 @@
-import 'jest-styled-components'
-import { sortByCount } from '../src/components/HorizontalBarChart'
+import { sortByCount } from './HorizontalBarChart'
 
 describe('sortByCount', () => {
   it('should sort object their count property and return keys', () => {
