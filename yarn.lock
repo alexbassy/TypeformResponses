@@ -3778,6 +3778,10 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
+deepmerge@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.1.0.tgz#511a54fff405fc346f0240bb270a3e9533a31102"
+
 default-require-extensions@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/default-require-extensions/-/default-require-extensions-1.0.0.tgz#f37ea15d3e13ffd9b437d33e1a75b5fb97874cb8"
@@ -7494,7 +7498,11 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
 
-nan@^2.3.3, nan@^2.9.2:
+nan@2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
+
+nan@^2.9.2:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
 
@@ -9118,15 +9126,16 @@ readdirp@^2.0.0:
     readable-stream "^2.0.2"
     set-immediate-shim "^1.0.1"
 
-realm@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.2.0.tgz#496af9ed5aa0c9564292210520fb3f9b0bcb44b8"
+realm@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.8.1.tgz#33964763e0fd0c724be88f773582e05600d086ee"
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"
+    deepmerge "2.1.0"
     fs-extra "^4.0.2"
     ini "^1.3.4"
-    nan "^2.3.3"
+    nan "2.8.0"
     node-fetch "^1.6.3"
     node-pre-gyp "^0.6.36"
     progress "^2.0.0"
@@ -9134,7 +9143,7 @@ realm@2.2.0:
     request "^2.78.0"
     stream-counter "^1.0.0"
     sync-request "^3.0.1"
-    url-parse "^1.1.7"
+    url-parse "^1.2.0"
 
 realpath-native@^1.0.0:
   version "1.0.0"
@@ -10668,9 +10677,16 @@ url-parse-lax@^3.0.0:
   dependencies:
     prepend-http "^2.0.0"
 
-url-parse@^1.1.7, url-parse@^1.1.8, url-parse@^1.1.9, url-parse@~1.4.0:
+url-parse@^1.1.8, url-parse@^1.1.9, url-parse@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.0.tgz#6bfdaad60098c7fe06f623e42b22de62de0d3d75"
+  dependencies:
+    querystringify "^2.0.0"
+    requires-port "^1.0.0"
+
+url-parse@^1.2.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.1.tgz#4dec9dad3dc8585f862fed461d2e19bbf623df30"
   dependencies:
     querystringify "^2.0.0"
     requires-port "^1.0.0"
