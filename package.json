@@ -68,7 +68,11 @@
   },
   "jest": {
     "preset": "react-native",
-    "testPathIgnorePatterns": ["__tests__/config"],
+    "testPathIgnorePatterns": [
+      "__tests__/config",
+      "__tests__/fixtures",
+      "/node_modules/"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>/__tests__/config/setupTestFrameworkScriptFile.js",
     "moduleNameMapper": {
       "styled-components": "<rootDir>/node_modules/styled-components/dist/styled-components.native.cjs.js"
