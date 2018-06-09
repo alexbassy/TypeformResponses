@@ -35,7 +35,7 @@ describe('settingsController', () => {
   })
 
   afterAll(done => {
-    exec('yarn clean', done)
+    exec('yarn clean-realm', done)
   })
 
   it('should read a setting', async () => {
