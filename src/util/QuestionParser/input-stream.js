@@ -33,3 +33,5 @@ function InputStream (input) {
     throw new Error(msg + ' (' + line + ':' + col + ')')
   }
 }
+
+export default InputStream
