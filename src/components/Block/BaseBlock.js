@@ -1,7 +1,8 @@
 import React from 'react'
 import camelCase from 'lodash.camelcase'
-import { View, Text, StyleSheet } from 'react-native'
-import Question from '../Question'
+import styled from 'styled-components'
+import {View, Text, StyleSheet} from 'react-native'
+import QuestionText from '../Question'
 
 const blockColors = {
   multipleChoice: '#72bec8',
@@ -21,6 +22,36 @@ const blockColors = {
   group: '#cb722b'
 }
 
+const Container = styled.View`
+  background-color: #fff;
+  margin-bottom: 12;
+  shadow-color: #000;
+  shadow-offset: 0 2px;
+  shadow-opacity: 0.08;
+  shadow-radius: 8;
+`
+
+const QuestionWrap = styled.View`
+  margin-vertical: 16;
+  flex-direction: row;
+`
+
+const AnswerCount = styled.Text`
+  font-size: 12;
+  line-height: 18;
+  margin-top: 8;
+  color: #999;
+`
+
+const QuestionTypeIcon = styled.View`
+  width: 5;
+  height: 5;
+  border-radius: 10;
+  margin-horizontal: 16;
+  margin-top: 8;
+  background-color: ${props => props.color || '#eee'};
+`
+
 class BaseBlock extends React.PureComponent {
   render () {
     const {
@@ -30,35 +61,32 @@ class BaseBlock extends React.PureComponent {
     const isStatement = field.type === 'statement'
     const showResponses = !isStatement && !!responses
     const count = responses.length
-    const iconStyle = {
-      backgroundColor: blockColors[camelCase(field.type)]
-    }
 
     return (
-      <View style={style.blockContainer}>
-        <View style={style.questionContainer}>
-          <View style={[style.questionTypeIcon, iconStyle]}/>
-          <View style={{ flex: 1, marginRight: 16 }}>
-            <Text style={style.question}>
+      <Container>
+        <QuestionWrap>
+          <QuestionTypeIcon color={blockColors[camelCase(field.type)]} />
+          <View style={{flex: 1, marginRight: 16}}>
+            <QuestionText style={style.question}>
               {field.title}
-            </Text>
-            {(showResponses && totalResponsesCount) ? (
-              <Text style={style.responseRate}>
+            </QuestionText>
+            {(showResponses && totalResponsesCount)  ? (
+              <AnswerCount>
                 {count
                   ? `${count} out of ${totalResponsesCount} people answered this question`
                   : `No one answered this question`}
-              </Text>
+              </AnswerCount>
             ) : null}
           </View>
-        </View>
+        </QuestionWrap>
         {(!isStatement && count)
           ? (
             <View style={[style.answerContainer,
-              { backgroundColor: answerBackground }]}>
+              {backgroundColor: answerBackground}]}>
               {children}
             </View>
           ) : null}
-      </View>
+      </Container>
     )
   }
 }
@@ -66,47 +94,13 @@ class BaseBlock extends React.PureComponent {
 export default BaseBlock
 
 const style = StyleSheet.create({
-  blockContainer: {
-    backgroundColor: '#fff',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8
-  },
-  questionContainer: {
-    marginVertical: 16,
-    flexDirection: 'row',
-    flex: 1
-  },
   answerContainer: {
     flex: 1
-  },
-  question: {
-    fontSize: 18,
-    lineHeight: 26,
-    fontFamily: 'Apercu Pro'
-  },
-  questionTypeIcon: {
-    width: 5,
-    height: 5,
-    borderRadius: 10,
-    marginHorizontal: 16,
-    marginTop: 8
   },
   responseRate: {
     fontSize: 12,
     lineHeight: 18,
     marginTop: 8,
-    color: '#999'
-  },
-  noAnswers: {
-    marginLeft: 38,
-    marginTop: -8,
-    marginBottom: 16
-  },
-  noAnswersText: {
-    fontSize: 14,
     color: '#999'
   }
 })

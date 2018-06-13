@@ -12,6 +12,36 @@ const FormWorkspace = {
   }
 }
 
+const FormSelfNotifications = {
+  name: 'FormSelfNotifications',
+  properties: {
+    enable: 'bool?',
+    recipients: 'string[]',
+    reply_to: 'string[]',
+    subject: 'string',
+    message: 'string'
+  }
+}
+
+const FormRespondentNotifications = {
+  name: 'FormRespondentNotifications',
+  properties: {
+    enable: 'bool?',
+    recipient: 'string',
+    reply_to: 'string[]',
+    subject: 'string',
+    message: 'string'
+  }
+}
+
+const FormNotifications = {
+  name: 'FormNotifications',
+  properties: {
+    self: 'FormSelfNotifications?',
+    respondent: 'FormRespondentNotifications?'
+  }
+}
+
 const FormSettings = {
   name: 'FormSettings',
   properties: {
@@ -21,6 +51,7 @@ const FormSettings = {
     progress_bar: 'string',
     show_progress_bar: 'bool',
     show_typeform_branding: 'bool',
+    notifications: 'FormNotifications?',
     meta: 'FormMeta'
   }
 }
@@ -53,8 +84,8 @@ const FormAttachment = {
 const FieldChoice = {
   name: 'FieldChoice',
   properties: {
-    id: 'string',
-    ref: 'string',
+    id: 'string?',
+    ref: 'string?',
     label: 'string',
     attachment: 'FormAttachment?'
   }
@@ -72,17 +103,18 @@ const FieldLabels = {
 const FieldProperties = {
   name: 'FieldProperties',
   properties: {
+    fields: 'FormField[]', // multiple choice
     labels: 'FieldLabels?',
-    hide_marks: 'bool',
-    button_text: 'string',
-    randomize: 'bool',
-    supersized: 'bool',
-    show_labels: 'bool',
-    start_at_one: 'bool',
-    alphabetical_order: 'bool',
-    allow_multiple_selection: 'bool',
-    allow_other_choice: 'bool',
-    vertical_alignment: 'bool',
+    hide_marks: 'bool?',
+    button_text: 'string?',
+    randomize: 'bool?',
+    supersized: 'bool?',
+    show_labels: 'bool?',
+    start_at_one: 'bool?',
+    alphabetical_order: 'bool?',
+    allow_multiple_selection: 'bool?',
+    allow_other_choice: 'bool?',
+    vertical_alignment: 'bool?',
     choices: 'FieldChoice[]',
     steps: 'int?',
     shape: 'string?'
@@ -106,7 +138,7 @@ const FormField = {
     id: 'string',
     title: 'string',
     ref: 'string',
-    properties: 'FieldProperties',
+    properties: 'FieldProperties?',
     validations: 'FormValidations',
     type: 'string'
   }
@@ -122,7 +154,7 @@ const FormTheme = {
 const _Links = {
   name: '_Links',
   properties: {
-    display: 'bool'
+    display: 'string'
   }
 }
 
@@ -132,7 +164,7 @@ const Form = {
   properties: {
     id: 'string',
     title: 'string',
-    theme: 'FormTheme',
+    theme: 'FormTheme?',
     workspace: 'FormWorkspace',
     settings: 'FormSettings',
     thankyou_screens: 'ThankYouScreen[]',
@@ -145,6 +177,9 @@ export default [
   FormMeta,
   FormWorkspace,
   FieldLabels,
+  FormNotifications,
+  FormSelfNotifications,
+  FormRespondentNotifications,
   FormSettings,
   ThankYouScreen,
   ThankYouScreenProperties,

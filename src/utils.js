@@ -75,11 +75,15 @@ export const tallyMultipleChoiceAnswers = ({field, responses}: { field: Field, r
   responses.forEach(response => {
     if (field.properties.allow_multiple_selection) {
       response.choices.labels.forEach(label => {
-        fields[label].count++
+        if (fields[label]) {
+          fields[label].count++
+        }
       })
     } else {
       const label = response.choice.label
-      fields[label].count++
+      if (fields[label]) {
+        fields[label].count++
+      }
     }
   })
 
@@ -107,3 +111,5 @@ export const getThemeIDFromHref = href => {
   const split = barePath.split('/')
   return split[split.length - 1]
 }
+
+export const toPlainObject = rObj => JSON.parse(JSON.stringify(rObj))

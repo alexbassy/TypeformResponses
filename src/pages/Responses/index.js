@@ -1,11 +1,11 @@
 import React from 'react'
 import BaseComponent from '../base'
-import { View, Text, StyleSheet, ActivityIndicator, ScrollView } from 'react-native'
+import {View, Text, StyleSheet, ActivityIndicator, ScrollView} from 'react-native'
 import Block from '../../components/Block/index'
-import { getCompletionRate, getResponsesCount, getResponsesForQuestion } from '../../utils'
+import {getCompletionRate, getResponsesCount, getResponsesForQuestion, toPlainObject} from '../../utils'
 import Api from '../../api'
 
-const Statistics = ({ responses }) => {
+const Statistics = ({responses}) => {
   // @todo: Work out completion rate same way as in the platform
   return (
     <View style={styles.statisticContainer}>
@@ -39,7 +39,7 @@ export default class ViewResponses extends BaseComponent {
   }
 
   async getFormAndResponses () {
-    const { id: formId } = this.props.form
+    const {id: formId} = this.props.form
 
     const [form, responses] = await Promise.all([
       Api.getFormDefinition(formId),
@@ -54,7 +54,7 @@ export default class ViewResponses extends BaseComponent {
   }
 
   render () {
-    const { form, responses, loading } = this.state
+    const {form, responses, loading} = this.state
 
     if (loading) {
       return (

@@ -18,7 +18,7 @@ export default class Login extends BaseComponent {
     try {
       const token = await Api.getOauthToken(temporaryAuthorisationCode)
       await Api.setToken(token)
-      this.goToListForms()
+      this.skipLoginScreen()
     } catch (e) {
       this.setState({ loginError: true })
     }
@@ -34,9 +34,9 @@ export default class Login extends BaseComponent {
     return (
       <View style={styles.container}>
         <View style={styles.headingWrap}>
-          <TFHeading2 center>
+          <H2 center>
             Read your responses on the move
-          </TFHeading2>
+          </H2>
         </View>
         <TFForm>
           <TFButton

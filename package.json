@@ -12,7 +12,8 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "ios": "react-native run-ios --simulator=\"iPhone 8\"",
+    "ios": "react-native run-ios",
+    "bundle-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "test": "node node_modules/jest/bin/jest.js --forceExit",
     "mock-server": "json-server --watch __mock-server__/db.json --routes __mock-server__/routes.json",
     "flow": "flow",
@@ -20,18 +21,19 @@
     "storybook": "storybook start -p 7007",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "semantic-release": "semantic-release",
-    "clean": "rm -rf default.realm*"
+    "clean-realm": "rm -rf default.realm* realm-object-server"
   },
   "dependencies": {
+    "fetch-mock": "^6.3.0",
     "lodash.camelcase": "^4.3.0",
     "moment": "^2.20.1",
-    "react": "16.2.0",
-    "react-native": "^0.54.2",
+    "react": "^16.4.0",
+    "react-native": "^0.55.4",
     "react-native-config": "^0.11.5",
     "react-native-linear-gradient": "^2.4.0",
-    "react-native-navigation": "^1.1.397",
-    "realm": "2.2.0",
-    "styled-components": "^3.1.6",
+    "react-native-navigation": "^1.1.444",
+    "realm": "^2.8.1",
+    "styled-components": "^3.3.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
@@ -50,12 +52,13 @@
     "eslint-plugin-jest": "^21.8.0",
     "flow-bin": "^0.61.0",
     "husky": "^0.14.3",
-    "jest": "^22.4.2",
+    "jest": "^23.1.0",
     "jest-react-native": "^18.0.0",
+    "jest-styled-components": "^5.0.1",
     "json-server": "^0.12.1",
     "prop-types": "^15.6.1",
     "react-dom": "^16.2.0",
-    "react-test-renderer": "16.2.0",
+    "react-test-renderer": "^16.4.0",
     "semantic-release": "^12.4.1",
     "standard": "^11.0.0-beta.0"
   },
@@ -65,7 +68,16 @@
     ]
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "testPathIgnorePatterns": [
+      "__tests__/config",
+      "__tests__/fixtures",
+      "/node_modules/"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/__tests__/config/setupTestFrameworkScriptFile.js",
+    "moduleNameMapper": {
+      "styled-components": "<rootDir>/node_modules/styled-components/dist/styled-components.native.cjs.js"
+    }
   },
   "standard": {
     "parser": "babel-eslint",

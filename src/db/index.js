@@ -9,3 +9,16 @@ export const openDatabase = (extraOptions = {}) => {
     ...extraOptions
   })
 }
+
+export const runQuery = async (callback) => {
+  const realm = await Realm.open({schema: schemas, deleteRealmIfMigrationNeeded: true})
+  return callback(realm)
+}
+
+export const clearDatabase = () => {
+  runQuery(realm => {
+    realm.write(() => realm.deleteAll())
+  })
+}
+
+export default runQuery

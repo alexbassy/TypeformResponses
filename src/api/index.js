@@ -1,16 +1,13 @@
 import Config from 'react-native-config'
 import url from 'url'
 import qs from 'querystring'
-import { openDatabase } from '../db/index'
-
-const toPlainObject = rObj => JSON.parse(JSON.stringify(rObj))
+import {openDatabase} from '../db/index'
 
 export class Api {
   constructor ({open, scopes, base, secrets, fetchMock}) {
     this.open = open
     if (fetchMock) this.fetch = fetchMock
     this.config = {base, scopes, secrets}
-    this.currentRequestURI = ''
   }
 
   helpers = {
@@ -84,7 +81,7 @@ export class Api {
 
     // @todo add try-catch to not overwrite when offline
     if (!localTheme || overwriteCache) {
-      const theme = await this.makeRequest(`/themes/${id}`, { method: 'GET' })
+      const theme = await this.makeRequest(`/themes/${id}`, {method: 'GET'})
       realm.write(() => {
         if (theme.background) {
           theme.background.brightness *= 100
@@ -102,8 +99,21 @@ export class Api {
     return this.makeRequest(`/forms${options ? optionsQuery : ''}`)
   }
 
-  async getFormDefinition (id) {
-    return this.makeRequest(`/forms/${id}`)
+  async getFormDefinition (id, overwriteCache) {
+    const realm = await this.open()
+    const localFormDefinition = realm.objectForPrimaryKey('Form', id)
+
+    // @todo add try-catch to not overwrite when offline
+    if (!localFormDefinition || overwriteCache) {
+      const form = await this.makeRequest(`/forms/${id}`, {method: 'GET'})
+      realm.write(() => {
+        realm.create('Form', form, true)
+      })
+      return form
+    }
+
+    console.log(`loaded form definition from cache`)
+    return localFormDefinition
   }
 
   async getFormResponses (id) {
@@ -123,8 +133,6 @@ export class Api {
     isAuthenticated = true,
     isJson = true
   } = {}) {
-    this.currentRequestURI = url
-
     const defaultHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -139,8 +147,6 @@ export class Api {
 
     const request = this.fetch || fetch
     const response = await request(`${this.config.base}/${url}`, {method, headers, body})
-
-    this.currentRequestURI = ''
 
     if (isJson) {
       return response.json()

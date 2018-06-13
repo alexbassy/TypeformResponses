@@ -1,14 +1,15 @@
 import React from 'react'
 import BasePage from '../base'
 import Api from '../../api'
-import { FlatList, StyleSheet, SafeAreaView } from 'react-native'
+import {FlatList, StyleSheet, SafeAreaView} from 'react-native'
 import Form from '../../components/Form'
 
 export default class ListForms extends BasePage {
   static navigatorButtons = {
     rightButtons: [{
       id: 'open-settings',
-      title: 'Settings'
+      icon: require('../../../assets/icon/settings.png'),
+      disableIconTint: true
     }]
   }
 
@@ -20,8 +21,8 @@ export default class ListForms extends BasePage {
 
   requestedResponseCount = []
 
-  constructor (props) {
-    super(props)
+  constructor (...args) {
+    super(...args)
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
   }
 
@@ -39,7 +40,7 @@ export default class ListForms extends BasePage {
 
   async retrieveForms (isRefreshing = false) {
     try {
-      const { items } = await Api.listForms()
+      const {items} = await Api.listForms()
 
       const processed = items.map(form => {
         form.key = form.id
@@ -56,7 +57,7 @@ export default class ListForms extends BasePage {
     }
   }
 
-  getResponseCount ({ id }) {
+  getResponseCount ({id}) {
     const hasRequested = this.requestedResponseCount.includes(id)
     const responsesCountForForm = this.state.responsesCounts[id]
 
@@ -66,7 +67,7 @@ export default class ListForms extends BasePage {
 
     if (typeof responsesCountForForm === 'undefined') {
       this.requestedResponseCount.push(id)
-      Api.getFormResponses(id, { page_size: 0 }).then(responses => {
+      Api.getFormResponses(id, {page_size: 0}).then(responses => {
         this.setState({
           responsesCounts: {
             ...this.state.responsesCounts,
@@ -85,11 +86,11 @@ export default class ListForms extends BasePage {
   }
 
   refreshForms = () => {
-    this.setState({ isRefreshing: true })
+    this.setState({isRefreshing: true})
     return this.retrieveForms(true)
   }
 
-  renderForm = ({ item }) => {
+  renderForm = ({item}) => {
     return (
       <Form
         item={item}
@@ -100,10 +101,10 @@ export default class ListForms extends BasePage {
   }
 
   render () {
-    const { forms, isRefreshing } = this.state
+    const {forms, isRefreshing} = this.state
 
     if (!forms.length) {
-      return this.renderLoading()
+      return this.renderLoading({ light: true })
     }
 
     return (

@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { ActionSheetIOS, View, ActivityIndicator, StyleSheet } from 'react-native'
+import React, {Component} from 'react'
+import {AsyncStorage, ActionSheetIOS, View, ActivityIndicator, StyleSheet} from 'react-native'
 
 const pageProperties = {
   navigatorStyle: {
@@ -8,9 +8,21 @@ const pageProperties = {
 }
 
 export default class BasePage extends Component {
+  paths = {
+    '/login': this.goToLoginScreen,
+    '/callback': this.goToLoginScreen,
+    '/': this.skipLoginScreen,
+    '/form/:id': this.goToFormResponses
+  }
+
+  constructor (...args) {
+    super(...args)
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent)
+  }
+
   onNavigatorEvent (event) {
-    console.log(event)
     // handle a deep link
+    console.log(`onNavigatorEvent:`, event)
     if (event.type === 'DeepLink') {
       const parts = event.link.split('/') // Link parts
       const payload = event.payload // (optional) The payload
@@ -21,13 +33,14 @@ export default class BasePage extends Component {
     }
   }
 
-  goToLoginScreen ({ logout = false } = {}) {
+  goToLoginScreen ({logout = false} = {}) {
     const ev = {
       screen: 'responses.Login',
       title: 'Login',
       animated: false,
       navigatorStyle: {
-        navBarHidden: true
+        navBarHidden: true,
+        disabledBackGesture: true
       }
     }
     this.props.navigator.resetTo(ev)
@@ -42,26 +55,18 @@ export default class BasePage extends Component {
     })
   }
 
-  goToListForms () {
-    this.props.navigator.push({
-      screen: 'responses.ListForms',
-      title: 'Your typeforms',
-      ...pageProperties
-    })
-  }
-
   goToFormResponses (form) {
     this.props.navigator.push({
       screen: 'responses.ViewResponses',
       title: form.title,
-      passProps: { form },
+      passProps: {form},
       ...pageProperties
     })
   }
 
   doLogout = async () => {
     console.log('[to do]: clear token from cache')
-    this.goToLoginScreen({ logout: true })
+    this.goToLoginScreen({logout: true})
   }
 
   logout = async () => {
@@ -86,12 +91,22 @@ export default class BasePage extends Component {
     })
   }
 
-  renderLoading () {
+  renderLoading ({ light = false } = {}) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size='large' color='#000'/>
+        <ActivityIndicator size='large' color={light ? '#fff' : '#000'} />
       </View>
     )
+  }
+
+  async saveLastLocation (path) {
+    await AsyncStorage.setItem('lastLocation', path)
+  }
+
+  async jumpToLocation () {
+    const lastLocation = await AsyncStorage.getItem('lastLocation')
+    if (!lastLocation || !this.paths[lastLocation]) return
+    this.paths[lastLocation]()
   }
 }
 

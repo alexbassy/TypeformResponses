@@ -4,6 +4,7 @@ import React from 'react'
 import BaseComponent from '../base'
 import {SectionList, StyleSheet} from 'react-native'
 import SettingsFactory from '../../settingsController'
+import {clearDatabase} from '../../db'
 import {ListItem, SectionTitle, ButtonListItem} from './visual'
 
 class AppSettings extends BaseComponent {
@@ -50,6 +51,13 @@ class AppSettings extends BaseComponent {
       onPress: async () => {
         await this.settings.resetToDefaults()
         await this.getSettingsOptions()
+      }
+    }, {
+      id: 'clear-db',
+      title: 'Clear database',
+      onPress: async () => {
+        await clearDatabase()
+        this.goToLoginScreen()
       }
     }, {
       id: 'report-problem',

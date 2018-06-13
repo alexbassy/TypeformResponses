@@ -29,9 +29,11 @@ class Date extends Component {
   }
 
   render () {
+    const format = this.formats[this.state.format]
+    const date = new Date(this.props.children[0])
     return (
       <Text onPress={this.onClick}>
-        {this.formats[this.state.format](this.props.children[0])}
+        {format(date)}
       </Text>
     )
   }
