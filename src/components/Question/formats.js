@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export const FIND_TAGS = /((\*(.+?)\*)|(_(.+?)_)|({{(field|hidden):.+?}}))/g
+export const EXPRESSION_FIND_FIELDS = /({{(field|hidden):[a-z0-9-]+}})/g
 
 const PipedField = styled.Text`
   color: #4fb0ae;
@@ -11,17 +11,11 @@ const HiddenField = styled.Text`
   color: red;
 `
 
+export function stripBoldAndItalic (text) {
+  return text.replace(/[*_]/g, '')
+}
+
 export const types = {
-  bold: {
-    expression: /(\*(.+?)\*)/,
-    render: (token) => token,
-    strip: token => token.replace(/\*(.+?)\*/, '$1')
-  },
-  italic: {
-    expression: /(_(.+?)_)/,
-    render: (token) => token,
-    strip: token => token.replace(/_(.+?)_/, '$1')
-  },
   field: {
     expression: /({{field:.+}})/,
     render: (token, fields) => {

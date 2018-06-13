@@ -3,6 +3,8 @@ import renderer from 'react-test-renderer'
 import {plain, bold, italic, boldItalic, hidden, fields} from '../../../__tests__/fixtures/sentences'
 import Question from '.'
 
+jest.mock('../../db')
+
 const defer = cb => setTimeout(cb, 100)
 
 describe('<Question/>', () => {

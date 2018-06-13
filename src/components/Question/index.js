@@ -1,30 +1,33 @@
-import React, { Component } from 'react'
-import runQuery from '../../db'
+import React, {Component} from 'react'
 import {Text, StyleSheet} from 'react-native'
-import {FIND_TAGS, types} from './formats'
+import runQuery from '../../db'
+import {EXPRESSION_FIND_FIELDS, stripBoldAndItalic, types} from './formats'
 
 class Question extends Component {
   state = {
-    isPlain: true,
+    hasFields: true,
     fields: {}
   }
 
+  static getDerivedStateFromProps (props, state) {
+    return {
+      textContent: stripBoldAndItalic(props.children)
+    }
+  }
+
   async componentDidMount () {
-    const textContent = this.props.children
-    this.tags = textContent.match(FIND_TAGS)
+    this.fields = this.state.textContent.match(EXPRESSION_FIND_FIELDS)
 
-
-
-    if (this.tags) {
+    if (this.fields) {
       await this.getFormFields()
     }
   }
 
   async getFormFields () {
-    const withPiping = this.tags.filter(tag => types.field.expression.test(tag))
+    const withPiping = this.fields.filter(tag => types.field.expression.test(tag))
 
     if (!withPiping) {
-      return this.setState({isPlain: false})
+      return this.setState({hasFields: false})
     }
 
     const fieldIds = withPiping
@@ -42,24 +45,19 @@ class Question extends Component {
       })
     })
 
-    this.setState({fields, isPlain: false})
+    this.setState({fields, hasFields: false})
   }
 
   getTextPart (token, {expression, render, strip}, fields) {
     const stripped = strip(token)
-    if (stripped.match(FIND_TAGS)) {
-      const type = Object.values(types).find(type => type.expression.test(stripped))
-      console.log(token, stripped, type)
-      return this.getTextPart(stripped, type, fields)
-    }
     return render(stripped, fields)
   }
 
-  renderRichTextWithPiping () {
+  renderTextWithFields () {
     const text = this.props.children
-    const indices = this.tags.map(tag => text.indexOf(tag))
+    const indices = this.fields.map(tag => text.indexOf(tag))
 
-    const textComponents = this.tags.reduce((result, tag, i) => {
+    const textComponents = this.fields.reduce((result, tag, i) => {
       const index = indices[i]
       const tokenTypes = Object.values(types)
 
@@ -90,12 +88,12 @@ class Question extends Component {
   }
 
   render () {
-    if (!this.state.isPlain) {
-      return this.renderRichTextWithPiping()
+    if (!this.state.hasFields) {
+      return this.renderTextWithFields()
     }
 
     return (
-      <Text style={styles.question}>{this.props.children}</Text>
+      <Text style={styles.question}>{this.state.textContent}</Text>
     )
   }
 }
