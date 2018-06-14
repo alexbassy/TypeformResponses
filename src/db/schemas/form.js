@@ -94,9 +94,9 @@ const FieldChoice = {
 const FieldLabels = {
   name: 'FieldLabels',
   properties: {
-    left: 'string',
-    right: 'string',
-    center: 'string'
+    left: 'string?',
+    right: 'string?',
+    center: 'string?'
   }
 }
 
