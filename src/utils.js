@@ -14,7 +14,7 @@ export const getResponsesCount = responses => {
 
 export const getCompletionRate = responses => {
   const completed = getResponsesCount(responses)
-  return completed ? responses.total_items / completed : 0
+  return completed ? (responses.total_items / completed).toFixed(2) : 0
 }
 
 export const findQuestion = (fields: Field[], comparison: Function) => {

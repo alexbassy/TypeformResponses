@@ -101,22 +101,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 8,
-    backgroundColor: '#f1ece5',
     borderRadius: 4
-  },
-  firstStatistic: {
-    marginRight: 8
-  },
-  statisticValue: {
-    fontSize: 22,
-    lineHeight: 32,
-    marginBottom: 2,
-    fontFamily: 'Apercu Pro'
   },
   statisticTitle: {
     fontWeight: '300',
     color: '#8e8e93',
-    fontSize: 12,
-    fontFamily: 'Apercu Pro'
+    fontSize: 12
+  },
+  statisticValue: {
+    fontSize: 22,
+    lineHeight: 32,
+    fontWeight: '800',
+    marginBottom: 2
+  },
+  firstStatistic: {
+    marginRight: 8
   }
 })
